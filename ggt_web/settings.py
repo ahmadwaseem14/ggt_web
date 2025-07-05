@@ -134,11 +134,6 @@ WHITENOISE_AUTOREFRESH = True
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Configure WhiteNoise to serve media files in production
-WHITENOISE_ADDITIONAL_PREFIXES = [
-    ('media/', 'media/'),
-]
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
