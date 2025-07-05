@@ -26,19 +26,7 @@ SECRET_KEY = 'django-insecure-_ud9bc4%-kemdf2$=hdty-8*p$@zjiz-7ofr4hxm9^nqk0$j#b
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-<<<<<<< HEAD
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    'ggt.com.pk',  # replace with your real domain
-    'www.ggt.com.pk',  # optional: your server's public IP or domain
-    'your-subdomain.onrender.com',  # Add your Render URL here if deploying there
-]
-=======
-ALLOWED_HOSTS = [ '*'
-     ]
-
->>>>>>> f958e230211ccc9b64e8e0c138917e04c0f79fe0
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -148,12 +136,3 @@ MEDIA_ROOT = BASE_DIR / 'media'  # Good to keep this as Path object
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-<<<<<<< HEAD
-=======
-STATIC_ROOT = BASE_DIR / "staticfiles"
-STATIC_URL = "/static/"
-
-STATICFILES_DIRS = [BASE_DIR / "static"]
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'  # Use Path for media root
->>>>>>> f958e230211ccc9b64e8e0c138917e04c0f79fe0
