@@ -9,8 +9,8 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-import os
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -26,12 +26,13 @@ SECRET_KEY = 'django-insecure-_ud9bc4%-kemdf2$=hdty-8*p$@zjiz-7ofr4hxm9^nqk0$j#b
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = [ 'localhost',
-         '127.0.0.1',
-         'ggt.com.pk',  # replace with your real domain
-         'www.ggt.com.pk'   # optional: your server's public IP
-     ]
-
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'ggt.com.pk',  # replace with your real domain
+    'www.ggt.com.pk',  # optional: your server's public IP or domain
+    'your-subdomain.onrender.com',  # Add your Render URL here if deploying there
+]
 
 
 # Application definition
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # WhiteNoise middleware for static files
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -68,8 +70,7 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-               
+                'django.contrib.messages.context_processors.messages',    
             ],
         },
     },
@@ -125,14 +126,19 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = [BASE_DIR / "static"]
+
+# WhiteNoise static files storage with compression and caching
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+
+# Media files (uploads)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'  # Good to keep this as Path object
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-STATIC_ROOT = BASE_DIR / "staticfiles"
-STATIC_URL = "/static/"
-
-STATICFILES_DIRS = [BASE_DIR / "static"]
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'  # Use Path for media root
