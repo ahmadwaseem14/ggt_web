@@ -26,10 +26,7 @@ SECRET_KEY = 'django-insecure-_ud9bc4%-kemdf2$=hdty-8*p$@zjiz-7ofr4hxm9^nqk0$j#b
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = [ 'localhost',
-         '127.0.0.1',
-         'ggt.com.pk',  # replace with your real domain
-         'www.ggt.com.pk'   # optional: your server's public IP
+ALLOWED_HOSTS = [ '*'
      ]
 
 
