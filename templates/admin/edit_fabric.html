@@ -1,0 +1,144 @@
+{% extends "sidebar.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-light">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4><i class="fas fa-edit"></i> Edit Fabric</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <!-- Name -->
+                        <div class="form-group">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" name="name" class="form-control mb-3" id="name" placeholder="Enter Fabric name" value="{{ button.name }}" required>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="form-group">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea name="description" class="form-control mb-3" id="description" placeholder="Enter Fabric description" rows="3">{{ button.description }}</textarea>
+                        </div>
+
+                        <!-- Price -->
+                        <div class="form-group">
+                            <label for="price" class="form-label">Price</label>
+                            <input type="number" name="price" class="form-control mb-3" id="price" step="0.01" placeholder="Enter price" value="{{ button.price }}" required>
+                        </div>
+
+                        <!-- Original Price -->
+                        <div class="form-group">
+                            <label for="original_price" class="form-label">Original Price</label>
+                            <input type="number" name="original_price" class="form-control mb-3" id="original_price" step="0.01" placeholder="Enter original price" value="{{ button.original_price }}">
+                        </div>
+
+                        <!-- Image -->
+                        <div class="form-group">
+                            <label for="image" class="form-label">Image</label>
+                            <input type="file" name="image" class="form-control mb-3" id="image">
+                            {% if button.image %}
+                                <img src="{{ button.image.url }}" alt="Button Image" class="img-fluid mt-2" width="150">
+                            {% endif %}
+                        </div>
+
+                        <!-- Video -->
+                        <div class="form-group">
+                            <label for="video" class="form-label">Video</label>
+                            <input type="file" name="video" class="form-control mb-3" id="video">
+                            {% if button.video %}
+                                <video controls class="mt-2" width="150">
+                                    <source src="{{ button.video.url }}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            {% endif %}
+                        </div>
+
+                        <!-- In Stock -->
+                        <div class="form-group form-check">
+                            <input type="checkbox" name="in_stock" class="form-check-input" id="in_stock" {% if button.in_stock %}checked{% endif %}>
+                            <label class="form-check-label" for="in_stock">In Stock</label>
+                        </div>
+
+                        <!-- Dynamic Specifications Section -->
+                        <div id="specifications" class="mb-4">
+                            <h5 class="mb-3"><i class="fas fa-cogs"></i> Specifications</h5>
+                            {% for spec in button.specifications %}
+                                <div class="specification-row mb-3">
+                                    <div class="row">
+                                        <div class="col-md-5 col-12 mb-3 mb-md-0">
+                                            <input type="text" name="spec_title[]" value="{{ spec.title }}" placeholder="Specification Title" class="form-control" />
+                                        </div>
+                                        <div class="col-md-5 col-12 mb-3 mb-md-0">
+                                            <input type="text" name="spec_value[]" value="{{ spec.value }}" placeholder="Specification Value" class="form-control" />
+                                        </div>
+                                        <div class="col-md-2 col-12 text-center">
+                                            <button type="button" class="btn btn-danger remove-spec">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Add Specification Button -->
+                        <button type="button" id="add-spec" class="btn btn-success mb-3">
+                            <i class="fas fa-plus"></i> Add Specification
+                        </button>
+
+                        <!-- Save Button -->
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <button type="submit" name="save" class="btn btn-primary btn-block">
+                                    <i class="fas fa-save"></i> Save Changes
+                                </button>
+                            </div>
+                            <div class="col-12 mt-2">
+                                <a href="{% url 'fabric_listss' %}" class="btn btn-secondary btn-block">
+                                    <i class="fas fa-arrow-left"></i> Back to Button List
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // JavaScript for adding dynamic specification fields
+    document.getElementById('add-spec').addEventListener('click', function () {
+        var specRow = document.createElement('div');
+        specRow.classList.add('specification-row', 'mb-3');
+        specRow.innerHTML = `
+            <div class="row">
+                <div class="col-md-5 col-12 mb-3 mb-md-0">
+                    <input type="text" name="spec_title[]" placeholder="Title" class="form-control" />
+                </div>
+                <div class="col-md-5 col-12 mb-3 mb-md-0">
+                    <input type="text" name="spec_value[]" placeholder="Value" class="form-control" />
+                </div>
+                <div class="col-md-2 col-12 text-center">
+                    <button type="button" class="btn btn-danger remove-spec">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+        document.getElementById('specifications').appendChild(specRow);
+    });
+
+    // Event delegation for removing specification rows
+    document.getElementById('specifications').addEventListener('click', function(event) {
+        if (event.target.classList.contains('remove-spec')) {
+            event.target.closest('.specification-row').remove();
+        }
+    });
+</script>
+
+{% endblock %}

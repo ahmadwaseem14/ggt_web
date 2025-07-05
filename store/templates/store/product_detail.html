@@ -1,0 +1,1047 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+<style>
+    body {
+        background-color: #121212;
+        color: #e0e0e0;
+    }
+
+    .navbar {
+        background-color: #1a1a1a !important;
+        border-bottom: 1px solid #333;
+    }
+
+    .product-template__container {
+        margin-top: 80px;
+        padding-bottom: 50px;
+        background-color: #121212;
+    }
+
+    .container1 {
+        background-color: #121212;
+    }
+
+    .product-single {
+        background-color: #1e1e1e;
+        border-radius: 10px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .product-title {
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #ffffff;
+    }
+
+    @media (max-width: 768px) {
+        .product-title {
+            font-size: 1.5rem;
+        }
+    }
+
+    .product-brand {
+        font-size: 1.1rem;
+        color: #9e9e9e;
+        margin-bottom: 20px;
+    }
+
+    .product-price {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #ffffff;
+        margin-bottom: 5px;
+    }
+
+    .old-price {
+        text-decoration: line-through;
+        color: #9e9e9e;
+        font-size: 1.2rem;
+        margin-right: 10px;
+    }
+
+    .discount-badge {
+        background-color: #e53935;
+        color: white;
+        padding: 3px 10px;
+        border-radius: 3px;
+        font-size: 0.9rem;
+        margin-left: 10px;
+    }
+
+    .call-for-price {
+        font-size: 1.5rem;
+        color: #f0f0f0;
+        font-weight: 600;
+    }
+
+    .product-condition {
+        margin-bottom: 20px;
+    }
+
+    .product-description {
+        margin: 30px 0;
+        line-height: 1.6;
+        color: #bdbdbd;
+    }
+
+    .action-buttons {
+        margin: 30px 0;
+    }
+
+    .action-buttons .btn {
+        margin-bottom: 10px;
+        width: 100%;
+        padding: 12px;
+        font-weight: 600;
+        border-radius: 6px;
+    }
+
+    .btn-primary {
+        background-color: #2196f3;
+        border-color: #2196f3;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #1976d2;
+        border-color: #1976d2;
+    }
+
+    .btn-success {
+        background-color: #4CAF50;
+        border-color: #4CAF50;
+    }
+
+    .btn-success:hover {
+        background-color: #388E3C;
+        border-color: #388E3C;
+    }
+
+    .btn-outline-secondary {
+        color: #e0e0e0;
+        border-color: #616161;
+        background-color: transparent;
+    }
+
+    .btn-outline-secondary:hover {
+        background-color: #424242;
+        border-color: #757575;
+        color: #ffffff;
+    }
+
+    .btn-info {
+        background-color: #00BCD4;
+        border-color: #00BCD4;
+        color: #121212;
+    }
+
+    .btn-info:hover {
+        background-color: #00ACC1;
+        border-color: #00ACC1;
+        color: #121212;
+    }
+
+    .secondary-buttons {
+        display: flex;
+        
+        gap: 10px;
+    }
+
+    .secondary-buttons .btn {
+        flex: 1;
+        background-color: #1090ff;
+    }
+
+    @media (max-width: 576px) {
+        .secondary-buttons {
+            flex-direction: column;
+        }
+    }
+
+    /* Product Image Gallery */
+    .product-details-img {
+        position: relative;
+        margin-bottom: 30px;
+    }
+
+    .product-zoom-wrap {
+        position: relative;
+        overflow: hidden;
+        background-color: #1a1a1a;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .product-zoom-span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 450px;
+        position: relative;
+    }
+
+    @media (max-width: 768px) {
+        .product-zoom-span {
+            height: 350px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .product-zoom-span {
+            height: 280px;
+        }
+    }
+
+    .product-zoom {
+        max-height: 100%;
+        max-width: 100%;
+        object-fit: contain;
+    }
+
+    .product-zoom-lens {
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        background: rgba(255, 255, 255, 0.2);
+        border: 1px solid #2196f3;
+        border-radius: 50%;
+        pointer-events: none;
+        display: none;
+        z-index: 10;
+    }
+
+    .product-zoom-result {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        background-color: #1a1a1a;
+        border: 1px solid #333;
+        border-radius: 5px;
+        overflow: hidden;
+        display: none;
+        z-index: 10;
+        top: 0;
+        right: -320px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .product-zoom-image {
+        position: absolute;
+        object-fit: contain;
+    }
+
+    @media (max-width: 768px) {
+        .product-zoom-result {
+            width: 200px;
+            height: 200px;
+            right: -220px;
+        }
+
+        .product-zoom-lens {
+            width: 80px;
+            height: 80px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .product-zoom-result {
+            display: none;
+        }
+
+        .product-zoom-lens {
+            display: none;
+        }
+    }
+
+    .product-labels {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        z-index: 2;
+    }
+
+    .product-labels .lbl {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 3px;
+        margin-right: 5px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .product-labels .lbl.on-sale {
+        background-color: #e53935;
+        color: white;
+    }
+
+    .product-labels .lbl.pr-label1 {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .product-buttons {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        z-index: 2;
+    }
+
+    .product-buttons .btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.2);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+        transition: background-color 0.3s;
+    }
+
+    .product-buttons .btn:hover {
+        background-color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Custom Thumbnail Slider */
+    .thumbnail-slider {
+        position: relative;
+        margin-top: 20px;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .thumbnail-slider-container {
+        display: flex;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        justify-content: center;
+    }
+
+    .thumbnail-slider-container::-webkit-scrollbar {
+        display: none;
+    }
+
+    .thumbnail-slider-container.fewer-images {
+        justify-content: center;
+    }
+
+    .thumbnail-item {
+        flex: 0 0 auto;
+        width: 120px;
+        height: 120px;
+        margin-right: 10px;
+        background-color: #1a1a1a;
+        border-radius: 5px;
+        overflow: hidden;
+        border: 2px solid transparent;
+        transition: border-color 0.2s, transform 0.2s;
+        cursor: pointer;
+    }
+
+    .thumbnail-item:hover {
+        transform: scale(1.05);
+        border-color: #2196f3;
+    }
+
+    .thumbnail-item.active {
+        border-color: #2196f3;
+        transform: scale(1.05);
+    }
+
+    .thumbnail-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: opacity 0.2s;
+    }
+
+    .thumbnail-item:hover img {
+        opacity: 0.9;
+    }
+
+    .slider-nav {
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        transform: translateY(-50%);
+        pointer-events: none;
+    }
+
+    .slider-nav button {
+        pointer-events: all;
+        width: 30px;
+        height: 30px;
+        background-color: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .slider-nav button:hover {
+        background-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .slider-nav .prev {
+        margin-left: 5px;
+    }
+
+    .slider-nav .next {
+        margin-right: 5px;
+    }
+
+    .slider-nav.hidden {
+        display: none;
+    }
+
+    @media (max-width: 768px) {
+        .thumbnail-item {
+            width: 100px;
+            height: 100px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .thumbnail-item {
+            width: 80px;
+            height: 80px;
+        }
+
+        .slider-nav button {
+            width: 25px;
+            height: 25px;
+            font-size: 12px;
+        }
+    }
+
+    /* Specifications */
+    .specs-container {
+        background-color: #1e1e1e;
+        border-radius: 10px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .specs-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: #ffffff;
+        border-bottom: 1px solid #333;
+        padding-bottom: 10px;
+    }
+
+    .specs-section {
+        margin-bottom: 30px;
+    }
+
+    .specs-section:last-child {
+        margin-bottom: 0;
+    }
+
+    .specs-section-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #2196f3;
+    }
+
+    .specs-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .specs-table tr {
+        border-bottom: 1px solid #333;
+    }
+
+    .specs-table tr:last-child {
+        border-bottom: none;
+    }
+
+    .specs-table td {
+        padding: 12px 8px;
+        color: #e0e0e0;
+    }
+
+    .specs-table td:first-child {
+        width: 40%;
+        font-weight: 500;
+        color: #bdbdbd;
+    }
+
+    /* Related Products */
+    .related-products {
+        margin-top: 50px;
+    }
+
+    .related-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 30px;
+        color: #ffffff;
+        text-align: center;
+    }
+
+    .related-product-card {
+        background-color: #1e1e1e;
+        border-radius: 8px;
+        overflow: hidden;
+        height: 100%;
+        position: relative;
+        transition: transform 0.3s, box-shadow 0.3s;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .related-product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .related-product-image {
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #1a1a1a;
+        padding: 15px;
+    }
+
+    .related-product-image img {
+        max-height: 100%;
+        max-width: 100%;
+        object-fit: contain;
+    }
+
+    .related-product-info {
+        padding: 15px;
+    }
+
+    .related-product-title {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #ffffff;
+        height: 40px;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    .related-product-price {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #ffffff;
+        margin-bottom: 10px;
+    }
+
+    .related-product-call-price {
+        font-size: 1rem;
+        color: #e0e0e0;
+        margin-bottom: 10px;
+    }
+
+    /* Fullscreen Modal */
+    .fullscreen-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        z-index: 9999;
+    }
+
+    .fullscreen-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 30px;
+        color: white;
+        cursor: pointer;
+        z-index: 10000;
+    }
+
+    .fullscreen-image-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+    }
+
+    .fullscreen-image {
+        max-height: 90%;
+        max-width: 90%;
+        object-fit: contain;
+    }
+
+    .fullscreen-nav {
+        position: absolute;
+        bottom: 20px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .fullscreen-nav-btn {
+        background-color: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    .fullscreen-nav-btn:hover {
+        background-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .no-image-placeholder {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #1a1a1a;
+        color: #757575;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'navbar.html' %}
+
+<div id="ProductSection-product-template" class="product-template__container container">
+    <div class="product-single">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                <div class="product-details-img">
+                    <div class="product-zoom-wrap">
+                        <div class="product-zoom-span">
+                            {% with primary_image=product.images.all|dictsort:"is_primary"|last %}
+                            {% if primary_image %}
+                            <img id="product-main-image" class="product-zoom" src="{{ primary_image.image.url }}"
+                                alt="{{ primary_image.alt_text }}">
+                            {% else %}
+                            {% with first_image=product.images.first %}
+                            {% if first_image %}
+                            <img id="product-main-image" class="product-zoom" src="{{ first_image.image.url }}"
+                                alt="{{ first_image.alt_text }}">
+                            {% else %}
+                            <div class="no-image-placeholder">
+                                <span>No Image Available</span>
+                            </div>
+                            {% endif %}
+                            {% endwith %}
+                            {% endif %}
+                            {% endwith %}
+                            <div class="product-zoom-lens"></div>
+                            <div class="product-zoom-result">
+                                <img id="product-zoom-image" src="">
+                            </div>
+                        </div>
+
+                        <div class="product-labels">
+                            {% if product.condition == 'new' %}
+                            <span class="lbl pr-label1">New</span>
+                            {% elif product.condition == 'used' %}
+                            <span class="lbl" style="background-color: #FF9800; color: #121212;">Used</span>
+                            {% elif product.condition == 'refurbished' %}
+                            <span class="lbl" style="background-color: #00BCD4; color: #121212;">Refurbished</span>
+                            {% elif product.condition == 'box_open' %}
+                            <span class="lbl" style="background-color: #9E9E9E;">Box Open</span>
+                            {% endif %}
+                            {% if product.old_price %}
+                            <span class="lbl on-sale">Sale</span>
+                            {% endif %}
+                            {% if product.top_pick %}
+                            <span class="lbl" style="background-color: #2196f3;">Top Pick</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="product-buttons">
+                            <a href="#" class="btn prlightbox" title="Zoom">
+                                <i class="fa fa-search-plus"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    {% if product.images.count > 1 %}
+                    <div class="thumbnail-slider">
+                        <div id="thumbnail-slider-container" class="thumbnail-slider-container">
+                            {% for image in product.images.all %}
+                            <div class="thumbnail-item {% if image.is_primary %}active{% endif %}"
+                                data-image="{{ image.image.url }}">
+                                <img src="{{ image.image.url }}" alt="{{ image.alt_text }}">
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="slider-nav">
+                            <button class="prev"><i class="fa fa-chevron-left"></i></button>
+                            <button class="next"><i class="fa fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                <div class="product-info">
+                    <h1 class="product-title">{{ product.name }}</h1>
+                    <div class="product-brand">
+                        Brand: {{ product.brand }} | SKU: {{ product.sku }}
+                    </div>
+                    <div class="product-condition">
+                        <span
+                            class="badge {% if product.condition == 'new' %}bg-success{% elif product.condition == 'used' %}bg-warning text-dark{% elif product.condition == 'refurbished' %}bg-info text-dark{% else %}bg-secondary{% endif %}">
+                            {{ product.condition|title }}
+                        </span>
+                        {% if product.top_pick %}
+                        <span class="badge bg-primary">Top Pick</span>
+                        {% endif %}
+                    </div>
+                    {% if product.price %}
+                    <div class="product-price">
+                       
+                        Rs. {{ product.price }}
+                        {% if product.old_price %}
+                        {% with discount=product.old_price|floatformat:0 %}
+                        {% with current=product.price|floatformat:0 %}
+                        {% with savings=discount|add:"-"|add:current %}
+                        {% with percentage=savings|floatformat:0|add:"00"|stringformat:"s"|slice:":2" %}
+                        <span class="discount-badge">{{ percentage }}% OFF</span>
+                        {% endwith %}
+                        {% endwith %}
+                        {% endwith %}
+                        {% endwith %}
+                        {% endif %}
+                    </div>
+                    {% else %}
+                    <div class="call-for-price">Price on request</div>
+                    {% endif %}
+                    <div class="product-description">
+                        {{ product.description }}
+                    </div>
+                    <div class="action-buttons">
+                        {% if product.price %}
+                        <button type="button" class="btn btn-primary mb-3">
+                            <i class="fa fa-shopping-cart me-2"></i> Add to Cart
+                        </button>
+                        {% else %}
+                        <a href="javascript:void(0)" 
+                           class="btn btn-success mb-3 inquiry-whatsapp-btn"
+                           data-sku="{{ product.sku }}"
+                           data-name="{{ product.name|truncatechars:50 }}"
+                           data-url="{% url 'product_detail' product.sku %}"
+                           style="background-color: #25d366;">
+                            <i class="fa fa-whatsapp me-2"></i> Contact for Price
+                        </a>
+                        {% endif %}
+                        <div class="secondary-buttons">
+                            <a href="{% url 'add_to_wishlist' product.sku %}" class="btn btn-outline-secondary">
+                                <i class="fa fa-heart-o me-2"></i> Add to Wishlist
+                            </a>
+                            <a href="{% url 'add_to_comparison' product.sku %}" class="btn btn-info">
+                                <i class="fa fa-exchange me-2"></i> Compare
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="specs-container">
+                    <h3 class="specs-title">Specifications</h3>
+                    {% for section in specs %}
+                    {% if section.items %}
+                    <div class="specs-section">
+                        <h4 class="specs-section-title">{{ section.name }}</h4>
+                        <table class="specs-table">
+                            <tbody>
+                                {% for key, value in section.items.items %}
+                                <tr>
+                                    <td>{{ key }}</td>
+                                    <td>{{ value }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if related_products %}
+    <div class="related-products">
+        <h3 class="related-title">Related Products</h3>
+        <div class="row">
+            {% for related in related_products %}
+            <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+                <div class="related-product-card">
+                    <div class="related-product-image">
+                        {% with primary_image=related.images.all|dictsort:"is_primary"|last %}
+                        {% if primary_image %}
+                        <img src="{{ primary_image.image.url }}" alt="{{ primary_image.alt_text }}">
+                        {% else %}
+                        {% with first_image=related.images.first %}
+                        {% if first_image %}
+                        <img src="{{ first_image.image.url }}" alt="{{ first_image.alt_text }}">
+                        {% else %}
+                        <div class="no-image-placeholder text-center">
+                            <span class="text-muted">No Image</span>
+                        </div>
+                        {% endif %}
+                        {% endwith %}
+                        {% endif %}
+                        {% endwith %}
+                    </div>
+                    <div class="related-product-info">
+                        <h5 class="related-product-title">{{ related.name }}</h5>
+                        {% if related.price %}
+                        <div class="related-product-price">Rs. {{ related.price }}</div>
+                        {% else %}
+                        <div class="related-product-call-price">Price on request</div>
+                        {% endif %}
+                        <a href="{% url 'product_detail' related.sku %}" style="background-color: #1189ff; color: #fff; border-radius: 2px;"
+                            class="btn btn-outline-primary btn-sm mt-2 w-100">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<div id="fullscreen-modal" class="fullscreen-modal">
+    <div class="fullscreen-close">×</div>
+    <div class="fullscreen-image-container">
+        <img id="fullscreen-image" class="fullscreen-image" src="" alt="Product Image">
+    </div>
+    <div class="fullscreen-nav">
+        <button id="fullscreen-prev" class="fullscreen-nav-btn">
+            <i class="fa fa-chevron-left"></i>
+        </button>
+        <button id="fullscreen-next" class="fullscreen-nav-btn">
+            <i class="fa fa-chevron-right"></i>
+        </button>
+    </div>
+</div>
+{% include 'footer.html' %}
+{% endblock %}
+
+{% block script %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // WhatsApp configuration
+    const WHATSAPP_NUMBER = '923224467244'; // Replace with your actual WhatsApp number
+    // Note: Include country code but remove any +, -, or spaces
+    // Example: 923224467244 (for Pakistan) or 919876543210 (for India)
+
+    // Function to detect if the user is on a mobile device
+    function isMobileDevice() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+
+    // Function to format phone number for URLs (removes all non-digit characters)
+    function formatPhoneNumber(phone) {
+        return phone.replace(/\D/g, '');
+    }
+
+    // Function to generate WhatsApp URL
+    function getWhatsAppUrl(phoneNumber, message) {
+        const formattedNumber = formatPhoneNumber(phoneNumber);
+        const baseUrl = isMobileDevice() ? 'https://wa.me/' : 'https://web.whatsapp.com/send?phone=';
+        const separator = isMobileDevice() ? '?' : '&';
+        return `${baseUrl}${formattedNumber}${separator}text=${encodeURIComponent(message)}`;
+    }
+
+    // WhatsApp message template for inquiry
+    function getInquiryMessage(name, sku, url) {
+        return `🌟 Hello! I have a query about the following product:\n\n` +
+               `📦 *Product*: ${name}\n` +
+               `🔢 *SKU*: ${sku}\n` +
+               `🔗 *Details*: www.ggt.com.pk${url}\n\n` +
+               `Could you please provide the price and ordering details? Thank you! 😊`;
+    }
+
+    $(document).ready(function () {
+        // Handle WhatsApp inquiry button clicks
+        $('.inquiry-whatsapp-btn').on('click', function(e) {
+            e.preventDefault();
+            console.log('Inquiry WhatsApp button clicked.');
+            const name = $(this).data('name');
+            const sku = $(this).data('sku');
+            const url = $(this).data('url');
+            const message = getInquiryMessage(name, sku, url);
+            const whatsappUrl = getWhatsAppUrl(WHATSAPP_NUMBER, message);
+            console.log('Opening WhatsApp URL:', whatsappUrl);
+            try {
+                window.open(whatsappUrl, '_blank');
+            } catch (error) {
+                console.error('Failed to open WhatsApp URL:', error);
+                alert('Unable to open WhatsApp. Please check your connection or try again.');
+            }
+        });
+
+        // Initialize variables
+        const $slider = $('#thumbnail-slider-container');
+        const $prevBtn = $('.slider-nav .prev');
+        const $nextBtn = $('.slider-nav .next');
+        const $sliderNav = $('.slider-nav');
+        const scrollAmount = 240;
+
+        // Fullscreen modal variables
+        let currentImageIndex = 0;
+        let images = [];
+
+        // Function to update slider navigation visibility
+        function updateSliderNav() {
+            const sliderWidth = $slider.width();
+            const contentWidth = $slider[0].scrollWidth;
+
+            if (contentWidth <= sliderWidth) {
+                $sliderNav.addClass('hidden');
+                $slider.addClass('fewer-images');
+            } else {
+                $sliderNav.removeClass('hidden');
+                $slider.removeClass('fewer-images');
+            }
+        }
+
+        // Initialize thumbnail slider
+        function initThumbnailSlider() {
+            $nextBtn.on('click', function () {
+                $slider.scrollLeft($slider.scrollLeft() + scrollAmount);
+            });
+
+            $prevBtn.on('click', function () {
+                $slider.scrollLeft($slider.scrollLeft() - scrollAmount);
+            });
+
+            updateSliderNav();
+            $(window).on('resize', updateSliderNav);
+        }
+
+        // Initialize image gallery
+        function initImageGallery() {
+            // Collect all image URLs
+            $('.thumbnail-item').each(function () {
+                images.push($(this).data('image'));
+            });
+
+            // If no thumbnails but we have a main image, use that
+            if (images.length === 0 && $('#product-main-image').length) {
+                images.push($('#product-main-image').attr('src'));
+            }
+
+            // Thumbnail click handler
+            $('.thumbnail-item').on('click', function () {
+                var $this = $(this);
+                var imageUrl = $this.data('image');
+
+                // Update main image
+                $('#product-main-image')
+                    .attr('src', imageUrl)
+                    .trigger('load');
+
+                // Update active class
+                $('.thumbnail-item').removeClass('active');
+                $this.addClass('active');
+
+                // Update current image index for fullscreen modal
+                currentImageIndex = images.indexOf(imageUrl);
+                if (currentImageIndex === -1) currentImageIndex = 0;
+            });
+
+            // Ensure at least one thumbnail is active
+            if ($('.thumbnail-item').length > 0 && !$('.thumbnail-item.active').length) {
+                $('.thumbnail-item:first').addClass('active');
+            }
+        }
+
+        // Initialize fullscreen modal
+        function initFullscreenModal() {
+            $('.prlightbox').on('click', function (e) {
+                e.preventDefault();
+                var currentSrc = $('#product-main-image').attr('src');
+                currentImageIndex = images.indexOf(currentSrc);
+                if (currentImageIndex === -1) currentImageIndex = 0;
+                $('#fullscreen-image').attr('src', images[currentImageIndex]);
+                $('#fullscreen-modal').fadeIn();
+                $('body').css('overflow', 'hidden');
+            });
+
+            $('.fullscreen-close').on('click', function () {
+                $('#fullscreen-modal').fadeOut();
+                $('body').css('overflow', 'auto');
+            });
+
+            $('#fullscreen-next').on('click', function () {
+                if (images.length <= 1) return;
+                currentImageIndex = (currentImageIndex + 1) % images.length;
+                $('#fullscreen-image').attr('src', images[currentImageIndex]);
+            });
+
+            $('#fullscreen-prev').on('click', function () {
+                if (images.length <= 1) return;
+                currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+                $('#fullscreen-image').attr('src', images[currentImageIndex]);
+            });
+
+            $(document).keydown(function (e) {
+                if (e.key === "Escape" && $('#fullscreen-modal').is(':visible')) {
+                    $('#fullscreen-modal').fadeOut();
+                    $('body').css('overflow', 'auto');
+                }
+            });
+        }
+
+        // Initialize add to cart button
+        function initAddToCart() {
+            $('.btn-primary').on('click', function () {
+                alert('Product added to cart!');
+            });
+        }
+
+        // Main initialization
+        function init() {
+            initThumbnailSlider();
+            initImageGallery();
+            initFullscreenModal();
+            initAddToCart();
+        }
+
+        // Start the initialization
+        init();
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<STYle>
+  .no-products {
+      text-align: center;
+      font-size: 18px;
+      color: #333;
+      padding: 100px;
+      margin: 20px auto;
+  }.no-news {
+    
+    text-align: center;
+    align-items: center;
+    margin: 20px auto;
+    padding: 50px 20px;
+
+    text-align: center;
+}
+
+.no-news-content {
+    max-width: 600px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.no-news-content h2 {
+    font-size: 26px;
+    color: #444;
+    margin-bottom: 20px;
+}
+
+.no-news-content p {
+    font-size: 18px;
+    color: #777;
+    margin-bottom: 15px;
+}
+
+@media (max-width: 768px) {
+    .no-news-content {
+        padding: 20px;
+    }
+
+    .no-news-content h2 {
+        font-size: 22px;
+    }
+
+    .no-news-content p {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .no-news-content {
+        padding: 15px;
+    }
+
+    .no-news-content h2 {
+        font-size: 20px;
+    }
+
+    .no-news-content p {
+        font-size: 14px;
+    }
+}
+
+  
+</STYle>
+
+{% include 'navbar.html' %}
+<!-- breadcrumb-section -->
+<div class="breadcrumb-section breadcrumb-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="breadcrumb-text">
+                    <p>Get Updated</p>
+                    <h1>News</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="latest-news mt-150 mb-150">
+    <div class="container">
+        <div class="row">
+            {% for news in news_items %}
+            <div class="col-lg-4 col-md-6">
+                <div class="single-latest-news">
+                    <a href="">
+                        <div class="latest-news-bg" style="background-image: url('{{ news.image.url }}');"></div>
+                    </a>
+                    <div class="news-text-box">
+                        <h3><a href="">{{ news.title }}</a></h3>
+                        <p class="blog-meta">
+                        
+                            <span class="date"><i class="fa fa-calendar" aria-hidden="true"></i> {{ news.posted_on|date:"d F, Y" }}</span>
+                        </p>
+                        <p class="excerpt" style="word-wrap: break-word;">{{ news.content|truncatewords:10 }}</p>
+                        
+                        <a href="{% url 'news_detail' news.id %}" class="read-more-btn">read more <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        <div class="row">
+            <div class="container">
+                <div class="row">
+                    {% if news %}
+                    {% if news.count > 6 %}
+                    <div class="col-lg-12 text-center">
+                        <div class="pagination-wrap">
+                            <ul>
+                                {% if news_items.has_previous %}
+                                    <li><a href="?page={{ news_items.previous_page_number }}">Prev</a></li>
+                                {% endif %}
+                                {% for i in news_items.paginator.page_range %}
+                                    <li><a href="?page={{ i }}" class="{% if news_items.number == i %}active{% endif %}">{{ i }}</a></li>
+                                {% endfor %}
+                                {% if news_items.has_next %}
+                                    <li><a href="?page={{ news_items.next_page_number }}">Next</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% else %}
+                    <div class="no-news">
+                        <div class="no-news-content">
+                            <h2>No News Available</h2>
+                            <p>It looks like there are no news articles to display right now.</p>
+                            <p>Please visit us again soon for the latest updates.</p>
+                        </div>
+                    </div>
+                    
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'footer.html' %}
+
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+{% include 'navbar.html' %}
+
+<div class="breadcrumb-section breadcrumb-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="breadcrumb-text">
+                    <p></p>
+                    <h1>Read the Details</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end breadcrumb section -->
+
+<!-- single article section -->
+<div class="mt-150 mb-150">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="single-article-section">
+                    <div class="single-article-text">
+                        <div class="single-artcile-bg" style="background-image: url('{{ article.image.url }}');"></div>
+                        <p class="blog-meta">
+                            
+                            <span class="date"><i class="fa fa-calendar" aria-hidden="true"></i> {{ article.posted_on|date:"F j, Y" }}</span>
+                        </p>
+                        <h2>{{ article.title }}</h2>
+                        <p>{{ article.content }}</p>
+                    </div>
+                    
+                    <!-- Comments section, recent posts, etc. -->
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="sidebar-section">
+                    <div class="recent-posts">
+                        <h4>Recent Posts</h4>
+                        <ul>
+                            {% for recent in recent_articles %}
+                                <li ><i class="fa fa-angle-right" aria-hidden="true"></i><a href="{% url 'news_detail' recent.id %}">{{ recent.title }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="margin-top: 100px;">
+{% include 'footer.html' %}
+</div>
+{% endblock %}

@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+{% block content %}
+{% include 'navbar.html' %}
+<style>
+    .error-message {
+        color: red;
+        font-size: 0.9em;
+        margin-top: 5px;
+    }
+
+    .card {
+        border-radius: 12px; /* Rounded corners */
+        background-color: #ffffff; /* White background */
+        padding: 30px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Box shadow */
+    }
+
+    .text-success {
+        font-weight: bold; /* Bold text for emphasis */
+        color: #000000;
+    }
+
+    .form-control {
+        border: 1px solid #ced4da; /* Default border for input fields */
+        transition: border-color 0.3s; /* Transition effect */
+    }
+
+    label {
+        color: black;
+    }
+
+    .form-group {
+        position: relative; /* For positioning the eye icon */
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid #000000;
+        border-radius: 4px;
+        font-size: 16px;
+        box-sizing: border-box;
+    }
+
+    .form-control:focus {
+        border-color: #007bff; /* Blue border on focus */
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Blue shadow effect */
+    }
+
+    .btn-primary {
+        background-color: #000000; /* Primary button color */
+        border: none; /* No border */
+        color: #fff; /* White text */
+    }
+
+    .btn-primary:hover {
+        background-color: #3d3d3d; /* Darker color on hover */
+        transition: background-color 0.3s; /* Transition effect */
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .text-gray-500 {
+        color: #777;
+    }
+
+    .font-bold {
+        font-weight: bold;
+    }
+
+    .text-purple-500 {
+        color: #6a0dad;
+    }
+
+    .text-purple-500:hover {
+        text-decoration: underline;
+    }
+
+    /* New styles for link layout */
+    .link-container {
+        display: flex;
+        flex-direction: column; /* Stack links vertically */
+        align-items: center; /* Center the links */
+    }
+
+    .link-container a {
+        margin: 5px 0; /* Space between links */
+    }
+
+    .eye-icon {
+        cursor: pointer;
+        position: absolute;
+        right: 10px;
+        top: 50%; /* Center vertically */
+        transform: translateY(-50%);
+        color: #007bff;
+    }
+</style>
+
+<div class="breadcrumb-section breadcrumb-bg" style="height: 50px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="breadcrumb-text">
+                    <p>Welcome back!</p>
+                    <h1>Login to Your Account</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="text-gray-500 body-font" style="margin-top: 20px;">
+    <div class="container px-10 py-24 mx-auto">
+        <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6">
+                {% if login_error %}
+                    <div class="alert alert-danger" role="alert" id="login_error">
+                        <span>{{ login_error }}</span>
+                        <button type="button" class="close" onclick="document.getElementById('login_error').style.display = 'none'">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <br>
+                {% endif %}
+
+                <div class="card">
+                    <h2 class="text-center mb-4" style="color: #000000;">Sign In</h2>
+
+                    <form method="post">{% csrf_token %}
+                        <div class="form-group">
+                            <label for="inline-email">Email</label>
+                            <input class="form-control" id="inline-email" type="email" placeholder="Email" name="email" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="inline-password">Password</label>
+                            <div class="position-relative">
+                                <input class="form-control" id="inline-password" type="password" placeholder="******************" name="password" required />
+                                <i class="fa fa-eye eye-icon" id="toggle-password" onclick="togglePassword('inline-password')"></i>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button class="btn btn-primary btn-block" type="submit">Sign In</button>
+                        </div>
+
+                        <br>
+                        <div class="text-center link-container">
+                            <label class="text-gray-500 font-bold">
+                                <span class="text-sm">Don't have an account? <a class="text-purple-500" href="{% url 'register' %}">Sign Up</a></span>
+                            </label>
+                            <label class="text-gray-500 font-bold">
+                                <span class="text-sm"><a class="text-purple-500" href="{% url 'forgot_password' %}">Forgot Password?</a></span>
+                            </label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function togglePassword(inputId) {
+        const inputField = document.getElementById(inputId);
+        const inputType = inputField.getAttribute('type') === 'password' ? 'text' : 'password';
+        inputField.setAttribute('type', inputType);
+    }
+</script>
+
+{% endblock %}

@@ -1,0 +1,226 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Privacy Policy | GGT [ Gaming & Graphics Tech]{% endblock %}
+
+{% block style %}
+{# Link external libraries (if not already in base.html) #}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+{# Font Awesome link if needed #}
+
+<style>
+    :root {
+        /* Consistent variables */
+        --ggt-bg-dark-primary: #0f0f0f;
+        --ggt-bg-dark-secondary: #1a1a1a;
+        --ggt-bg-dark-tertiary: #242424;
+        --ggt-text-light-primary: #eaeaea;
+        --ggt-text-light-secondary: #b0b0b0;
+        --ggt-text-white: #ffffff;
+        --ggt-accent-primary: #00bfff; /* Deep Sky Blue */
+        --ggt-accent-primary-rgb: 0, 191, 255;
+        --ggt-accent-secondary: #4dd0e1; /* Lighter Cyan */
+        --ggt-border-color: #3a3a3a;
+        --ggt-border-color-subtle: #2c2c2c;
+
+        --ggt-font-primary: 'Source Sans Pro', sans-serif;
+        --ggt-font-headings: 'Poppins', sans-serif;
+
+        --ggt-shadow-sm: 0 3px 8px rgba(0, 0, 0, 0.4);
+        --ggt-shadow-md: 0 6px 20px rgba(0, 0, 0, 0.5);
+        --ggt-shadow-lg: 0 10px 35px rgba(0, 0, 0, 0.6);
+
+        --ggt-transition-speed: 0.3s;
+        --ggt-transition-timing: ease-in-out;
+    }
+
+    /* Base styles scoped to this page container */
+    #ggt-privacy-page-container {
+        background-color: var(--ggt-bg-dark-primary);
+        color: var(--ggt-text-light-primary);
+        font-family: var(--ggt-font-primary);
+        line-height: 1.8;
+        font-weight: 400;
+        font-size: 16px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%231a1a1a' fill-opacity='0.1' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+        overflow-x: hidden;
+    }
+     #ggt-privacy-page-container *,
+     #ggt-privacy-page-container *:before,
+     #ggt-privacy-page-container *:after {
+        box-sizing: border-box;
+    }
+
+    /* Layout Container */
+    .ggt-privacy-container {
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 0 20px;
+        width: 100%;
+    }
+
+    /* Typography specific to privacy page */
+    #ggt-privacy-page-container h1,
+    #ggt-privacy-page-container h2,
+    #ggt-privacy-page-container h3 { font-family: var(--ggt-font-headings); color: var(--ggt-text-white); font-weight: 600; margin: 0 0 1.5rem 0; letter-spacing: 0.5px; padding-top: 1rem; }
+    #ggt-privacy-page-container .ggt-privacy-h1 { font-size: clamp(2.2rem, 5vw, 3rem); margin-bottom: 0.5rem; text-align: center; padding-top: 0; }
+    #ggt-privacy-page-container .ggt-privacy-h2 { font-size: clamp(1.6rem, 4vw, 2rem); margin-top: 2.5rem; border-bottom: 1px solid var(--ggt-border-color); padding-bottom: 0.5rem; }
+    #ggt-privacy-page-container .ggt-privacy-h3 { font-size: clamp(1.2rem, 3vw, 1.4rem); margin-top: 2rem; color: var(--ggt-accent-primary); }
+    #ggt-privacy-page-container p { margin-bottom: 1.5rem; color: var(--ggt-text-light-secondary); }
+    #ggt-privacy-page-container ul,
+    #ggt-privacy-page-container ol { margin-bottom: 1.5rem; padding-left: 2rem; color: var(--ggt-text-light-secondary); }
+    #ggt-privacy-page-container li { margin-bottom: 0.75rem; }
+    #ggt-privacy-page-container strong { color: var(--ggt-text-light-primary); font-weight: 600; }
+    #ggt-privacy-page-container a { color: var(--ggt-accent-primary); text-decoration: underline; transition: color var(--ggt-transition-speed) var(--ggt-transition-timing); }
+    #ggt-privacy-page-container a:hover { color: var(--ggt-accent-secondary); text-decoration: none; }
+    #ggt-privacy-page-container .last-updated { text-align: center; color: var(--ggt-text-light-secondary); font-size: 0.9rem; margin-bottom: 2.5rem; }
+
+    /* Utility */
+    #ggt-privacy-page-container .ggt-privacy-section-padding { padding: 4rem 0; }
+
+    /* Hero Header (Simplified) */
+    #ggt-privacy-page-container .ggt-privacy-hero-header {
+        background: linear-gradient(rgba(15, 15, 15, 0.85), rgba(15, 15, 15, 0.95));
+        color: var(--ggt-text-white); padding: 6rem 1rem 3rem 1rem;
+        margin-bottom: 3rem;
+        border-bottom: 1px solid var(--ggt-border-color);
+    }
+
+    /* Responsive */
+    @media (max-width: 767.98px) {
+        #ggt-privacy-page-container { font-size: 15px; }
+        #ggt-privacy-page-container .ggt-privacy-hero-header { padding: 6rem 1rem 2rem 1rem; }
+        #ggt-privacy-page-container .ggt-privacy-section-padding { padding: 2rem 0; }
+        #ggt-privacy-page-container h1 { font-size: 1.8rem; }
+        #ggt-privacy-page-container h2 { font-size: 1.4rem; }
+        #ggt-privacy-page-container h3 { font-size: 1.1rem; }
+        #ggt-privacy-page-container ul,
+        #ggt-privacy-page-container ol { padding-left: 1.5rem; }
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'navbar.html' %}
+<div id="ggt-privacy-page-container"> {# Wrapper for scoped styles #}
+    
+
+    <!-- Hero Header Section -->
+    <header class="ggt-privacy-hero-header">
+        <div class="ggt-privacy-container">
+            <h1 class="ggt-privacy-h1">Privacy Policy</h1>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main id="ggt-privacy-main-content">
+        <div class="ggt-privacy-container">
+
+            <p class="last-updated">Last Updated: {% now "F j, Y" %}</p> {# Dynamic Date #}
+
+            <p>GGT [ Gaming & Graphics Tech] ("GGT", "we", "us", or "our") operates the website located at [Your Website URL] (the "Website"). This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our Website and the choices you have associated with that data.</p> <!-- REPLACE URL -->
+
+            <p>We use your data to provide and improve the Website experience. By using the Website, you agree to the collection and use of information in accordance with this policy. Unless otherwise defined in this Privacy Policy, terms used in this Privacy Policy have the same meanings as in our <a href="{% url 'terms_and_conditions' %}">Terms and Conditions</a>.</p> {# Use url tag for terms #}
+
+            <p><strong>Please Note:</strong> This Privacy Policy applies specifically to information collected through the Website. Information you provide to us through other channels (like WhatsApp, phone calls, or in-person visits) may be subject to different practices outlined during those interactions.</p>
+
+            <h2 class="ggt-privacy-h2">1. Information Collection and Use</h2>
+            <p>We collect several different types of information for various purposes to provide and improve our Service to you.</p>
+
+            <h3 class="ggt-privacy-h3">Types of Data Collected</h3>
+            <ul>
+                <li>
+                    <strong>Usage Data:</strong> We may automatically collect information on how the Website is accessed and used ("Usage Data"). This Usage Data may include information such as your computer's Internet Protocol address (e.g., IP address), browser type, browser version, the pages of our Website that you visit, the time and date of your visit, the time spent on those pages, unique device identifiers, and other diagnostic data. This information is typically aggregated and anonymized.
+                </li>
+                <li>
+                    <strong>Cookies and Tracking Technologies Data:</strong> We use cookies and similar tracking technologies to track the activity on our Website and hold certain information. Cookies are files with a small amount of data which may include an anonymous unique identifier. See the "Cookies" section below for more details.
+                </li>
+                {% comment %} Remove this list item if you do NOT have a contact form {% endcomment %}
+                <li>
+                    <strong>Contact Form Data (If Applicable):</strong> If you use a contact form on our Website, we may collect the personal information you provide, such as your name, email address, subject, and message content, solely for the purpose of responding to your inquiry.
+                </li>
+            </ul>
+             <p>We **do not** collect sensitive personal information like financial details, government IDs, or health information through this Website.</p>
+
+
+            <h2 class="ggt-privacy-h2">2. Use of Data</h2>
+            <p>GGT [ Gaming & Graphics Tech] uses the collected data for various purposes:</p>
+            <ul>
+                <li>To provide and maintain our Website</li>
+                <li>To monitor the usage of our Website (e.g., analytics)</li>
+                <li>To detect, prevent, and address technical issues</li>
+                <li>To improve the user experience and content of the Website</li>
+                 {% comment %} Remove this list item if you do NOT have a contact form {% endcomment %}
+                <li>To respond to your inquiries if you contact us via a website form</li>
+                <li>To comply with legal obligations</li>
+            </ul>
+
+            <h2 class="ggt-privacy-h2">3. Disclosure of Data</h2>
+            <p>GGT [ Gaming & Graphics Tech] may disclose your Personal Data in the good faith belief that such action is necessary to:</p>
+            <ul>
+                <li>To comply with a legal obligation</li>
+                <li>To protect and defend the rights or property of GGT [ Gaming & Graphics Tech]</li>
+                <li>To prevent or investigate possible wrongdoing in connection with the Service</li>
+                <li>To protect the personal safety of users of the Service or the public</li>
+                <li>To protect against legal liability</li>
+            </ul>
+            <p>We may employ third-party companies and individuals ("Service Providers") to facilitate our Website, provide the Website on our behalf, perform Website-related services, or assist us in analyzing how our Website is used (e.g., hosting providers, analytics providers like Google Analytics).</p>
+            <p>These third parties have access to your Usage Data only to perform these tasks on our behalf and are obligated not to disclose or use it for any other purpose. [Specify analytics providers if known, e.g., "We use Google Analytics to monitor and analyze web traffic." Add link to Google's privacy policy.]</p>
+            <p>We do not sell your personal data collected through this Website to third parties.</p>
+
+            <h2 class="ggt-privacy-h2">4. Data Security</h2>
+            <p>The security of your data is important to us, but remember that no method of transmission over the Internet or method of electronic storage is 100% secure. While we strive to use commercially acceptable means to protect any data collected via the Website (such as using HTTPS), we cannot guarantee its absolute security.</p>
+
+            <h2 class="ggt-privacy-h2">5. Data Retention</h2>
+            <p>We will retain Usage Data and Cookie data for internal analysis purposes or as needed to improve website functionality. Usage Data is generally retained for a shorter period, except when this data is used to strengthen the security or to improve the functionality of our Service, or we are legally obligated to retain this data for longer time periods. {% comment %} Remove mention of contact form if not applicable {% endcomment %}Data submitted via contact forms will be retained only as long as necessary to address your inquiry.</p>
+
+            <h2 class="ggt-privacy-h2">6. Your Data Protection Rights</h2>
+            <p>Depending on your location and applicable law, you may have certain rights regarding your personal data. These may include the right to access, update, or delete the information we have on you (where applicable and technically feasible for data collected via the website).</p>
+            <p>If you wish to exercise any rights regarding data potentially collected via this website (primarily related to cookies {% comment %} Remove mention of contact form if not applicable {% endcomment %}or contact form submissions), please contact us using the details below.</p>
+
+            <h2 class="ggt-privacy-h2">7. Cookies</h2>
+            <p>Cookies are small files stored on your device (computer or mobile device). We use cookies and similar tracking technologies to improve your experience on our Website.</p>
+            <ul>
+                <li><strong>Session Cookies:</strong> We use Session Cookies to operate our Service. These are temporary and deleted when you close your browser.</li>
+                <li><strong>Preference Cookies:</strong> We may use Preference Cookies to remember your preferences and various settings (if applicable, e.g., language).</li>
+                <li><strong>Analytics Cookies:</strong> Third-party cookies (like Google Analytics) help us understand how visitors interact with our Website by collecting information anonymously.</li>
+            </ul>
+            <p>You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent. However, if you do not accept cookies, you may not be able to use some portions of our Service effectively.</p>
+            <p>For more information about managing cookies, you can refer to your browser's help documentation.</p>
+
+            <h2 class="ggt-privacy-h2">8. Children's Privacy</h2>
+            <p>Our Service does not address anyone under the age of [e.g., 13 or 16 - check local regulations] ("Children").</p> <!-- REPLACE AGE -->
+            <p>We do not knowingly collect personally identifiable information from anyone under the age of [e.g., 13 or 16]. If you are a parent or guardian and you are aware that your Child has provided us with Personal Data via the website, please contact us. If we become aware that we have collected Personal Data from children without verification of parental consent, we take steps to remove that information from our servers.</p>
+
+            <h2 class="ggt-privacy-h2">9. Links to Other Sites</h2>
+            <p>Our Website may contain links to other sites that are not operated by us. If you click on a third-party link, you will be directed to that third party's site. We strongly advise you to review the Privacy Policy of every site you visit.</p>
+            <p>We have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party sites or services.</p>
+
+            <h2 class="ggt-privacy-h2">10. Changes to This Privacy Policy</h2>
+            <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.</p>
+            <p>We will let you know via a prominent notice on our Website, prior to the change becoming effective and update the "Last Updated" date at the top of this Privacy Policy.</p>
+            <p>You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.</p>
+
+            <h2 class="ggt-privacy-h2">11. Contact Us</h2>
+            <p>If you have any questions about this Privacy Policy, please contact us:</p>
+             <ul>
+                <li>By email: info@ggt.com.pk</li> <!-- REPLACE -->
+                <li>By visiting our Contact page: <a href="{% url 'contact' %}">www.ggt.com.pk/contact</a></li> <!-- REPLACE URL text if needed -->
+                <li>By phone number: +92 322 4467244</li> <!-- REPLACE -->
+            </ul>
+
+        </div> <!-- End Container -->
+    </main>
+
+  
+</div> {# End ggt-privacy-page-container #}
+{% include 'footer.html' %}
+{% endblock %}
+
+{% block script %}
+{# Add any page-specific JS here if needed #}
+{% endblock %}

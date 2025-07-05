@@ -1,0 +1,124 @@
+{% extends "sidebar.html" %}
+
+{% block content %}
+<title>Job Listing</title>
+
+<div class="container mt-4">
+    <h2 class="text-center">Job Listing</h2>
+
+    <!-- Search Bar (optional) -->
+    <div class="mb-3">
+        <input type="text" id="searchBar" class="form-control" placeholder="Search jobs by title..." />
+    </div>
+
+    <!-- Job Table -->
+    <div class="table-responsive" style="margin-top: 30px; margin-bottom: 50px;">
+        <table id="jobTable" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Location</th>
+                    <th>Job Type</th>
+                    <th>Posted On</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="jobTableBody">
+                {% for job in jobs %}
+                    <tr>
+                        <td>{{ job.title }}</td>
+                        <td>{{ job.description|truncatewords:15 }}</td>
+                        <td>{{ job.location }}</td>
+                        <td>{{ job.get_job_type_display }}</td>
+                        <td>{{ job.posted_on|date:"Y-m-d" }}</td>
+                        <td>
+                            <div class="btn-group d-inline-flex">
+                                <!-- Edit Button -->
+                                <a href="{% url 'edit_job' job.id %}" class="btn btn-warning btn-sm mr-1">Edit</a>
+                                <!-- Delete Button -->
+                                <form action="{% url 'job_delete' job.id %}" method="POST" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this job?');">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6">No jobs available</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Fixed Add Job Button -->
+    <a href="{% url 'add_job' %}" class="fixed-bottom-right">
+        <button class="btn btn-success btn-lg">Add Job</button>
+    </a>
+</div>
+
+<!-- jQuery, Bootstrap, and DataTables scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Initialize DataTable with export options
+        var table = $('#jobTable').DataTable({
+            dom: 'Bfrtip',
+            pageLength: 10,
+            buttons: [
+                'copy', 'excel', 'pdf', 'print'
+            ]
+        });
+
+        // Live Search Functionality
+        $('#searchBar').on('keyup', function() {
+            table.search(this.value).draw();
+        });
+    });
+</script>
+
+<style>
+    /* Fixed button styling */
+    .fixed-bottom-right {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+        padding: 10px 20px;
+        font-size: 1rem;
+        transition: font-size 0.3s, padding 0.3s;
+    }
+
+    /* Responsive adjustments for smaller screens */
+    @media (max-width: 576px) {
+        .fixed-bottom-right {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            bottom: 10px;
+            right: 10px;
+        }}
+
+    /* Table responsiveness adjustments */
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    /* Responsive adjustments for smaller screens */
+    @media (max-width: 576px) {
+        .row.gx-1 .col {
+            margin-bottom: 4px;
+        }
+    }
+</style>
+
+{% endblock %}

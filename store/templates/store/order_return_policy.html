@@ -1,0 +1,243 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Order & Return Policy | GGT [ Gaming & Graphics Tech]{% endblock %}
+
+{% block style %}
+{# Link external libraries (if not already in base.html) #}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+{# Font Awesome link if needed #}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+
+
+<style>
+    :root {
+        /* Consistent variables */
+        --ggt-bg-dark-primary: #0f0f0f;
+        --ggt-bg-dark-secondary: #1a1a1a;
+        --ggt-bg-dark-tertiary: #242424;
+        --ggt-text-light-primary: #eaeaea;
+        --ggt-text-light-secondary: #b0b0b0;
+        --ggt-text-white: #ffffff;
+        --ggt-accent-primary: #00bfff; /* Deep Sky Blue */
+        --ggt-accent-primary-rgb: 0, 191, 255;
+        --ggt-accent-secondary: #4dd0e1; /* Lighter Cyan */
+        --ggt-border-color: #3a3a3a;
+        --ggt-border-color-subtle: #2c2c2c;
+
+        --ggt-font-primary: 'Source Sans Pro', sans-serif;
+        --ggt-font-headings: 'Poppins', sans-serif;
+
+        --ggt-shadow-sm: 0 3px 8px rgba(0, 0, 0, 0.4);
+        --ggt-shadow-md: 0 6px 20px rgba(0, 0, 0, 0.5);
+        --ggt-shadow-lg: 0 10px 35px rgba(0, 0, 0, 0.6);
+
+        --ggt-transition-speed: 0.3s;
+        --ggt-transition-timing: ease-in-out;
+    }
+
+    /* Base styles scoped to this page container */
+    #ggt-policy-page-container {
+        background-color: var(--ggt-bg-dark-primary);
+        color: var(--ggt-text-light-primary);
+        font-family: var(--ggt-font-primary);
+        line-height: 1.8;
+        font-weight: 400;
+        font-size: 16px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%231a1a1a' fill-opacity='0.1' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+        overflow-x: hidden;
+    }
+     #ggt-policy-page-container *,
+     #ggt-policy-page-container *:before,
+     #ggt-policy-page-container *:after {
+        box-sizing: border-box;
+    }
+
+    /* Layout Container */
+    .ggt-policy-container {
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 0 20px;
+        width: 100%;
+    }
+
+    /* Typography specific to policy page */
+    #ggt-policy-page-container h1,
+    #ggt-policy-page-container h2,
+    #ggt-policy-page-container h3 { font-family: var(--ggt-font-headings); color: var(--ggt-text-white); font-weight: 600; margin: 0 0 1.5rem 0; letter-spacing: 0.5px; padding-top: 1rem; }
+    #ggt-policy-page-container .ggt-policy-h1 { font-size: clamp(2.2rem, 5vw, 3rem); margin-bottom: 0.5rem; text-align: center; padding-top: 0; }
+    #ggt-policy-page-container .ggt-policy-h2 { font-size: clamp(1.6rem, 4vw, 2rem); margin-top: 2.5rem; border-bottom: 1px solid var(--ggt-border-color); padding-bottom: 0.5rem; }
+    #ggt-policy-page-container .ggt-policy-h3 { font-size: clamp(1.2rem, 3vw, 1.4rem); margin-top: 2rem; color: var(--ggt-accent-primary); }
+    #ggt-policy-page-container p { margin-bottom: 1.5rem; color: var(--ggt-text-light-secondary); }
+    #ggt-policy-page-container ul,
+    #ggt-policy-page-container ol { margin-bottom: 1.5rem; padding-left: 2rem; color: var(--ggt-text-light-secondary); }
+    #ggt-policy-page-container li { margin-bottom: 0.75rem; }
+    #ggt-policy-page-container strong { color: var(--ggt-text-light-primary); font-weight: 600; }
+    #ggt-policy-page-container a { color: var(--ggt-accent-primary); text-decoration: underline; transition: color var(--ggt-transition-speed) var(--ggt-transition-timing); }
+    #ggt-policy-page-container a:hover { color: var(--ggt-accent-secondary); text-decoration: none; }
+    #ggt-policy-page-container .last-updated { text-align: center; color: var(--ggt-text-light-secondary); font-size: 0.9rem; margin-bottom: 2.5rem; }
+    #ggt-policy-page-container .policy-highlight {
+        background-color: rgba(var(--ggt-accent-primary-rgb), 0.1);
+        border-left: 4px solid var(--ggt-accent-primary);
+        padding: 1rem 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 4px;
+    }
+    #ggt-policy-page-container .policy-highlight strong { color: var(--ggt-accent-primary); }
+
+
+    /* Utility */
+    #ggt-policy-page-container .ggt-policy-section-padding { padding: 4rem 0; }
+
+    /* Hero Header (Simplified) */
+    #ggt-policy-page-container .ggt-policy-hero-header {
+        background: linear-gradient(rgba(15, 15, 15, 0.85), rgba(15, 15, 15, 0.95));
+        color: var(--ggt-text-white); padding: 6rem 1rem 3rem 1rem;
+        margin-bottom: 3rem;
+        border-bottom: 1px solid var(--ggt-border-color);
+    }
+
+     /* Contact Icons */
+     #ggt-policy-page-container .contact-list li i {
+        margin-right: 0.7rem;
+        color: var(--ggt-accent-primary);
+        width: 20px; /* Align icons */
+        text-align: center;
+    }
+
+    /* Responsive */
+    @media (max-width: 767.98px) {
+        #ggt-policy-page-container { font-size: 15px; }
+        #ggt-policy-page-container .ggt-policy-hero-header { padding: 6rem 1rem 2rem 1rem; }
+        #ggt-policy-page-container .ggt-policy-section-padding { padding: 2rem 0; }
+        #ggt-policy-page-container h1 { font-size: 1.8rem; }
+        #ggt-policy-page-container h2 { font-size: 1.4rem; }
+        #ggt-policy-page-container h3 { font-size: 1.1rem; }
+        #ggt-policy-page-container ul,
+        #ggt-policy-page-container ol { padding-left: 1.5rem; }
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'navbar.html' %}
+<div id="ggt-policy-page-container"> {# Wrapper for scoped styles #}
+    
+
+    <!-- Hero Header Section -->
+    <header class="ggt-policy-hero-header">
+        <div class="ggt-policy-container">
+            <h1 class="ggt-policy-h1">Ordering & Returns Policy</h1>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main id="ggt-policy-main-content">
+        <div class="ggt-policy-container">
+
+            <p class="last-updated">Last Updated: {% now "F j, Y" %}</p> {# Dynamic Date #}
+
+            <p>Thank you for choosing GGT [ Gaming & Graphics Tech]. This policy outlines the process for placing inquiries/orders and our guidelines regarding returns and exchanges. Please read this carefully.</p>
+
+            <div class="policy-highlight">
+                <p><strong>Important Note:</strong> GGT [ Gaming & Graphics Tech] currently **does not accept orders directly through this website**. This site serves as a product catalogue. All price confirmations, stock checks, and order placements **must** be done via direct communication, primarily through WhatsApp.</p>
+            </div>
+
+            <h2 class="ggt-policy-h2">1. Ordering Process</h2>
+            <ul>
+                <li><strong>Inquiry:</strong> Browse our website catalogue. If you are interested in a product, please contact us via WhatsApp ([Your WhatsApp Number]) or phone ([Your Phone Number]). <!-- REPLACE NUMBERS --></li>
+                <li><strong>Information Required:</strong> Please provide the product name, SKU (if available), or a link to the product page from our website when inquiring.</li>
+                <li><strong>Price & Availability Confirmation:</strong> Our team will confirm the current price (which may differ from any indicative price shown online due to market fluctuations) and stock availability.</li>
+                <li><strong>Order Placement:</strong> If you wish to proceed, confirm your order details, payment method, and delivery/pickup preference with our team via WhatsApp or phone.</li>
+                <li><strong>Confirmation:</strong> GGT reserves the right to confirm or decline any order request based on stock, pricing verification, or other factors.</li>
+            </ul>
+
+            <h2 class="ggt-policy-h2">2. Payment</h2>
+            <p>Payment methods will be discussed and confirmed during the ordering process via direct communication. We typically accept:</p>
+            <ul>
+                <li>Cash (In-store purchases)</li>
+                <li>Bank Transfer</li>
+                <li>Mobile Wallets (e.g., Easypaisa, JazzCash - confirm availability)</li>
+                <!-- Add/remove methods as applicable -->
+            </ul>
+            <p>Payment must be cleared before items are dispatched for delivery or released for pickup, unless otherwise agreed upon (e.g., Cash on Delivery for specific local orders, if offered).</p>
+
+            <h2 class="ggt-policy-h2">3. Delivery & Shipping</h2>
+            <ul>
+                <li><strong>In-Store Pickup:</strong> You are welcome to collect your order from our store at [Your Store Address] during business hours. <!-- REPLACE ADDRESS --></li>
+                <li><strong>Local Delivery (Lahore):</strong> We may offer local delivery within certain areas of Lahore. Charges and availability will be confirmed upon ordering.</li>
+                <li><strong>Nationwide Shipping:</strong> We can arrange shipping to other cities in Pakistan via reputable courier services. Shipping charges are borne by the customer and vary based on destination, package size, and weight. An estimated cost will be provided during the order process.</li>
+                <li><strong>Risk of Loss/Damage:</strong> Once the package is handed over to the courier service, the risk of loss or damage transfers to the courier company and/or the customer as per the courier's terms. We ensure items are packed securely. Please inspect packages upon arrival and report any transit damage directly to the courier company immediately.</li>
+                <li><strong>Delivery Time:</strong> Estimated delivery times will be provided but are subject to courier operations and potential delays beyond our control.</li>
+            </ul>
+
+            <h2 class="ggt-policy-h2">4. Returns & Exchanges</h2>
+            <p>We aim for customer satisfaction. Please review the following return conditions carefully:</p>
+            <ul>
+                <li><strong>Checking Warranty Period:</strong> Most items come with a limited checking warranty period of [e.g., 3 to 7] days from the date of purchase, unless specified otherwise (e.g., for items sold "as is"). This period allows you to check for manufacturing defects or if the item is significantly not as described upon arrival. <!-- REPLACE WARRANTY PERIOD --></li>
+                <li><strong>Eligibility for Return/Exchange:</strong>
+                    <ul>
+                        <li>Item is faulty or malfunctioning due to a manufacturing defect identified within the checking warranty period.</li>
+                        <li>Item received is significantly different from what was ordered and confirmed via communication (wrong model/specification).</li>
+                        <li>Item must be returned in its original condition, with all original packaging, accessories, manuals, and proof of purchase (receipt/invoice).</li>
+                    </ul>
+                </li>
+                <li><strong>Non-Returnable Items/Conditions:</strong>
+                    <ul>
+                        <li>Change of mind.</li>
+                        <li>Physical damage, burns, misuse, or damage caused after purchase/delivery.</li>
+                        <li>Compatibility issues with your existing hardware/software (unless GGT specifically provided incorrect compatibility advice *in writing*). Please research compatibility before purchase.</li>
+                        <li>Items sold "as is" or with no specified warranty.</li>
+                        <li>Products with tampered seals or missing accessories/packaging.</li>
+                        <li>Software, digital goods, or consumables.</li>
+                    </ul>
+                </li>
+                <li><strong>Return Process:</strong>
+                    <ol>
+                        <li>Contact GGT immediately (within the checking warranty period) via WhatsApp or phone to report the issue.</li>
+                        <li>Provide details of the problem and your proof of purchase.</li>
+                        <li>If advised, securely pack the item in its original packaging and return it to our store address [Your Store Address] at your expense (unless the fault is confirmed as GGT's error, e.g., sending the wrong item). <!-- REPLACE ADDRESS --></li>
+                        <li>Upon receipt, GGT will inspect the item (which may take [e.g., 1-3] business days). <!-- REPLACE INSPECTION TIME --></li>
+                        <li>If the return is approved based on eligibility criteria, we will offer an exchange for the same item (if available), store credit, or a refund, at GGT's discretion and in accordance with applicable laws.</li>
+                    </ol>
+                </li>
+                <li><strong>Refunds (if applicable):</strong> Approved refunds will be processed via the original payment method where possible, or via an alternative method agreed upon (e.g., bank transfer). Processing time may vary.</li>
+            </ul>
+
+            <h2 class="ggt-policy-h2">5. Product Warranty (Beyond Checking Period)</h2>
+            <ul>
+                <li>Many new products carry a manufacturer's warranty (e.g., 1 year, 3 years). The terms, conditions, and claim process for these warranties are determined by the manufacturer/brand.</li>
+                <li>GGT will assist customers in understanding the manufacturer's warranty process where possible, but the final warranty service is provided by the brand or its authorized service centers.</li>
+                <li>Warranty does not typically cover physical damage, misuse, power surge damage, or software issues. Refer to the manufacturer's specific warranty terms.</li>
+                <li>Proof of purchase is required for all warranty claims.</li>
+            </ul>
+
+            <h2 class="ggt-policy-h2">6. Policy Changes</h2>
+            <p>GGT [ Gaming & Graphics Tech] reserves the right to modify this Order & Return Policy at any time. Changes will be effective immediately upon posting on this page. We encourage you to review this policy periodically.</p>
+
+            <h2 class="ggt-policy-h2">7. Contact Information</h2>
+            <p>For any questions regarding orders, returns, or this policy, please contact us:</p>
+            <ul class="contact-list">
+            
+                 <li><i class="fas fa-phone-alt"></i><strong>Phone:</strong> <a href="tel:+923224467244">+92 322 4467244</a></li> <!-- REPLACE -->
+                 <li><i class="fas fa-envelope"></i><strong>Email:</strong> <a href="mailto:info@ggt.com.pk">info@ggt.com.pk</a></li> <!-- REPLACE -->
+                 <li><i class="fas fa-map-marker-alt"></i><strong>Visit Us:</strong> Shop #6 3rd Floor, Hafeez Centre, Block E1 Block E 1, Gulberg III, Lahore</li> <!-- REPLACE -->      
+                 <li><i class="fas fa-globe"></i><strong>Website Contact:</strong> <a href="{% url 'contact' %}">Contact Page</a></li> {# Use url tag #}
+            </ul>
+
+        </div> <!-- End Container -->
+    </main>
+
+    
+</div> {# End ggt-policy-page-container #}
+{% include 'footer.html' %}
+{% endblock %}
+
+
+{% block script %}
+{# Add any page-specific JS here if needed #}
+{% endblock %}

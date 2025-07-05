@@ -1,0 +1,198 @@
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Form</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        background-color: #f0f4f8; /* Light background for the body */
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        overflow: hidden; /* Hide body overflow to prevent double scrollbars */
+        }
+
+        #initialBookingForm {
+            max-width: 700px;
+        width: 90%;
+        background: white;
+        padding: 30px;
+        margin: 20px; /* Add margin to center the form */
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        max-height: 80vh; /* Limit height of form container */
+        min-height: 80vh;
+        overflow-y: auto; /* Allow vertical scrolling within the form container */
+        box-sizing: border-box; /* Prevent padding from increasing width */
+        }
+
+        h2 {
+            text-align: center;
+        color: black; /* Theme color for the heading */
+        margin-bottom: 30px;
+        font-size: 2.5em;
+        text-shadow: 1px 1px 5px rgba(0, 123, 255, 0.2);
+        }
+
+        .form-field {
+            margin-bottom: 25px; /* Increased spacing */
+        }
+
+        label {
+            font-weight: bold;
+            color: #333;
+            display: block;
+            margin-bottom: 8px; /* Adjusted margin */
+        }
+
+        .form-input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus {
+            border-color: black;
+            outline: none;
+        }
+
+        .error {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .radio-group {
+            display: flex;
+            justify-content: space-between; /* Aligns items in a row */
+            flex-wrap: wrap; /* Allows wrapping for smaller screens */
+            gap: 20px; /* Space between options */
+        }
+
+        .radio-option {
+            flex: 1 1 calc(50% - 20px); /* Responsive sizing */
+            display: flex;
+            align-items: center;
+            padding: 15px; /* Increased padding */
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            transition: background-color 0.3s;
+            cursor: pointer; /* Indicates the option is clickable */
+            margin-top: 10px; /* Added margin for spacing */
+        }
+
+        .radio-option:hover {
+            background-color: #f4f4f4;
+        }
+
+        .radio-option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .radio-option img {
+            max-width: 80px; /* Adjusted image size */
+            height: auto;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        .radio-option p {
+            margin: 0;
+            color: #555;
+            font-size: 16px;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 15px; /* Increased button size */
+            background-color: black;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px; /* Increased font size */
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button[type="submit"]:hover {
+            background-color: rgb(43, 43, 43);
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="buttonForm"> <!-- Added a container for the form -->
+    <form id="initialBookingForm" method="post" action="{% url 'booking' product_sku=product.sku %}?step=initial">
+        {% csrf_token %}
+        <h2>Booking Information</h2>
+
+        {% for field in form %}
+            <div class="form-field">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                
+                {% if field.field.widget.type == "radio" %}
+                    <div class="radio-group">
+                        {% for radio in field %}
+                            <div class="radio-option">
+                                {{ radio.tag }} <!-- Render radio input -->
+                                <label for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ field|add_class:"form-input" }}
+                {% endif %}
+                
+                {% if field.errors %}
+                    <div class="error">{{ field.errors }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <button type="submit">Next</button>
+        <div style="margin-top: 20px; text-align: center; color: #555;">
+            <p>Next, you'll confirm your booking details and add any extra instructions for our team!</p>
+        </div>
+        <div class="faq-section" style="margin-top: 60px; font-size: medium;">
+            <h3 style="text-align: center;">Frequently Asked Questions</h3>
+            <p><strong>What information do I need to provide for my booking?</strong><br>You will need to provide details such as your name, contact information, and any specific preferences related to your booking (e.g., fabric choices, address).</p>
+            <p><strong>How long does it take to process my booking?</strong><br>Once you submit your booking, you will receive a confirmation email within a few minutes. If you do not receive this email, please check your spam folder or contact us for assistance.</p>
+            <p><strong>Is my personal information secure?</strong><br>Yes, we take your privacy seriously. All personal information is stored securely and will only be used for the purpose of your booking.</p>
+            <p><strong>What if I have specific requirements or requests?</strong><br>You can include any specific requirements or requests in the additional notes section of the booking form, and we will do our best to accommodate them.</p>
+            <p><strong>How do I know if my booking is confirmed?</strong><br>After successfully submitting your booking, you will receive a confirmation email with all the details. If you do not receive it, please check your spam folder or contact us.</p>
+        </div>
+           
+    </form>
+   
+    
+</div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $('#initialBookingForm').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: $(this).attr('action'),
+                type: $(this).attr('method'),
+                data: $(this).serialize(),
+                success: function(response) {
+                    if (response.redirect_url) {
+                        window.location.href = response.redirect_url;
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error:', status, error);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

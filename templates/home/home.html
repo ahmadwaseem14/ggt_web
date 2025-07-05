@@ -1,0 +1,1243 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+<style>
+body {
+    background-color: #1a1a1a !important; 
+    color: #ffffff;
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+}
+.variants.add {
+    position: relative;
+    overflow: hidden;
+}
+.btn.btn-addto-cart {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.btn.btn-addto-cart:hover {
+    background-color: #555;
+}
+.btn.btn-addto-cart.whatsapp-btn {
+    background-color: #25D366; /* WhatsApp green */
+    text-decoration: none;
+}
+.btn.btn-addto-cart.whatsapp-btn:hover {
+    background-color: #1EBB52;
+}
+.product-price .price {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+.product-price .availability {
+    display: block;
+    font-size: 12px;
+    color: #666;
+}
+.trusted-companies-section {
+    background-color: #1a1a1a;
+    padding: 40px 20px;
+    text-align: center;
+    overflow: hidden;
+}
+.companies-carousel {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    margin: 0 auto;
+}
+.companies-track {
+    display: flex;
+    gap: 20px;
+    animation: infiniteScroll 30s linear infinite;
+    width: calc(150px * 30 * 2);
+}
+.company-card {
+    border: 1px solid #656666;
+    padding: 15px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 10px;
+    background-color: transparent;
+}
+.company-logo {
+    width: 80px;
+    height: 80px;
+    filter: brightness(0) invert(1);
+    transition: all 0.3s ease-in-out;
+}
+.company-card:hover {
+    background-color: white !important;
+}
+.company-card:hover .company-logo {
+    filter: none;
+}
+@keyframes infiniteScroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+.categories-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.heading-container {
+    text-align: center;
+    margin-bottom: 40px;
+}
+.main-heading {
+    font-size: 2.8rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    color: #ffffff;
+    position: relative;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+.main-heading::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    width: 100%;
+    height: 4px;
+    background: #1189ff;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s ease-in-out;
+}
+.main-heading.underline-visible::after {
+    transform: scaleX(1);
+}
+.call-for-price {
+    display: inline-block;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-transform: uppercase;
+}
+.heading-container h3 {
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    color: #ccc;
+    margin-top: 5px;
+    opacity: 0.85;
+    letter-spacing: 0.5px;
+}
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+.category-card {
+    background-color: #2a2a2a;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.category-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+.category-card .category-image {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 15px;
+    transition: transform 0.3s ease;
+}
+.category-card:hover .category-image {
+    transform: scale(1.1);
+}
+.category-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+.category-card p {
+    font-size: 1rem;
+    color: #b0b0b0;
+}
+.see-all-btn {
+    display: block;
+    margin: 40px auto 0;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.see-all-btn a {
+    border-radius: 5px;
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #1189ff;
+    padding: 10px 20px;
+    display: inline-block;
+}
+.see-all-btn a:hover {
+    background-color: #0066cc;
+}
+@media (max-width: 1024px) {
+    .main-heading {
+        font-size: 2.4rem;
+    }
+    .heading-container h3.sub-heading {
+        font-size: 1.1rem;
+    }
+}
+@media (max-width: 768px) {
+    .main-heading {
+        font-size: 2rem;
+    }
+    .heading-container h3.sub-heading {
+        font-size: 1rem;
+    }
+}
+@media (max-width: 480px) {
+    .main-heading {
+        font-size: 1.7rem;
+    }
+    .cas {
+        margin-top: 30px;
+    }
+    .heading-container h3.sub-heading {
+        font-size: 0.95rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'navbar.html' %}
+<div id="page-content">
+    <!-- Home slider -->
+    <div class="slideshow slideshow-wrapper pb-section sliderFull">
+        <div class="home-slideshow">
+            {% for slide in sliders %}
+            <div class="slide">
+                <div class="blur-up lazyload bg-size">
+                    <img class="blur-up lazyload bg-img" 
+                         data-src="{{ slide.image.url }}" 
+                         src="{{ slide.image.url }}" 
+                         alt="{{ slide.heading }}" 
+                         title="{{ slide.heading }}" />
+                    <div class="slideshow__text-wrap slideshow__overlay classic bottom"> 
+                        <div class="slideshow__text-content bottom">
+                            <div class="wrap-caption center">
+                                <h2 class="h1 mega-title slideshow__title">{{ slide.heading }}</h2>
+                                {% if slide.subheading %}
+                                <span class="mega-subtitle slideshow__subtitle">{{ slide.subheading }}</span>
+                                {% endif %}
+                                {% if slide.button_text %}
+                                <a href="{{ slide.button_link }}" class="btn">{{ slide.button_text }}</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="slide">
+                <div class="blur-up lazyload bg-size">
+                    <img class="blur-up lazyload bg-img" 
+                         data-src="{% static 'assets/images/kv-m.jpg' %}" 
+                         src="{% static 'assets/images/kv-m.jpg' %}" 
+                         alt="Shop Our New Collection" 
+                         title="Shop Our New Collection" />
+                    <div class="slideshow__text-wrap slideshow__overlay classic bottom">
+                        <div class="slideshow__text-content bottom">
+                            <div class="wrap-caption center">
+                                <h2 class="h1 mega-title slideshow__title">Buy custom pc</h2>
+                                <span class="mega-subtitle slideshow__subtitle">From High to low, classic or modern. We have you covered</span>
+                                <span class="btn">Shop now</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- End Home slider -->
+
+    <!-- Top Categories -->
+    <div class="categories-container">
+        <div class="heading-container">
+            <h2 class="main-heading">Top Categories</h2>
+        </div>
+        <div class="categories-grid">
+            <a style="text-decoration: none;" href="{% url 'product_list' 'laptop' %}">
+                <div class="category-card">
+                    <img src="{% static 'assets/images/icon2.svg' %}" alt="Laptop" class="category-image">
+                    <h3>Laptop</h3>
+                    <p>Powerful laptops for work and gaming needs.</p>
+                </div>
+            </a>
+            <a style="text-decoration: none;" href="{% url 'product_list' 'tablet' %}">
+                <div class="category-card">
+                    <img style="width: 75px;" src="{% static 'assets/images/icon6.svg' %}" alt="Tablet" class="category-image">
+                    <h3>Tablet</h3>
+                    <p>Portable tablets for work and entertainment.</p>
+                </div>
+            </a>
+            <a style="text-decoration: none;" href="{% url 'product_list' 'gpu' %}">
+                <div class="category-card">
+                    <img src="{% static 'assets/images/icon10.svg' %}" alt="Monitor" class="category-image">
+                    <h3>Monitor</h3>
+                    <p>High-quality displays for work and gaming.</p>
+                </div>
+            </a>
+            <a style="text-decoration: none;" href="{% url 'product_list' 'case' %}">
+                <div class="category-card">
+                    <img src="{% static 'assets/images/icon8.svg' %}" alt="Casing" class="category-image">
+                    <h3>Casing</h3>
+                    <p>Stylish cases for your custom PC builds.</p>
+                </div>
+            </a>
+            <a style="text-decoration: none;" href="{% url 'product_list' 'gpu' %}">
+                <div class="category-card">
+                    <img style="width: 85px;" src="{% static 'assets/images/icon.svg' %}" alt="GPU" class="category-image">
+                    <h3>GPU</h3>
+                    <p>Powerful graphics cards for gaming needs.</p>
+                </div>
+            </a>
+            <a style="text-decoration: none;" href="{% url 'product_list' 'motherboard' %}">
+                <div class="category-card">
+                    <img src="{% static 'assets/images/icon11.svg' %}" style="width: 90px;" alt="Motherboard" class="category-image">
+                    <h3>Motherboard</h3>
+                    <p>Reliable motherboards for your PC builds.</p>
+                </div>
+            </a>
+            <a style="text-decoration: none;" href="{% url 'product_list' 'cpu' %}">
+                <div class="category-card">
+                    <img style="width: 60px;" src="{% static 'assets/images/icon5.svg' %}" alt="CPU" class="category-image">
+                    <h3>CPU</h3>
+                    <p>Powerful processors for your PC needs.</p>
+                </div>
+            </a>
+            <a style="text-decoration: none;" href="{% url 'product_list' 'ram' %}">
+                <div class="category-card">
+                    <img style="width: 85px;" src="{% static 'assets/images/icon7.svg' %}" alt="RAM" class="category-image">
+                    <h3>RAM</h3>
+                    <p>High-speed memory for your PC needs.</p>
+                </div>
+            </a>
+        </div>
+        <button class="see-all-btn" style="margin-top: 20px;">
+            <a href="{% url 'all_categories' %}" class="btn btn-primary">See All Categories</a>
+        </button>
+    </div>
+
+    <!-- Top Picks -->
+    <div class="tab-slider-product section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="categories-container">
+                        <div class="heading-container">
+                            <h2 class="main-heading">Top Picks</h2>
+                            <h3 style="color: white;">Switch between categories to explore our best products.</h3>
+                        </div>
+                    </div>
+                    <div class="tabs-listing">
+                        <ul class="tabs clearfix">
+                            <li class="active" rel="tab2">Laptops</li>
+                            <li rel="tab3">Tablets</li>
+                            <li rel="tab1">Casing</li>
+                            <li rel="tab4">GPU</li>
+                        </ul>
+                        <div class="tab_container">
+                            <!-- Laptops -->
+                            <div id="tab2" class="tab_content grid-products">
+                                <div class="productSlider">
+                                    {% for laptop in top_laptops %}
+                                    <div class="col-12 item">
+                                        <!-- Product Image -->
+                                        <div class="product-image">
+                                            <a href="{% url 'product_detail' laptop.sku %}" class="grid-view-item__link">
+                                                {% with first_image=laptop.images.all|first %}
+                                                    {% if first_image %}
+                                                        <img style="background-color: white;" class="primary blur-up lazyload" 
+                                                             data-src="{{ first_image.image.url }}" 
+                                                             src="{{ first_image.image.url }}" 
+                                                             alt="{{ first_image.alt_text }}" 
+                                                             title="{{ laptop.name }}">
+                                                    {% else %}
+                                                        <img style="background-color: white;" class="primary blur-up lazyload" 
+                                                             data-src="/static/assets/images/default-product.jpg" 
+                                                             src="/static/assets/images/default-product.jpg" 
+                                                             alt="Default Image" 
+                                                             title="{{ laptop.name }}">
+                                                    {% endif %}
+                                                {% endwith %}
+                                                {% with first_image=laptop.images.all|first second_image=laptop.images.all|slice:'1:2'|first %}
+                                                    {% if second_image %}
+                                                        <img class="hover blur-up lazyload" 
+                                                             data-src="{{ second_image.image.url }}" 
+                                                             src="{{ second_image.image.url }}" 
+                                                             alt="{{ second_image.alt_text }}" 
+                                                             title="{{ laptop.name }}">
+                                                    {% elif first_image %}
+                                                        <img class="hover blur-up lazyload" 
+                                                             data-src="{{ first_image.image.url }}" 
+                                                             src="{{ first_image.image.url }}" 
+                                                             alt="{{ first_image.alt_text }}" 
+                                                             title="{{ laptop.name }}">
+                                                    {% else %}
+                                                        <img class="hover blur-up lazyload" 
+                                                             data-src="/static/assets/images/default-product.jpg" 
+                                                             src="/static/assets/images/default-product.jpg" 
+                                                             alt="Default Image" 
+                                                             title="{{ laptop.name }}">
+                                                    {% endif %}
+                                                {% endwith %}
+                                                <div class="product-labels rectangular">
+                                                    {% if laptop.condition == 'new' %}
+                                                        <span class="lbl pr-label1">new</span>
+                                                    {% endif %}
+                                                    {% if laptop.price and laptop.price < 500 %}
+                                                        <span class="lbl on-sale">Sale</span>
+                                                    {% elif laptop.old_price and laptop.price %}
+                                                        <span class="lbl on-sale">-{{
+                                                            laptop.old_price|sub:laptop.price|div:laptop.old_price|mul:100|floatformat:0
+                                                        }}%</span>
+                                                    {% endif %}
+                                                    {% if laptop.is_hot %}
+                                                        <span class="lbl pr-label2">Hot</span>
+                                                    {% endif %}
+                                                </div>
+                                            </a>
+                                            <!-- Product Buttons -->
+                                            <div class="variants add">
+                                                {% if laptop.price %}
+                                                    <a href="#" class="btn btn-addto-cart whatsapp-btn order-whatsapp-btn" 
+                                                       data-sku="{{ laptop.sku }}" 
+                                                       data-name="{{ laptop.name|truncatechars:50 }}" 
+                                                       data-price="{{ laptop.price }}" 
+                                                       data-url="{% url 'product_detail' laptop.sku %}" 
+                                                       tabindex="0">
+                                                        Order Now
+                                                    </a>
+                                                {% else %}
+                                                    <a href="#" class="btn btn-addto-cart whatsapp-btn inquiry-whatsapp-btn" 
+                                                       data-sku="{{ laptop.sku }}" 
+                                                       data-name="{{ laptop.name|truncatechars:50 }}" 
+                                                       data-url="{% url 'product_detail' laptop.sku %}" 
+                                                       tabindex="0">
+                                                        Contact for Price & Order
+                                                    </a>
+                                                {% endif %}
+                                            </div>
+                                            <div class="button-set">
+                                                <a href="{% url 'quick_view' laptop.sku %}" title="Quick View" class="quick-view-popup quick-view" data-toggle="modal" data-target="#content_quickview">
+                                                    <i class="icon anm anm-search-plus-r"></i>
+                                                </a>
+                                                <div class="wishlist-btn">
+                                                    <a class="wishlist add-to-wishlist" href="{% url 'add_to_wishlist' laptop.sku %}" title="Add to Wishlist">
+                                                        <i class="icon anm anm-heart-l"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="compare-btn">
+                                                    <a class="compare add-to-compare" href="{% url 'add_to_comparison' laptop.sku %}" title="Add to Compare">
+                                                        <i class="icon anm anm-random-r"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Product Details -->
+                                        <div class="product-details text-center">
+                                            <div class="product-name">
+                                                <a href="{% url 'product_detail' laptop.sku %}">{{ laptop.name }}</a>
+                                            </div>
+                                            <div class="product-price">
+                                                {% if laptop.price %}
+                                                    {% if laptop.old_price %}
+                                                        <span class="old-price">Rs{{ laptop.old_price }}</span>
+                                                    {% endif %}
+                                                    <span class="price">Rs{{ laptop.price }}</span>
+                                                {% else %}
+                                                    <span class="price">Price on Request</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% empty %}
+                                        <div class="col-12 item">
+                                            <p>No top laptops available.</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <!-- Casing -->
+                            <div id="tab1" class="tab_content grid-products">
+                                <div class="productSlider">
+                                    {% for case in top_cases %}
+                                    <div class="col-12 item">
+                                        <div class="product-image">
+                                            <a href="{% url 'product_detail' case.sku %}" class="grid-view-item__link">
+                                                {% with first_image=case.images.all|first %}
+                                                    {% if first_image %}
+                                                        <img style="background-color: white;" class="primary blur-up lazyload" 
+                                                             data-src="{{ first_image.image.url }}" 
+                                                             src="{{ first_image.image.url }}" 
+                                                             alt="{{ first_image.alt_text }}" 
+                                                             title="{{ case.name }}">
+                                                    {% else %}
+                                                        <img style="background-color: white;" class="primary blur-up lazyload" 
+                                                             data-src="/static/assets/images/default-product.jpg" 
+                                                             src="/static/assets/images/default-product.jpg" 
+                                                             alt="Default Image" 
+                                                             title="{{ case.name }}">
+                                                    {% endif %}
+                                                {% endwith %}
+                                                {% with first_image=case.images.all|first second_image=case.images.all|slice:'1:2'|first %}
+                                                    {% if second_image %}
+                                                        <img class="hover blur-up lazyload" 
+                                                             data-src="{{ second_image.image.url }}" 
+                                                             src="{{ second_image.image.url }}" 
+                                                             alt="{{ second_image.alt_text }}" 
+                                                             title="{{ case.name }}">
+                                                    {% elif first_image %}
+                                                        <img class="hover blur-up lazyload" 
+                                                             data-src="{{ first_image.image.url }}" 
+                                                             src="{{ first_image.image.url }}" 
+                                                             alt="{{ first_image.alt_text }}" 
+                                                             title="{{ case.name }}">
+                                                    {% else %}
+                                                        <img class="hover blur-up lazyload" 
+                                                             data-src="/static/assets/images/default-product.jpg" 
+                                                             src="/static/assets/images/default-product.jpg" 
+                                                             alt="Default Image" 
+                                                             title="{{ case.name }}">
+                                                    {% endif %}
+                                                {% endwith %}
+                                                <div class="product-labels rectangular">
+                                                    {% if case.condition == 'new' %}
+                                                        <span class="lbl pr-label1">new</span>
+                                                    {% endif %}
+                                                    {% if case.price and case.price < 500 %}
+                                                        <span class="lbl on-sale">Sale</span>
+                                                    {% elif case.old_price and case.price %}
+                                                        <span class="lbl on-sale">-{{
+                                                            case.old_price|sub:case.price|div:case.old_price|mul:100|floatformat:0
+                                                        }}%</span>
+                                                    {% endif %}
+                                                    {% if case.is_hot %}
+                                                        <span class="lbl pr-label2">Hot</span>
+                                                    {% endif %}
+                                                </div>
+                                            </a>
+                                            <div class="variants add">
+                                                {% if case.price %}
+                                                    <a href="#" class="btn btn-addto-cart whatsapp-btn order-whatsapp-btn" 
+                                                       data-sku="{{ case.sku }}" 
+                                                       data-name="{{ case.name|truncatechars:50 }}" 
+                                                       data-price="{{ case.price }}" 
+                                                       data-url="{% url 'product_detail' case.sku %}" 
+                                                       tabindex="0">
+                                                        Order Now
+                                                    </a>
+                                                {% else %}
+                                                    <a href="#" class="btn btn-addto-cart whatsapp-btn inquiry-whatsapp-btn" 
+                                                       data-sku="{{ case.sku }}" 
+                                                       data-name="{{ case.name|truncatechars:50 }}" 
+                                                       data-url="{% url 'product_detail' case.sku %}" 
+                                                       tabindex="0">
+                                                        Contact for Price & Order
+                                                    </a>
+                                                {% endif %}
+                                            </div>
+                                            <div class="button-set">
+                                                <a href="{% url 'quick_view' case.sku %}" title="Quick View" class="quick-view-popup quick-view" data-toggle="modal" data-target="#content_quickview">
+                                                    <i class="icon anm anm-search-plus-r"></i>
+                                                </a>
+                                                <div class="wishlist-btn">
+                                                    <a class="wishlist add-to-wishlist" href="{% url 'add_to_wishlist' case.sku %}" title="Add to Wishlist">
+                                                        <i class="icon anm anm-heart-l"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="compare-btn">
+                                                    <a class="compare add-to-compare" href="{% url 'add_to_comparison' case.sku %}" title="Add to Compare">
+                                                        <i class="icon anm anm-random-r"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="product-details text-center">
+                                            <div class="product-name">
+                                                <a href="{% url 'product_detail' case.sku %}">{{ case.name }}</a>
+                                            </div>
+                                            <div class="product-price">
+                                                {% if case.price %}
+                                                    {% if case.old_price %}
+                                                        <span class="old-price">Rs{{ case.old_price }}</span>
+                                                    {% endif %}
+                                                    <span class="price">Rs{{ case.price }}</span>
+                                                {% else %}
+                                                    <span class="price">Price on Request</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% empty %}
+                                        <div class="col-12 item">
+                                            <p>No top cases available.</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <!-- Tablets -->
+                            <div id="tab3" class="tab_content grid-products">
+                                <div class="productSlider">
+                                    {% for tablet in top_tablets %}
+                                    <div class="col-12 item">
+                                        <div class="product-image">
+                                            <a href="{% url 'product_detail' tablet.sku %}" class="grid-view-item__link">
+                                                {% with first_image=tablet.images.all|first %}
+                                                    {% if first_image %}
+                                                        <img style="background-color: white;" class="primary blur-up lazyload" 
+                                                             data-src="{{ first_image.image.url }}" 
+                                                             src="{{ first_image.image.url }}" 
+                                                             alt="{{ first_image.alt_text }}" 
+                                                             title="{{ tablet.name }}">
+                                                    {% else %}
+                                                        <img style="background-color: white;" class="primary blur-up lazyload" 
+                                                             data-src="/static/assets/images/default-product.jpg" 
+                                                             src="/static/assets/images/default-product.jpg" 
+                                                             alt="Default Image" 
+                                                             title="{{ tablet.name }}">
+                                                    {% endif %}
+                                                {% endwith %}
+                                                {% with first_image=tablet.images.all|first second_image=tablet.images.all|slice:'1:2'|first %}
+                                                    {% if second_image %}
+                                                        <img class="hover blur-up lazyload" 
+                                                             data-src="{{ second_image.image.url }}" 
+                                                             src="{{ second_image.image.url }}" 
+                                                             alt="{{ second_image.alt_text }}" 
+                                                             title="{{ tablet.name }}">
+                                                    {% elif first_image %}
+                                                        <img class="hover blur-up lazyload" 
+                                                             data-src="{{ first_image.image.url }}" 
+                                                             src="{{ first_image.image.url }}" 
+                                                             alt="{{ first_image.alt_text }}" 
+                                                             title="{{ tablet.name }}">
+                                                    {% else %}
+                                                        <img class="hover blur-up lazyload" 
+                                                             data-src="/static/assets/images/default-product.jpg" 
+                                                             src="/static/assets/images/default-product.jpg" 
+                                                             alt="Default Image" 
+                                                             title="{{ tablet.name }}">
+                                                    {% endif %}
+                                                {% endwith %}
+                                                <div class="product-labels rectangular">
+                                                    {% if tablet.condition == 'new' %}
+                                                        <span class="lbl pr-label1">new</span>
+                                                    {% endif %}
+                                                    {% if tablet.price and tablet.price < 500 %}
+                                                        <span class="lbl on-sale">Sale</span>
+                                                    {% elif tablet.old_price and tablet.price %}
+                                                        <span class="lbl on-sale">-{{
+                                                            tablet.old_price|sub:tablet.price|div:tablet.old_price|mul:100|floatformat:0
+                                                        }}%</span>
+                                                    {% endif %}
+                                                    {% if tablet.is_hot %}
+                                                        <span class="lbl pr-label2">Hot</span>
+                                                    {% endif %}
+                                                </div>
+                                            </a>
+                                            <div class="variants add">
+                                                {% if tablet.price %}
+                                                    <a href="#" class="btn btn-addto-cart whatsapp-btn order-whatsapp-btn" 
+                                                       data-sku="{{ tablet.sku }}" 
+                                                       data-name="{{ tablet.name|truncatechars:50 }}" 
+                                                       data-price="{{ tablet.price }}" 
+                                                       data-url="{% url 'product_detail' tablet.sku %}" 
+                                                       tabindex="0">
+                                                        Order Now
+                                                    </a>
+                                                {% else %}
+                                                    <a href="#" class="btn btn-addto-cart whatsapp-btn inquiry-whatsapp-btn" 
+                                                       data-sku="{{ tablet.sku }}" 
+                                                       data-name="{{ tablet.name|truncatechars:50 }}" 
+                                                       data-url="{% url 'product_detail' tablet.sku %}" 
+                                                       tabindex="0">
+                                                        Contact for Price & Order
+                                                    </a>
+                                                {% endif %}
+                                            </div>
+                                            <div class="button-set">
+                                                <a href="{% url 'quick_view' tablet.sku %}" title="Quick View" class="quick-view-popup quick-view" data-toggle="modal" data-target="#content_quickview">
+                                                    <i class="icon anm anm-search-plus-r"></i>
+                                                </a>
+                                                <div class="wishlist-btn">
+                                                    <a class="wishlist add-to-wishlist" href="{% url 'add_to_wishlist' tablet.sku %}" title="Add to Wishlist">
+                                                        <i class="icon anm anm-heart-l"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="compare-btn">
+                                                    <a class="compare add-to-compare" href="{% url 'add_to_comparison' tablet.sku %}" title="Add to Compare">
+                                                        <i class="icon anm anm-random-r"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="product-details text-center">
+                                            <div class="product-name">
+                                                <a href="{% url 'product_detail' tablet.sku %}">{{ tablet.name }}</a>
+                                            </div>
+                                            <div class="product-price">
+                                                {% if tablet.price %}
+                                                    {% if tablet.old_price %}
+                                                        <span class="old-price">Rs{{ tablet.old_price }}</span>
+                                                    {% endif %}
+                                                    <span class="price">Rs{{ tablet.price }}</span>
+                                                {% else %}
+                                                    <span class="price">Price on Request</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% empty %}
+                                        <div class="col-12 item">
+                                            <p>No top tablets available.</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <!-- GPUs -->
+                            <div id="tab4" class="tab_content grid-products">
+                                <div class="productSlider">
+                                    {% for gpu in top_gpus %}
+                                    <div class="col-12 item">
+                                        <div class="product-image">
+                                            <a href="{% url 'product_detail' gpu.sku %}" class="grid-view-item__link">
+                                                {% with first_image=gpu.images.all|first %}
+                                                    {% if first_image %}
+                                                        <img style="background-color: white;" class="primary blur-up lazyload" 
+                                                             data-src="{{ first_image.image.url }}" 
+                                                             src="{{ first_image.image.url }}" 
+                                                             alt="{{ first_image.alt_text }}" 
+                                                             title="{{ gpu.name }}">
+                                                    {% else %}
+                                                        <img style="background-color: white;" class="primary blur-up lazyload" 
+                                                             data-src="/static/assets/images/default-product.jpg" 
+                                                             src="/static/assets/images/default-product.jpg" 
+                                                             alt="Default Image" 
+                                                             title="{{ gpu.name }}">
+                                                    {% endif %}
+                                                {% endwith %}
+                                                {% with first_image=gpu.images.all|first second_image=gpu.images.all|slice:'1:2'|first %}
+                                                    {% if second_image %}
+                                                        <img class="hover blur-up lazyload" 
+                                                             data-src="{{ second_image.image.url }}" 
+                                                             src="{{ second_image.image.url }}" 
+                                                             alt="{{ second_image.alt_text }}" 
+                                                             title="{{ gpu.name }}">
+                                                    {% elif first_image %}
+                                                        <img class="hover blur-up lazyload" 
+                                                             data-src="{{ first_image.image.url }}" 
+                                                             src="{{ first_image.image.url }}" 
+                                                             alt="{{ first_image.alt_text }}" 
+                                                             title="{{ gpu.name }}">
+                                                    {% else %}
+                                                        <img class="hover blur-up lazyload" 
+                                                             data-src="/static/assets/images/default-product.jpg" 
+                                                             src="/static/assets/images/default-product.jpg" 
+                                                             alt="Default Image" 
+                                                             title="{{ gpu.name }}">
+                                                    {% endif %}
+                                                {% endwith %}
+                                                <div class="product-labels rectangular">
+                                                    {% if gpu.condition == 'new' %}
+                                                        <span class="lbl pr-label1">new</span>
+                                                    {% endif %}
+                                                </div>
+                                            </a>
+                                            <div class="variants add">
+                                                {% if gpu.price %}
+                                                    <a href="#" class="btn btn-addto-cart whatsapp-btn order-whatsapp-btn" 
+                                                       data-sku="{{ gpu.sku }}" 
+                                                       data-name="{{ gpu.name|truncatechars:50 }}" 
+                                                       data-price="{{ gpu.price }}" 
+                                                       data-url="{% url 'product_detail' gpu.sku %}" 
+                                                       tabindex="0">
+                                                        Order Now
+                                                    </a>
+                                                {% else %}
+                                                    <a href="#" class="btn btn-addto-cart whatsapp-btn inquiry-whatsapp-btn" 
+                                                       data-sku="{{ gpu.sku }}" 
+                                                       data-name="{{ gpu.name|truncatechars:50 }}" 
+                                                       data-url="{% url 'product_detail' gpu.sku %}" 
+                                                       tabindex="0">
+                                                        Contact for Price & Order
+                                                    </a>
+                                                {% endif %}
+                                            </div>
+                                            <div class="button-set">
+                                                <a href="{% url 'quick_view' gpu.sku %}" title="Quick View" class="quick-view-popup quick-view" data-toggle="modal" data-target="#content_quickview">
+                                                    <i class="icon anm anm-search-plus-r"></i>
+                                                </a>
+                                                <div class="wishlist-btn">
+                                                    <a class="wishlist add-to-wishlist" href="{% url 'add_to_wishlist' gpu.sku %}" title="Add to Wishlist">
+                                                        <i class="icon anm anm-heart-l"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="compare-btn">
+                                                    <a class="compare add-to-compare" href="{% url 'add_to_comparison' gpu.sku %}" title="Add to Compare">
+                                                        <i class="icon anm anm-random-r"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="product-details text-center">
+                                            <div class="product-name">
+                                                <a href="{% url 'product_detail' gpu.sku %}">{{ gpu.name }}</a>
+                                            </div>
+                                            <div class="product-price">
+                                                {% if gpu.price %}
+                                                    {% if gpu.old_price %}
+                                                        <span class="old-price">Rs{{ gpu.old_price }}</span>
+                                                    {% endif %}
+                                                    <span class="price">Rs{{ gpu.price }}</span>
+                                                {% else %}
+                                                    <span class="price">Price on Request</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% empty %}
+                                        <div class="col- blessing you and your family12 item">
+                                            <p>No top GPUs available.</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>    
+        </div>
+    </div>
+
+    <!-- Latest Arrivals -->
+    <div class="product-rows section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="heading-container">
+                        <h2 class="main-heading cas">Latest Arrivals</h2>
+                        <h3 style="color: white;">Fresh new products just added!</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-products">
+                <div class="row">
+                    {% for product in latest_products %}
+                    <div class="col-6 col-sm-2 col-md-3 col-lg-3 item">
+                        <div class="product-image">
+                            <a href="{% url 'product_detail' product.sku %}" class="grid-view-item__link">
+                                {% with first_image=product.images.all|first %}
+                                    {% if first_image %}
+                                        <img class="primary blur-up lazyload" 
+                                             data-src="{{ first_image.image.url }}" 
+                                             src="{{ first_image.image.url }}" 
+                                             alt="{{ first_image.alt_text }}" 
+                                             title="{{ product.name }}">
+                                    {% else %}
+                                        <img class="primary blur-up lazyload" 
+                                             data-src="/static/assets/images/default-product.jpg" 
+                                             src="/static/assets/images/default-product.jpg" 
+                                             alt="Default Image" 
+                                             title="{{ product.name }}">
+                                    {% endif %}
+                                {% endwith %}
+                                {% with first_image=product.images.all|first second_image=product.images.all|slice:'1:2'|first %}
+                                    {% if second_image %}
+                                        <img class="hover blur-up lazyload" 
+                                             data-src="{{ second_image.image.url }}" 
+                                             src="{{ second_image.image.url }}" 
+                                             alt="{{ second_image.alt_text }}" 
+                                             title="{{ product.name }}">
+                                        <img class="grid-view-item__image hover variantImg" 
+                                             src="{{ second_image.image.url }}" 
+                                             alt="{{ second_image.alt_text }}" 
+                                             title="{{ product.name }}">
+                                    {% elif first_image %}
+                                        <img class="hover blur-up lazyload" 
+                                             data-src="{{ first_image.image.url }}" 
+                                             src="{{ first_image.image.url }}" 
+                                             alt="{{ first_image.alt_text }}" 
+                                             title="{{ product.name }}">
+                                        <img class="grid-view-item__image hover variantImg" 
+                                             src="{{ first_image.image.url }}" 
+                                             alt="{{ first_image.alt_text }}" 
+                                             title="{{ product.name }}">
+                                    {% else %}
+                                        <img class="hover blur-up lazyload" 
+                                             data-src="/static/assets/images/default-product.jpg" 
+                                             src="/static/assets/images/default-product.jpg" 
+                                             alt="Default Image" 
+                                             title="{{ product.name }}">
+                                        <img class="grid-view-item__image hover variantImg" 
+                                             src="/static/assets/images/default-product.jpg" 
+                                             alt="Default Image" 
+                                             title="{{ product.name }}">
+                                    {% endif %}
+                                {% endwith %}
+                                <div class="product-labels">
+                                    {% if product.condition == 'new' %}
+                                        <span class="lbl pr-label1">new</span>
+                                    {% endif %}
+                                </div>
+                            </a>
+                            <div class="variants add">
+                                {% if product.price %}
+                                    <a href="#" class="btn btn-addto-cart whatsapp-btn order-whatsapp-btn" 
+                                       data-sku="{{ product.sku }}" 
+                                       data-name="{{ product.name|truncatechars:50 }}" 
+                                       data-price="{{ product.price }}" 
+                                       data-url="{% url 'product_detail' product.sku %}" 
+                                       tabindex="0">
+                                        Order Now
+                                    </a>
+                                {% else %}
+                                    <a href="#" class="btn btn-addto-cart whatsapp-btn inquiry-whatsapp-btn" 
+                                       data-sku="{{ product.sku }}" 
+                                       data-name="{{ product.name|truncatechars:50 }}" 
+                                       data-url="{% url 'product_detail' product.sku %}" 
+                                       tabindex="0">
+                                        Contact for Price & Order
+                                    </a>
+                                {% endif %}
+                            </div>
+                            <div class="button-set">
+                                <a href="{% url 'quick_view' product.sku %}" title="Quick View" class="quick-view-popup quick-view" data-toggle="modal" data-target="#content_quickview">
+                                    <i class="icon anm anm-search-plus-r"></i>
+                                </a>
+                                <div class="wishlist-btn">
+                                    <a class="wishlist add-to-wishlist" href="{% url 'add_to_wishlist' product.sku %}" title="Add to Wishlist">
+                                        <i class="icon anm anm-heart-l"></i>
+                                    </a>
+                                </div>
+                                <div class="compare-btn">
+                                    <a class="compare add-to-compare" href="{% url 'add_to_comparison' product.sku %}" title="Add to Compare">
+                                        <i class="icon anm anm-random-r"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-details text-center">
+                            <div class="product-name">
+                                <a href="{% url 'product_detail' product.sku %}">{{ product.name }}</a>
+                            </div>
+                            <div class="product-price">
+                                {% if product.price %}
+                                    <span class="price">Rs{{ product.price }}</span>
+                                {% else %}
+                                    <span class="price">Price on Request</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                        <div class="col-12">
+                            <p>No latest products available.</p>
+                        </div>
+                    {% endfor %}
+                </div>
+                <button class="see-all-btn" style="margin-top: 20px;">
+                    <a href="{% url 'all_products' %}" class="btn btn-primary">See All</a>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trusted Companies -->
+    <div class="trusted-companies-section">
+        <div class="companies-carousel">
+            <div class="companies-track">
+                <!-- First set of logos -->
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/intel-logo.svg' %}" class="company-logo" alt="Intel"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/amd-logo-pre-2013.svg' %}" class="company-logo" alt="AMD"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/nvidia-wordmark-1.svg' %}" class="company-logo" alt="NVIDIA"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/asus-logo.svg' %}" class="company-logo" alt="Asus"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/msi-5.svg' %}" class="company-logo" alt="MSI"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/gigabyte-1.svg' %}" class="company-logo" alt="Gigabyte"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/asrock-logo-1.svg' %}" class="company-logo" alt="ASRock"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/corsair-2.svg' %}" class="company-logo" alt="Corsair"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/kingston-2.svg' %}" class="company-logo" alt="Kingston"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/western-digital-2.svg' %}" class="company-logo" alt="Western Digital"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/seagate-logo.svg' %}" class="company-logo" alt="Seagate"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/thermaltake-seeklogo.svg' %}" class="company-logo" alt="Thermaltake"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/cooler-master-black-logo.svg' %}" class="company-logo" alt="Cooler Master"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/nzxt-1.svg' %}" class="company-logo" alt="NZXT"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/be-quiet-logo.svg' %}" class="company-logo" alt="be quiet!"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/dell-1.svg' %}" class="company-logo" alt="Dell"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/lenovo-logo-2015.svg' %}" class="company-logo" alt="Lenovo"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/acer-5.svg' %}" class="company-logo" alt="Acer"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/apple-11.svg' %}" class="company-logo" alt="Apple"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/samsung-electronics.svg' %}" class="company-logo" alt="Samsung"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/microsoft-6.svg' %}" class="company-logo" alt="Microsoft"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/huawei-2.svg' %}" class="company-logo" alt="Huawei"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/honor-1.svg' %}" class="company-logo" alt="Honor"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/xiaomi-1.svg' %}" class="company-logo" alt="Xiaomi"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/alcatel-mobile-3.svg' %}" class="company-logo" alt="Alcatel"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/ntt-docomo-logo.svg' %}" class="company-logo" alt="NTT Docomo"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/logitech-2-1.svg' %}" class="company-logo" alt="Logitech"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/razer-1.svg' %}" class="company-logo" alt="Razer"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/logo-of-zotac-international.svg' %}" class="company-logo" alt="Zotac"></div>
+                <!-- Duplicate set for seamless scrolling -->
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/intel-logo.svg' %}" class="company-logo" alt="Intel"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/amd-logo-pre-2013.svg' %}" class="company-logo" alt="AMD"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/nvidia-wordmark-1.svg' %}" class="company-logo" alt="NVIDIA"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/asus-logo.svg' %}" class="company-logo" alt="Asus"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/msi-5.svg' %}" class="company-logo" alt="MSI"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/gigabyte-1.svg' %}" class="company-logo" alt="Gigabyte"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/asrock-logo-1.svg' %}" class="company-logo" alt="ASRock"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/corsair-2.svg' %}" class="company-logo" alt="Corsair"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/kingston-2.svg' %}" class="company-logo" alt="Kingston"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/western-digital-2.svg' %}" class="company-logo" alt="Western Digital"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/seagate-logo.svg' %}" class="company-logo" alt="Seagate"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/thermaltake-seeklogo.svg' %}" class="company-logo" alt="Thermaltake"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/cooler-master-black-logo.svg' %}" class="company-logo" alt="Cooler Master"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/nzxt-1.svg' %}" class="company-logo" alt="NZXT"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/be-quiet-logo.svg' %}" class="company-logo" alt="be quiet!"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/dell-1.svg' %}" class="company-logo" alt="Dell"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/lenovo-logo-2015.svg' %}" class="company-logo" alt="Lenovo"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/acer-5.svg' %}" class="company-logo" alt="Acer"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/apple-11.svg' %}" class="company-logo" alt="Apple"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/samsung-electronics.svg' %}" class="company-logo" alt="Samsung"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/microsoft-6.svg' %}" class="company-logo" alt="Microsoft"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/huawei-2.svg' %}" class="company-logo" alt="Huawei"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/honor-1.svg' %}" class="company-logo" alt="Honor"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/xiaomi-1.svg' %}" class="company-logo" alt="Xiaomi"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/alcatel-mobile-3.svg' %}" class="company-logo" alt="Alcatel"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/ntt-docomo-logo.svg' %}" class="company-logo" alt="NTT Docomo"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/logitech-2-1.svg' %}" class="company-logo" alt="Logitech"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/razer-1.svg' %}" class="company-logo" alt="Razer"></div>
+                <div class="company-card"><img src="{% static 'assets/images/company_logos/logo-of-zotac-international.svg' %}" class="company-logo" alt="Zotac"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    {% include 'footer.html' %}
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+if (typeof jQuery === 'undefined') {
+    console.error('jQuery is not loaded. Please ensure the jQuery CDN is accessible.');
+} else {
+    console.log('jQuery loaded successfully.');
+}
+
+// Configuration - Set your WhatsApp number here
+const WHATSAPP_NUMBER = '923224467244'; // Replace with your actual WhatsApp number
+// Note: Include country code but remove any +, -, or spaces
+// Example: 923224467244 (for Pakistan) or 919876543210 (for India)
+
+// Function to detect if the user is on a mobile device
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+// Function to format phone number for URLs (removes all non-digit characters)
+function formatPhoneNumber(phone) {
+    return phone.replace(/\D/g, '');
+}
+
+// Function to generate WhatsApp URL
+function getWhatsAppUrl(phoneNumber, message) {
+    const formattedNumber = formatPhoneNumber(phoneNumber);
+    const baseUrl = isMobileDevice() ? 'https://wa.me/' : 'https://web.whatsapp.com/send?phone=';
+    const separator = isMobileDevice() ? '?' : '&';
+    return `${baseUrl}${formattedNumber}${separator}text=${encodeURIComponent(message)}`;
+}
+
+// WhatsApp message templates
+function getOrderMessage(name, sku, price, url) {
+    return `🌟 Hello! I'm interested in ordering the following product:\n\n` +
+           `📦 *Product*: ${name}\n` +
+           `🔢 *SKU*: ${sku}\n` +
+           `💰 *Price*: Rs${price}\n` +
+           `🔗 *Details*: ${window.location.origin}${url}\n\n` +
+           `Please confirm availability and provide order details. Thank you! 😊`;
+}
+
+function getInquiryMessage(name, sku, url) {
+    return `🌟 Hello! I have a query about the following product:\n\n` +
+           `📦 *Product*: ${name}\n` +
+           `🔢 *SKU*: ${sku}\n` +
+           `🔗 *Details*: www.ggt.com.pk${url}\n\n` +
+           `Could you please provide the price and ordering details? Thank you! 😊`;
+}
+
+// Handle WhatsApp button clicks
+$(document).ready(function() {
+    // Log to verify script execution
+    console.log('Document ready. Attaching WhatsApp button event listeners.');
+    console.log('Using WhatsApp number:', WHATSAPP_NUMBER);
+
+    // Order button (with price)
+    $('.order-whatsapp-btn').on('click', function(e) {
+        e.preventDefault();
+        console.log('Order WhatsApp button clicked.');
+        const name = $(this).data('name');
+        const sku = $(this).data('sku');
+        const price = $(this).data('price');
+        const url = $(this).data('url');
+        const message = getOrderMessage(name, sku, price, url);
+        const whatsappUrl = getWhatsAppUrl(WHATSAPP_NUMBER, message);
+        console.log('Opening WhatsApp URL:', whatsappUrl);
+        try {
+            window.open(whatsappUrl, '_blank');
+        } catch (error) {
+            console.error('Failed to open WhatsApp URL:', error);
+            alert('Unable to open WhatsApp. Please check your connection or try again.');
+        }
+    });
+
+    // Inquiry button (without price)
+    $('.inquiry-whatsapp-btn').on('click', function(e) {
+        e.preventDefault();
+        console.log('Inquiry WhatsApp button clicked.');
+        const name = $(this).data('name');
+        const sku = $(this).data('sku');
+        const url = $(this).data('url');
+        const message = getInquiryMessage(name, sku, url);
+        const whatsappUrl = getWhatsAppUrl(WHATSAPP_NUMBER, message);
+        console.log('Opening WhatsApp URL:', whatsappUrl);
+        try {
+            window.open(whatsappUrl, '_blank');
+        } catch (error) {
+            console.error('Failed to open WhatsApp URL:', error);
+            alert('Unable to open WhatsApp. Please check your connection or try again.');
+        }
+    });
+
+
+    // Quick View
+    $('.quick-view').on('click', function(e) {
+        e.preventDefault();
+        console.log('Quick View button clicked.');
+        var url = $(this).attr('href');
+        $.ajax({
+            url: url,
+            method: 'GET',
+            success: function(data) {
+                $('#content_quickview .modal-body').html(data);
+                $('#content_quickview').modal('show');
+            },
+            error: function(xhr, status, error) {
+                console.error('Error loading Quick View:', error);
+                $('#content_quickview .modal-body').html('<p>Error loading product details.</p>');
+                $('#content_quickview').modal('show');
+            }
+        });
+    });
+
+    $('#content_quickview').on('click', '.model-close-btn', function() {
+        $('#content_quickview').modal('hide');
+    });
+
+    // Intersection Observer for category cards
+    const observerCards = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        },
+        { threshold: 0.1 }
+    );
+
+    document.querySelectorAll('.category-card').forEach((card) => {
+        observerCards.observe(card);
+    });
+
+    // Intersection Observer for headings
+    const observerHeadings = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('underline-visible');
+                } else {
+                    entry.target.classList.remove('underline-visible');
+                }
+            });
+        },
+        { threshold: 0.8, rootMargin: '-50px 0px' }
+    );
+
+    document.querySelectorAll('.main-heading').forEach((heading) => {
+        observerHeadings.observe(heading);
+    });
+
+    // Popup handling
+    jQuery('.closepopup').on('click', function() {
+        jQuery('#popup-container').fadeOut();
+        jQuery('#modalOverly').fadeOut();
+    });
+
+    var visits = jQuery.cookie('visits') || 0;
+    visits++;
+    jQuery.cookie('visits', visits, { expires: 1, path: '/' });
+    if (jQuery.cookie('visits') > 1) {
+        jQuery('#modalOverly').hide();
+        jQuery('#popup-container').hide();
+    } else {
+        var pageHeight = jQuery(document).height();
+        jQuery('<div id="modalOverly"></div>').insertBefore('body');
+        jQuery('#modalOverly').css("height", pageHeight);
+        jQuery('#popup-container').show();
+    }
+    if (jQuery.cookie('noShowWelcome')) {
+        jQuery('#popup-container').hide();
+        jQuery('#active-popup').hide();
+    }
+
+    jQuery(document).mouseup(function(e) {
+        var container = jQuery('#popup-container');
+        if (!container.is(e.target) && container.has(e.target).length === 0) {
+            container.fadeOut();
+            jQuery('#modalOverly').fadeIn(200);
+            jQuery('#modalOverly').hide();
+        }
+    });
+});
+</script>
+{% endblock %}

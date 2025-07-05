@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Your Order</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #trackingContainer {
+            max-width: 700px;
+            width: 90%;
+            background: white;
+            padding: 30px;
+            margin: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: black;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        .tracking-id {
+            text-align: center;
+            font-size: 1.5em;
+            color: #333;
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .tips {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .anchor-button {
+            display: block;
+            padding: 15px;
+            background-color: black;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+
+        .anchor-button:hover {
+            background-color: rgb(43, 43, 43);
+        }
+
+        .contact-info {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="trackingContainer">
+        <h2>Track Your Order</h2>
+
+        <div class="tracking-id">
+            <p>Your Tracking ID: <strong>{{ booking.tracking_id }}</strong></p>
+        </div>
+
+        <div class="tracking-display">
+            <p>Your order is currently being processed.</p>
+        </div>
+
+        <div class="tips">
+            <p><strong>Need Assistance?</strong></p>
+            <p>If you have any questions or concerns regarding your order or want to cancel your order, please contact us at:</p>
+
+            <div class="contact-info">
+                <p><strong>Phone:</strong> +92 123 456 7890</p>
+            </div>
+            <p>We are here to help you!</p>
+            <p><strong>Cancellation Policy:</strong></p>
+            <p>You can cancel your order within 24 hours of placing it.</p>
+        </div>
+
+        <a href="#" class="anchor-button">Track Your Order</a>
+    </div>
+
+    <script>
+        // Redirect to /home when trying to reload the page
+     
+    </script>
+</body>
+</html>

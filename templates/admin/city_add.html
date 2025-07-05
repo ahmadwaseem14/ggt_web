@@ -1,0 +1,129 @@
+{% extends "sidebar.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4>Add City</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <!-- City Name -->
+                        <div class="form-group">
+                            {{ form.name.label_tag }}
+                            {{ form.name }}
+                            {% if form.name.errors %}
+                                <div class="text-danger small">{{ form.name.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Booking Open (Checkbox) -->
+                        <div class="form-group form-check">
+                            {{ form.booking_open }}
+                            <label class="form-check-label" for="{{ form.booking_open.id_for_label }}">
+                                {{ form.booking_open.label }}
+                            </label>
+                            {% if form.booking_open.errors %}
+                                <div class="text-danger small">{{ form.booking_open.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="row mb-3">
+                            <!-- Save Button (Left) -->
+                            <div class="col-6">
+                                <button type="submit" name="save" class="btn btn-success btn-block">
+                                    <i class="fas fa-save"></i> Save City
+                                </button>
+                            </div>
+                            <!-- Save and Add New Button (Right) -->
+                            <div class="col-6">
+                                <button type="submit" name="save_and_add" class="btn btn-primary btn-block">
+                                    <i class="fas fa-plus-circle"></i> Save and Add New
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Back to City List Button (Full Width) -->
+                        <div class="mb-3">
+                            <a href="{% url 'city_list' %}">
+                                <button type="button" class="btn btn-secondary btn-block">
+                                    <i class="fas fa-arrow-left"></i> Back to City List
+                                </button>
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<style>
+    .home-content {
+        align-items: normal;
+    }
+    a {
+        color: white;
+    }
+    a:hover {
+        color: rgb(255, 255, 255);
+        text-decoration: none;
+    }
+    .form-group label {
+        font-weight: 600;
+    }
+    .container {
+        margin-top: 50px;
+    }
+    .btn-block {
+        width: 100%;
+        padding: 15px;
+        font-size: 1rem;
+    }
+    .row > .col-6 {
+        margin-bottom: 10px;
+    }
+
+    /* Styling for the checkbox */
+    .form-check {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .form-check-label {
+        margin-bottom: 0;
+        font-weight: normal;
+    }
+
+    @media (max-width: 576px) {
+        .btn-block {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 0.85rem;
+        }
+        .card-body {
+            padding: 15px;
+        }
+    }
+    @media (max-width: 400px) {
+        .btn-block {
+            font-size: 0.8rem;
+            padding: 8px;
+        }
+        .card-body {
+            padding: 10px;
+        }
+    }
+</style>
+{% endblock %}

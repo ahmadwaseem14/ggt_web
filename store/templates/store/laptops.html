@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="heading-container mb-4">
+        <h2 class="main-heading">Laptops</h2>
+        <h3 class="text-muted">Browse our collection of laptops</h3>
+    </div>
+
+    <div class="row">
+        {% for laptop in laptops %}
+        <div class="col-md-3 mb-4">
+            <div class="card h-100">
+                <!-- Primary Image -->
+                {% with primary_image=laptop.images.all|dictsort:"is_primary"|last %}
+                    {% if primary_image %}
+                        <img src="{{ primary_image.image.url }}" 
+                             class="card-img-top" 
+                             alt="{{ primary_image.alt_text }}"
+                             style="height: 200px; object-fit: contain;">
+                    {% else %}
+                        {% with first_image=laptop.images.first %}
+                            {% if first_image %}
+                                <img src="{{ first_image.image.url }}" 
+                                     class="card-img-top" 
+                                     alt="{{ first_image.alt_text }}"
+                                     style="height: 200px; object-fit: contain;">
+                            {% else %}
+                                <div class="no-image-placeholder" 
+                                     style="height: 200px; background-color: #f8f9fa; 
+                                            display: flex; align-items: center; justify-content: center;">
+                                    <span class="text-muted">No Image Available</span>
+                                </div>
+                            {% endif %}
+                        {% endwith %}
+                    {% endif %}
+                {% endwith %}
+
+                <div class="card-body">
+                    <h5 class="card-title">{{ laptop.name }}</h5>
+                    <p class="card-text">
+                        <small class="text-muted">{{ laptop.brand }}</small>
+                    </p>
+                    {% if laptop.price %}
+                        <p class="price">Rs. {{ laptop.price|floatformat:2 }}</p>
+                    {% else %}
+                        <p class="call-for-price">Call for Price</p>
+                    {% endif %}
+                    
+                    <!-- Condition Badge -->
+                    <div class="mb-2">
+                        {% if laptop.condition == 'new' %}
+                            <span class="badge bg-success">New</span>
+                        {% elif laptop.condition == 'used' %}
+                            <span class="badge bg-warning">Used</span>
+                        {% elif laptop.condition == 'refurbished' %}
+                            <span class="badge bg-info">Refurbished</span>
+                        {% elif laptop.condition == 'box_open' %}
+                            <span class="badge bg-secondary">Box Open</span>
+                        {% endif %}
+                        
+                        {% if laptop.top_pick %}
+                            <span class="badge bg-primary">Top Pick</span>
+                        {% endif %}
+                    </div>
+
+                    <a href="{% url 'laptop_detail' laptop.id %}" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <p class="text-center">No laptops available at the moment.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %} 

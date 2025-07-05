@@ -1,0 +1,135 @@
+{% extends "sidebar.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4>Edit Product</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="form-group">
+                            {{ form.title.label_tag }}
+                            {{ form.title }}
+                            {% if form.title.errors %}
+                                <div class="text-danger small">{{ form.title.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group">
+                            {{ form.price.label_tag }}
+                            {{ form.price }}
+                            {% if form.price.errors %}
+                                <div class="text-danger small">{{ form.price.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group">
+                            {{ form.original_price.label_tag }}
+                            {{ form.original_price }}
+                            {% if form.original_price.errors %}
+                                <div class="text-danger small">{{ form.original_price.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group">
+                            {{ form.image.label_tag }}
+                            {{ form.image }}
+                            {% if form.image.errors %}
+                                <div class="text-danger small">{{ form.image.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group">
+                            {{ form.tag.label_tag }}
+                            {{ form.tag }}
+                            {% if form.tag.errors %}
+                                <div class="text-danger small">{{ form.tag.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="row mb-3">
+                            <!-- Save Product Button (Left) -->
+                            <div class="col-6">
+                                <button type="submit" name="save" class="btn btn-success btn-block">
+                                    <i class="fas fa-save"></i> Save Product
+                                </button>
+                            </div>
+                            <!-- Back to Products Button (Full Width) -->
+                            <div class="col-6">
+                                <a href="{% url 'product_lists' %}" class="btn btn-secondary btn-block">
+                                    <i class="fas fa-arrow-left"></i> Back to Products
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<style>
+     .home-content {
+        align-items: normal;}
+    a{
+        color: white;
+    }
+    a:hover{
+        color: rgb(255, 255, 255);
+        text-decoration: none;
+    }
+    .form-group label {
+        font-weight: 600;
+    }
+
+    .container {
+        margin-top: 50px;
+    }
+
+    .btn-block {
+        width: 100%;
+        padding: 15px; /* Default padding */
+        font-size: 1rem; /* Default font size */
+    }
+
+    /* Ensure buttons in a row are equal size on small screens */
+    .row > .col-6 {
+        margin-bottom: 10px;
+    }
+
+    @media (max-width: 576px) {
+        .btn-block {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px; /* Smaller padding for small screens */
+            font-size: 0.85rem; /* Smaller font size */
+        }
+
+        .card-body {
+            padding: 15px; /* Reduce padding in card for small screens */
+        }
+    }
+
+    @media (max-width: 400px) {
+        .btn-block {
+            font-size: 0.8rem; /* Even smaller font size for very small screens */
+            padding: 8px; /* Further reduce padding */
+        }
+
+        .card-body {
+            padding: 10px; /* Further reduce padding in card */
+        }
+    }
+</style>
+{% endblock %}

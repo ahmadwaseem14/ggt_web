@@ -1,0 +1,34 @@
+{% for button in buttons %}
+    <div class="button-option">
+        <div class="button-radio">
+            <input type="radio" id="button_{{ button.sku }}" name="button_sku" value="{{ button.sku }}" required>
+            <label for="button_{{ button.sku }}">
+                <img src="{{ button.image.url }}" alt="{{ button.name }}">
+            </label>
+        </div>
+        <div class="button-details">
+            <div class="button-info">
+                <p>{{ button.name }}</p>
+                <p>Rs.{{ button.price }}</p>
+            </div>
+        </div>
+        <button type="button" class="view-details-btn" onclick="openModal('{{ button.sku }}')">View Details</button>
+    </div>
+
+    <!-- Modal for each button -->
+    <div id="modal_{{ button.sku }}" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('{{ button.sku }}')">&times;</span>
+            <h3>{{ button.name }} Details</h3>
+            <p>Price: Rs.{{ button.price }}</p>
+            <p>Description: {{ button.description }}</p>
+            {% if button.video %}
+                <p>Video:</p>
+                <video controls width="100%">
+                    <source src="{{ button.video.url }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            {% endif %}
+        </div>
+    </div>
+{% endfor %}

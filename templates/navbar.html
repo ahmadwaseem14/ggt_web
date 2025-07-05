@@ -1,0 +1,548 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="pageWrapper" style="background-color: #121212;">
+	<!--Search Form Drawer-->
+	<div class="search">
+        <div class="search__form">
+            <div class="search-header">
+                <h3>Search Products</h3>
+                <button type="button" class="search-trigger close-btn"><i class="anm anm-times-l"></i></button>
+            </div>
+            <form class="search-bar__form" action="{% url 'all_products' %}" method="GET">
+                <div class="search-input-wrapper">
+                    <div class="search-input-container">
+                        <div class="search-input-group">
+                            <i class="icon anm anm-search-l search-icon"></i>
+                            <input class="search__input" type="search" name="q" value="{{ request.GET.q }}" 
+                                   placeholder="What are you looking for?" aria-label="Search" autocomplete="off">
+                        </div>
+                        <div class="search-divider"></div>
+                        <div class="search-category-dropdown">
+                            <select name="category" class="search-category-select">
+                                <option value="">All Categories</option>
+                                <option value="GPU">Graphics Cards</option>
+                                <option value="CPU">Processors</option>
+                                <option value="RAM">Memory</option>
+                                <option value="MOTHERBOARD">Motherboards</option>
+                                <option value="CASE">Cases</option>
+                                <option value="STORAGE">Storage</option>
+                                <option value="PSU">Power Supplies</option>
+                                <option value="MONITOR">Monitors</option>
+                                <option value="TABLET">Tablets</option>
+                                <option value="LAPTOP">Laptops</option>
+                            </select>
+                            <i class="icon anm anm-angle-down-l dropdown-icon"></i>
+                        </div>
+                        <button class="search__button" type="submit">Search</button>
+                    </div>
+                </div>
+                <div class="search-suggestions">
+                    <h4>Popular Categories</h4>
+                    <div class="category-buttons">
+                        <a href="{% url 'product_list' 'GPU' %}" class="category-btn">
+                            <i class="icon anm anm-desktop-l"></i> Graphics Cards
+                        </a>
+                        <a href="{% url 'product_list' 'CPU' %}" class="category-btn">
+                            <i class="icon anm anm-microchip-l"></i> Processors
+                        </a>
+                        
+                        <a href="{% url 'product_list' 'LAPTOP' %}" class="category-btn">
+                            <i class="icon anm anm-laptop-l"></i> Laptops
+                        </a>
+                        <a href="{% url 'product_list' 'TABLET' %}" class="category-btn">
+                            <i class="icon anm anm-tablet-l"></i> Tablets
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--End Search Form Drawer-->
+    <!--Top Header-->
+    <div class="top-header">
+        <div class="container-fluid">
+            <div class="row">
+            	<div class="col-10 col-sm-8 col-md-5 col-lg-4">
+                   
+                   
+                    <p class="phone-no"><i class="anm anm-phone-s"></i> (042) 35784635 </p>
+                </div>
+                <div class="col-sm-4 col-md-4 col-lg-4 d-none d-lg-none d-md-block d-lg-block">
+                	<div class="text-center"><p class="top-header_middle-text">Best Deals on PCs, Laptops & More!</p></div>
+                </div>
+                <div class="col-2 col-sm-4 col-md-3 col-lg-4 text-right">
+                	<span class="user-menu d-block d-lg-none"><i class="anm anm-user-al" aria-hidden="true"></i></span>
+                    <ul class="customer-links list-inline">
+                        <li><a href="{% url 'comparison_view' %}">Comparison</a></li> 
+                     
+                        <li><a href="{% url 'wishlist_view' %}">Wishlist</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End Top Header-->
+    <!--Header-->
+    <div class="header-wrap classicHeader animated d-flex">
+    	<div class="container-fluid">        
+            <div class="row align-items-center">
+            	<!--Desktop Logo-->
+                <div class="logo col-md-2 col-lg-2 d-none d-lg-block">
+                    <a href="{% url 'home' %}">
+                    	<img class="logo-img1" src="{% static 'assets/images/logo.svg' %}" alt="GGT" title="GGT" />
+                    </a>
+                </div>
+                <!--End Desktop Logo-->
+                <div class="col-3 col-sm-3 col-md-3 col-lg-8">
+                	<div class="d-block d-lg-none">
+                        <button type="button" class="btn--link site-header__menu js-mobile-nav-toggle mobile-nav--open">
+                        	<i class="icon anm anm-times-l"></i>
+                            <i class="anm anm-bars-r"></i>
+                        </button>
+                    </div>
+                	<!--Desktop Menu-->
+                	<nav class="grid__item" id="AccessibleNav">
+                        <ul id="siteNav" class="site-nav medium center hidearrow">
+                            
+                            <li class="lvl1 parent megamenu"><a href="#">Categories <i class="anm anm-angle-down-l"></i></a>
+                              <div class="megamenu style4">
+                                  <ul class="grid grid--uniform mmWrapper">
+                                      <li class="grid__item lvl-1 col-md-3 col-lg-3"><a href="#" class="site-nav lvl-1">Portable Devices</a>
+                                          <ul class="subLinks">
+                                              <li class="lvl-2"><a href="{% url 'product_list' 'LAPTOP' %}" class="site-nav lvl-2">Laptops</a></li>
+                                              <li class="lvl-2"><a href="{% url 'product_list' 'TABLET' %}" class="site-nav lvl-2">Tablets</a></li>
+                                          </ul>
+                                      </li>
+                                      <li class="grid__item lvl-1 col-md-3 col-lg-3"><a href="#" class="site-nav lvl-1">Components</a>
+                                          <ul class="subLinks">
+                                              <li class="lvl-2"><a href="{% url 'product_list' 'CPU' %}" class="site-nav lvl-2">Processors</a></li>
+                                              <li class="lvl-2"><a href="{% url 'product_list' 'GPU' %}" class="site-nav lvl-2">Graphics Cards</a></li>
+                                              <li class="lvl-2"><a href="{% url 'product_list' 'RAM' %}" class="site-nav lvl-2">RAM Memory</a></li>
+                                              <li class="lvl-2"><a href="{% url 'product_list' 'MOTHERBOARD' %}" class="site-nav lvl-2">Motherboards</a></li>
+                                          </ul>
+                                      </li>
+                                      <li class="grid__item lvl-1 col-md-3 col-lg-3"><a href="#" class="site-nav lvl-1">Storage & Power</a>
+                                          <ul class="subLinks">
+                                              <li class="lvl-2"><a href="{% url 'product_list' 'STORAGE' %}" class="site-nav lvl-2">Storage</a></li>
+                                              <li class="lvl-2"><a href="{% url 'product_list' 'PSU' %}" class="site-nav lvl-2">Power Supplies</a></li>
+                                              <li class="lvl-2"><a href="{% url 'product_list' 'CASE' %}" class="site-nav lvl-2">PC Cases</a></li>
+                                          </ul>
+                                      </li>
+                                      <li class="grid__item lvl-1 col-md-3 col-lg-3"><a href="#" class="site-nav lvl-1">Peripherals</a>
+                                          <ul class="subLinks">
+                                              <li class="lvl-2"><a href="{% url 'product_list' 'MONITOR' %}" class="site-nav lvl-2">Monitors</a></li>
+                                              <li class="lvl-2"><a href="{% url 'product_list' 'KEYBOARD' %}" class="site-nav lvl-2">Keyboards</a></li>
+                                              <li class="lvl-2"><a href="{% url 'product_list' 'MOUSE' %}" class="site-nav lvl-2">Mice</a></li>
+                                              <li class="lvl-2"><a href="{% url 'product_list' 'HEADSET' %}" class="site-nav lvl-2">Headsets</a></li>
+                                          </ul>
+                                      </li>
+                                  </ul>
+                              </div>
+                          </li>
+                            <!-- Laptops Dropdown -->
+                            <li class="lvl1 parent megamenu"><a href="{% url 'product_list' 'LAPTOP' %}">Laptops <i class="anm anm-angle-down-l"></i></a>
+                                <div class="megamenu style4">
+                                    <ul class="grid grid--uniform mmWrapper">
+                                        <li class="grid__item lvl-1 col-md-3 col-lg-3"><a href="#" class="site-nav lvl-1">By Brand</a>
+                                                    <ul class="subLinks">
+                                                <li class="lvl-2"><a href="/products/laptop?brand=apple" class="site-nav lvl-2">Apple MacBook</a></li>
+                                                <li class="lvl-2"><a href="/products/laptop?brand=dell" class="site-nav lvl-2">Dell</a></li>
+                                                <li class="lvl-2"><a href="/products/laptop?brand=hp" class="site-nav lvl-2">HP</a></li>
+                                                <li class="lvl-2"><a href="/products/laptop?brand=lenovo" class="site-nav lvl-2">Lenovo</a></li>
+                                                <li class="lvl-2"><a href="/products/laptop?brand=asus" class="site-nav lvl-2">Asus</a></li>
+                                                <li class="lvl-2"><a href="/products/laptop?brand=acer" class="site-nav lvl-2">Acer</a></li>
+                                                    </ul>
+                                                  </li>
+                                        <li class="grid__item lvl-1 col-md-3 col-lg-3"><a href="#" class="site-nav lvl-1">By Condition</a>
+                                                    <ul class="subLinks">
+                                                <li class="lvl-2"><a href="/products/laptop?condition=new" class="site-nav lvl-2">New</a></li>
+                                                <li class="lvl-2"><a href="/products/laptop?condition=refurbished" class="site-nav lvl-2">Refurbished</a></li>
+                                                <li class="lvl-2"><a href="/products/laptop?condition=used" class="site-nav lvl-2">Used</a></li>
+                                                    </ul>
+                                                </li>
+                                        <li class="grid__item lvl-1 col-md-6 col-lg-6">
+                                            <div class="menu-banner">
+                                                <a href="{% url 'product_list' 'LAPTOP' %}" class="menu-banner-link">
+                                                    <img src="{% static 'assets/images/LAPTOP.jpg' %}" alt="Laptops" class="menu-banner-img">
+                                                </a>
+                                </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <!-- PC Components Dropdown -->
+                           
+
+                            <!-- Tablets Dropdown -->
+                            <li class="lvl1 parent megamenu"><a href="{% url 'product_list' 'TABLET' %}">Tablets <i class="anm anm-angle-down-l"></i></a>
+                            	<div class="megamenu style4">
+                                    <ul class="grid grid--uniform mmWrapper">
+                                        <li class="grid__item lvl-1 col-md-3 col-lg-3"><a href="#" class="site-nav lvl-1">By Brand</a>
+                                            <ul class="subLinks">
+                                                <li class="lvl-2"><a href="/products/tablet?brand=apple" class="site-nav lvl-2">iPad</a></li>
+                                                <li class="lvl-2"><a href="/products/tablet?brand=samsung" class="site-nav lvl-2">Samsung Tablets</a></li>
+                                                <li class="lvl-2"><a href="/products/tablet?brand=microsoft" class="site-nav lvl-2">Microsoft Surface</a></li>
+                                                <li class="lvl-2"><a href="/products/tablet?brand=lenovo" class="site-nav lvl-2">Lenovo Tablets</a></li>
+                                            </ul>
+                                      	</li>
+                                        <li class="grid__item lvl-1 col-md-3 col-lg-3"><a href="#" class="site-nav lvl-1">By Condition</a>
+                                            <ul class="subLinks">
+                                                <li class="lvl-2"><a href="/products/tablet?condition=new" class="site-nav lvl-2">New</a></li>
+                                                <li class="lvl-2"><a href="/products/tablet?condition=refurbished" class="site-nav lvl-2">Refurbished</a></li>
+                                                <li class="lvl-2"><a href="/products/tablet?condition=used" class="site-nav lvl-2">Used</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="grid__item lvl-1 col-md-6 col-lg-6">
+                                            <div class="menu-banner">
+                                                <a href="{% url 'product_list' 'TABLET' %}" class="menu-banner-link">
+                                                    <img src="{% static 'assets/images/tab.jpg' %}" alt="Tablets" class="menu-banner-img">
+                                                </a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                              	</div>
+                            </li>
+                            <li class="lvl1 parent megamenu"><a href="#">PC Components <i class="anm anm-angle-down-l"></i></a>
+                              <div class="megamenu style4">
+                                  <ul class="grid grid--uniform mmWrapper">
+                                      <li class="grid__item lvl-1 col-md-3 col-lg-3"><a href="#" class="site-nav lvl-1">Processing & Memory</a>
+                                          <ul class="subLinks">
+                                              <li class="lvl-2"><a href="/products/cpu?condition=new" class="site-nav lvl-2">Processors (CPU)</a></li>
+                                              <li class="lvl-2"><a href="/products/gpu?condition=new" class="site-nav lvl-2">Graphics Cards</a></li>
+                                              <li class="lvl-2"><a href="/products/ram?condition=new" class="site-nav lvl-2">RAM Memory</a></li>
+                                              <li class="lvl-2"><a href="/products/motherboard?condition=new" class="site-nav lvl-2">Motherboards</a></li>
+                                          </ul>
+                                      </li>
+                                      <li class="grid__item lvl-1 col-md-3 col-lg-3"><a href="#" class="site-nav lvl-1">Storage & Power</a>
+                                          <ul class="subLinks">
+                                              <li class="lvl-2"><a href="/products/storage?storage_type=SSD" class="site-nav lvl-2">SSD</a></li>
+                                              <li class="lvl-2"><a href="/products/storage?storage_type=HDD" class="site-nav lvl-2">Hard Drives</a></li>
+                                              <li class="lvl-2"><a href="/products/psu?condition=new" class="site-nav lvl-2">Power Supplies</a></li>
+                                              <li class="lvl-2"><a href="/products/case?condition=new" class="site-nav lvl-2">PC Cases</a></li>
+                                          </ul>
+                                      </li>
+                                      <li class="grid__item lvl-1 col-md-6 col-lg-6">
+                                          <div class="menu-banner">
+                                              <a href="#" class="menu-banner-link">
+                                                  <img src="{% static 'assets/images/pc.jpg' %}" alt="PC Components" class="menu-banner-img">
+                                              </a>
+                                          </div>
+                                      </li>
+                                  </ul>
+                              </div>
+                          </li>
+                            <!-- Peripherals -->
+                            <li class="lvl1 parent megamenu"><a href="#">Peripherals <i class="anm anm-angle-down-l"></i></a>
+                                <div class="megamenu style4">
+                                    <ul class="grid grid--uniform mmWrapper">
+                                        <li class="grid__item lvl-1 col-md-3 col-lg-3"><a href="#" class="site-nav lvl-1">Input Devices</a>
+                                                <ul class="subLinks">
+                                                <li class="lvl-2"><a href="/products/keyboard?condition=new" class="site-nav lvl-2">Keyboards</a></li>
+                                                <li class="lvl-2"><a href="/products/mouse?condition=new" class="site-nav lvl-2">Mice</a></li>
+                                                <li class="lvl-2"><a href="/products/headset?condition=new" class="site-nav lvl-2">Headsets</a></li>
+                                                </ul>
+                                            </li>
+                                        <li class="grid__item lvl-1 col-md-3 col-lg-3"><a href="#" class="site-nav lvl-1">Display</a>
+                                                <ul class="subLinks">
+                                                <li class="lvl-2"><a href="/products/monitor" class="site-nav lvl-2">Monitors</a></li>
+                                                    </ul>
+                                                </li>
+                                        <li class="grid__item lvl-1 col-md-6 col-lg-6">
+                                            <div class="menu-banner">
+                                                <a href="#" class="menu-banner-link">
+                                                    <img src="{% static 'assets/images/per.webp' %}" alt="Peripherals" class="menu-banner-img">
+                                                </a>
+                                            </div>
+                                                </li>
+                                </ul>
+                          	</div>
+                            </li>
+
+                            <!-- Support & Services -->
+                            <li class="lvl1 parent dropdown"><a href="#">Explore Us<i class="anm anm-angle-down-l"></i></a>
+                                <ul class="dropdown">
+                                    <li><a href="{% url 'about_us' %}" class="site-nav">About Us</a></li>
+                                    <li><a href="{% url 'faq' %}" class="site-nav">FAQ</a></li>
+                                    <li><a href="{% url 'why_ggt' %}" class="site-nav">Why GGT</a></li>
+                              </ul>
+                            </li>
+
+                            <!-- All Categories -->
+                            
+                      </ul>
+                    </nav>
+                    <!--End Desktop Menu-->
+                </div>
+                <!--Mobile Logo-->
+                <div class="col-6 col-sm-6 col-md-6 col-lg-2 d-block d-lg-none mobile-logo">
+                	<div class="logo">
+                        <a href="index.html">
+                            <img src="{% static 'assets/images/logo1.svg' %}" alt="GGT" title="GGT" />
+                        </a>
+                    </div>
+                </div>
+                <!--Mobile Logo-->
+                <div class="col-3 col-sm-3 col-md-3 col-lg-2">
+                	
+                    <div class="site-header__search">
+                    	<button type="button" class="search-trigger"><i class="icon anm anm-search-l"></i></button>
+                    </div>
+                </div>
+        	</div>
+        </div>
+    </div>
+    <!--End Header-->
+    <!--Mobile Menu-->
+    <div class="mobile-nav-wrapper" role="navigation">
+		<div class="closemobileMenu"><i class="icon anm anm-times-l pull-right"></i> Close Menu</div>
+        <ul id="MobileNav" class="mobile-nav">
+            <li class="lvl1"><a href="{% url 'home' %}">Home</a></li>
+            <li class="lvl1 parent megamenu"><a href="#">Categories <i class="anm anm-plus-l"></i></a>
+              <ul>
+                  <li class="lvl2"><a href="#" class="site-nav">Portable Devices	<i class="anm anm-plus-l"></i></a>
+                      <ul>
+                          <li class="lvl3"><a href="{% url 'product_list' 'LAPTOP' %}" class="site-nav">Laptops</a></li>
+                          <li class="lvl3"><a href="{% url 'product_list' 'TABLET' %}" class="site-nav">Tablets</a></li>
+              </ul>
+            </li>
+                  <li class="lvl2"><a href="#" class="site-nav">Components <i class="anm anm-plus-l"></i></a>
+                      <ul>
+                          <li class="lvl3"><a href="{% url 'product_list' 'CPU' %}" class="site-nav">Processors</a></li>
+                          <li class="lvl3"><a href="{% url 'product_list' 'GPU' %}" class="site-nav">Graphics Cards</a></li>
+                          <li class="lvl3"><a href="{% url 'product_list' 'RAM' %}" class="site-nav">RAM Memory</a></li>
+                          <li class="lvl3"><a href="{% url 'product_list' 'MOTHERBOARD' %}" class="site-nav">Motherboards</a></li>
+              </ul>
+            </li>
+                  <li class="lvl2"><a href="#" class="site-nav">Storage & Power <i class="anm anm-plus-l"></i></a>
+                      <ul>
+                          <li class="lvl3"><a href="{% url 'product_list' 'STORAGE' %}" class="site-nav">Storage</a></li>
+                          <li class="lvl3"><a href="{% url 'product_list' 'PSU' %}" class="site-nav">Power Supplies</a></li>
+                          <li class="lvl3"><a href="{% url 'product_list' 'CASE' %}" class="site-nav">PC Cases</a></li>
+              </ul>
+            </li>
+                  <li class="lvl2"><a href="#" class="site-nav">Peripherals <i class="anm anm-plus-l"></i></a>
+                      <ul>
+                          <li class="lvl3"><a href="{% url 'product_list' 'MONITOR' %}" class="site-nav">Monitors</a></li>
+                          <li class="lvl3"><a href="{% url 'product_list' 'KEYBOARD' %}" class="site-nav">Keyboards</a></li>
+                          <li class="lvl3"><a href="{% url 'product_list' 'MOUSE' %}" class="site-nav">Mice</a></li>
+                          <li class="lvl3"><a href="{% url 'product_list' 'HEADSET' %}" class="site-nav">Headsets</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+            <!-- Laptops Mobile Menu -->
+            <li class="lvl1 parent megamenu"><a href="{% url 'product_list' 'LAPTOP' %}">Laptops <i class="anm anm-plus-l"></i></a>
+                <ul>
+                    <li class="lvl2"><a href="" class="site-nav">By Brand <i class="anm anm-plus-l"></i></a>
+                        <ul>
+                            <li class="lvl3"><a href="/products/laptop?brand=apple" class="site-nav">Apple MacBook</a></li>
+                            <li class="lvl3"><a href="/products/laptop?brand=dell" class="site-nav">Dell</a></li>
+                            <li class="lvl3"><a href="/products/laptop?brand=hp" class="site-nav">HP</a></li>
+                            <li class="lvl3"><a href="/products/laptop?brand=lenovo" class="site-nav">Lenovo</a></li>
+                            <li class="lvl3"><a href="/products/laptop?brand=asus" class="site-nav">Asus</a></li>
+                            <li class="lvl3"><a href="/products/laptop?brand=acer" class="site-nav">Acer</a></li>
+              </ul>
+            </li>
+                    <li class="lvl2"><a href="" class="site-nav">By Condition <i class="anm anm-plus-l"></i></a>
+                        <ul>
+                            <li class="lvl3"><a href="/products/laptop?condition=new" class="site-nav">New</a></li>
+                            <li class="lvl3"><a href="/products/laptop?condition=refurbished" class="site-nav">Refurbished</a></li>
+                            <li class="lvl3"><a href="/products/laptop?condition=used" class="site-nav">Used</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+
+            <!-- PC Components Mobile Menu -->
+            <li class="lvl1 parent megamenu"><a href="#">PC Components <i class="anm anm-plus-l"></i></a>
+                <ul>
+                    <li class="lvl2"><a href="#" class="site-nav">Processing & Memory <i class="anm anm-plus-l"></i></a>
+                        <ul>
+                            <li class="lvl3"><a href="/products/cpu?condition=new" class="site-nav">Processors (CPU)</a></li>
+                            <li class="lvl3"><a href="/products/gpu?condition=new" class="site-nav">Graphics Cards</a></li>
+                            <li class="lvl3"><a href="/products/ram?condition=new" class="site-nav">RAM Memory</a></li>
+                            <li class="lvl3"><a href="/products/motherboard?condition=new" class="site-nav">Motherboards</a></li>
+              </ul>
+            </li>
+                    <li class="lvl2"><a href="#" class="site-nav">Storage & Power <i class="anm anm-plus-l"></i></a>
+                        <ul>
+                            <li class="lvl3"><a href="/products/storage?storage_type=SSD" class="site-nav">SSD</a></li>
+                            <li class="lvl3"><a href="/products/storage?storage_type=HDD" class="site-nav">Hard Drives</a></li>
+                            <li class="lvl3"><a href="/products/psu?condition=new" class="site-nav">Power Supplies</a></li>
+                            <li class="lvl3"><a href="/products/case?condition=new" class="site-nav">PC Cases</a></li>
+                        </ul>
+                    </li>
+              </ul>
+            </li>
+
+            <!-- Tablets Mobile Menu -->
+            <li class="lvl1 parent megamenu"><a href="{% url 'product_list' 'TABLET' %}">Tablets <i class="anm anm-plus-l"></i></a>
+                <ul>
+                    <li class="lvl2"><a href="" class="site-nav">By Brand <i class="anm anm-plus-l"></i></a>
+                        <ul>
+                            <li class="lvl3"><a href="/products/tablet?brand=apple" class="site-nav">iPad</a></li>
+                            <li class="lvl3"><a href="/products/tablet?brand=samsung" class="site-nav">Samsung Tablets</a></li>
+                            <li class="lvl3"><a href="/products/tablet?brand=microsoft" class="site-nav">Microsoft Surface</a></li>
+                            <li class="lvl3"><a href="/products/tablet?brand=lenovo" class="site-nav">Lenovo Tablets</a></li>
+              </ul>
+            </li>
+                    <li class="lvl2"><a href="" class="site-nav">By Condition <i class="anm anm-plus-l"></i></a>
+                        <ul>
+                            <li class="lvl3"><a href="/products/tablet?condition=new" class="site-nav">New</a></li>
+                            <li class="lvl3"><a href="/products/tablet?condition=refurbished" class="site-nav">Refurbished</a></li>
+                            <li class="lvl3"><a href="/products/tablet?condition=used" class="site-nav">Used</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+
+            <!-- Peripherals Mobile Menu -->
+            <li class="lvl1 parent megamenu"><a href="#">Peripherals <i class="anm anm-plus-l"></i></a>
+                <ul>
+                    <li class="lvl2"><a href="#" class="site-nav">Input Devices <i class="anm anm-plus-l"></i></a>
+                        <ul>
+                            <li class="lvl3"><a href="/products/keyboard?condition=new" class="site-nav">Keyboards</a></li>
+                            <li class="lvl3"><a href="/products/mouse?condition=new" class="site-nav">Mice</a></li>
+                            <li class="lvl3"><a href="/products/headset?condition=new" class="site-nav">Headsets</a></li>
+                 </ul>
+            </li>
+                    <li class="lvl2"><a href="#" class="site-nav">Display <i class="anm anm-plus-l"></i></a>
+                        <ul>
+                            <li class="lvl3"><a href="/products/monitor" class="site-nav">Monitors</a></li>
+                 </ul>
+            </li>
+              </ul>
+            </li>
+
+            <!-- Explore Us Mobile Menu -->
+            <li class="lvl1 parent dropdown"><a href="#">Explore Us <i class="anm anm-plus-l"></i></a>
+                <ul>
+                    <li class="lvl2"><a href="{% url 'about_us' %}" class="site-nav">About Us</a></li>
+                    <li class="lvl2"><a href="{% url 'faq' %}" class="site-nav">FAQ</a></li>
+                    <li class="lvl2"><a href="{% url 'why_ggt' %}" class="site-nav">Why GGT</a></li>
+          </ul>
+        </li>
+
+            <!-- Additional Mobile Menu Items -->
+          
+            <li class="lvl1"><a href="{% url 'contact' %}">Contact Us</a></li>
+
+            <!-- All Categories Mobile Menu -->
+            
+      </ul>
+	</div>
+	<!--End Mobile Menu-->
+    <script>
+  //       var selectors = {
+  //     	body: 'body',
+  //     	sitenav: '#siteNav',
+  //     	navLinks: '#siteNav .lvl1 > a',
+  //     	menuToggle: '.js-mobile-nav-toggle',
+  //     	mobilenav: '.mobile-nav-wrapper',
+  //     	menuLinks: '#MobileNav .anm',
+  //     	closemenu: '.closemobileMenu'
+	// };
+     
+  // 	$(selectors.navLinks).each(function(){
+  //       if($(this).attr('href') == window.location.pathname) $(this).addClass('active');
+  //   })
+	
+  // 	$(selectors.menuToggle).on("click",function(){
+  //     body: 'body',
+  //     $(selectors.mobilenav).toggleClass("active");
+  //     $(selectors.body).toggleClass("menuOn");
+  //     $(selectors.menuToggle).toggleClass('mobile-nav--open mobile-nav--close');
+  //   });
+  
+  //   $(selectors.closemenu).on("click",function(){
+  //     body: 'body',
+  //     $(selectors.mobilenav).toggleClass("active");
+  //     $(selectors.body).toggleClass("menuOn");
+  //     $(selectors.menuToggle).toggleClass('mobile-nav--open mobile-nav--close');
+  //   });
+  //   $("body").on('click', function (event) {
+  //     var $target = $(event.target);
+  //     if(!$target.parents().is(selectors.mobilenav) && !$target.parents().is(selectors.menuToggle) && !$target.is(selectors.menuToggle)){
+  //         $(selectors.mobilenav).removeClass("active");
+  //         $(selectors.body).removeClass("menuOn");
+  //         $(selectors.menuToggle).removeClass('mobile-nav--close').addClass('mobile-nav--open');
+  //     }
+  //   });
+	// $(selectors.menuLinks).on('click', function(e) {
+	// 	e.preventDefault();
+	// 	$(this).toggleClass('anm-plus-l anm-minus-l');
+	// 	$(this).parent().next().slideToggle();
+  //   });
+	
+	
+    </script>
+
+    <!-- Add this CSS in the style section or where your other styles are -->
+    <style>
+      .logo-img1{
+        width: 3.4rem;
+      }
+        .logo img {
+            filter: brightness(0) invert(1); /* Makes logo white by default */
+            transition: filter 0.3s ease;
+            width: 3.4rem;
+        }
+
+        .header-wrap.is-sticky .logo img {
+            filter: none; /* Shows original logo color when header is sticky */
+        }
+    @media (max-width: 978px) {
+      .top-header_middle-text{
+        display: none;
+      }
+        
+    }
+    </style>
+
+    <!-- Add this JavaScript at the bottom of your file, before the closing </body> tag -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const header = document.querySelector('.header-wrap');
+            const logo = document.querySelector('.logo img');
+            
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 100) { // Change color after scrolling 100px
+                    header.classList.add('is-sticky');
+                } else {
+                    header.classList.remove('is-sticky');
+                }
+            });
+        });
+    </script>
+
+    <!-- Add this CSS in the style section -->
+    <style>
+        .search-trigger .anm-search-l:before {
+            color: white; /* Default color */
+            transition: color 0.3s ease;
+        }
+
+        .header-wrap.is-sticky .search-trigger .anm-search-l:before {
+            color: black; /* Color when scrolled */
+        }
+    </style>
+
+    <!-- Add this JavaScript at the bottom of your file -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const header = document.querySelector('.header-wrap');
+        
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 100) { // Change color after scrolling 100px
+                header.classList.add('is-sticky');
+            } else {
+                header.classList.remove('is-sticky');
+            }
+        });
+    });
+    </script>
+
+{% endblock %}

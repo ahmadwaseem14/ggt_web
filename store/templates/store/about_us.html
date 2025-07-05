@@ -1,0 +1,372 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About GGT | Lahore's Source for PC Hardware, Laptops & Best Deals{% endblock %}
+
+{% block style %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+<style>
+    :root {
+        --ggt-bg-dark-primary: #0f0f0f;
+        --ggt-bg-dark-secondary: #1a1a1a;
+        --ggt-bg-dark-tertiary: #242424;
+        --ggt-text-light-primary: #eaeaea;
+        --ggt-text-light-secondary: #b0b0b0;
+        --ggt-text-white: #ffffff;
+        --ggt-accent-primary: #00bfff; /* Deep Sky Blue */
+        --ggt-accent-primary-rgb: 0, 191, 255;
+        --ggt-accent-secondary: #4dd0e1; /* Lighter Cyan */
+        --ggt-border-color: #3a3a3a;
+        --ggt-border-color-subtle: #2c2c2c;
+
+        --ggt-font-primary: 'Source Sans Pro', sans-serif;
+        --ggt-font-headings: 'Poppins', sans-serif;
+
+        --ggt-shadow-sm: 0 3px 8px rgba(0, 0, 0, 0.4);
+        --ggt-shadow-md: 0 6px 20px rgba(0, 0, 0, 0.5);
+        --ggt-shadow-lg: 0 10px 35px rgba(0, 0, 0, 0.6);
+
+        --ggt-transition-speed: 0.4s;
+        --ggt-transition-timing: ease-in-out;
+    }
+
+    /* Apply base styles only within the scope of this page if necessary, */
+    /* assuming base.html might not have these defaults */
+    #ggt-about-page-container { /* Added a container ID */
+        background-color: var(--ggt-bg-dark-primary);
+        color: var(--ggt-text-light-primary);
+        font-family: var(--ggt-font-primary);
+        line-height: 1.8;
+        font-weight: 400;
+        font-size: 17px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%231a1a1a' fill-opacity='0.1' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+        overflow-x: hidden; /* Apply overflow to the container instead of body */
+    }
+
+    /* Ensure box-sizing for elements within this page */
+    #ggt-about-page-container *,
+    #ggt-about-page-container *:before,
+    #ggt-about-page-container *:after {
+        box-sizing: border-box;
+    }
+
+    /* Layout Container */
+    .ggt-about-container {
+        max-width: 1240px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 20px;
+        padding-right: 20px;
+        width: 100%;
+    }
+
+    /* Flexbox Row Simulation */
+    .ggt-about-flex-row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-left: -1rem; /* Gutter simulation */
+        margin-right: -1rem; /* Gutter simulation */
+    }
+
+    /* Flexbox Column Simulation (Example for 2 columns on large screens) */
+    .ggt-about-flex-col-6 {
+        flex: 0 0 100%; /* Full width on small screens */
+        max-width: 100%;
+        padding-left: 1rem; /* Gutter simulation */
+        padding-right: 1rem; /* Gutter simulation */
+        margin-bottom: 2rem; /* Spacing between stacked columns */
+    }
+    @media (min-width: 992px) {
+        .ggt-about-flex-col-6 {
+            flex: 0 0 50%;
+            max-width: 50%;
+            margin-bottom: 0; /* Reset bottom margin */
+        }
+        .ggt-about-story-content-col { order: 1; }
+        .ggt-about-story-image-col { order: 0; }
+        .ggt-about-ceo-image-col { flex: 0 0 40%; max-width: 40%; }
+        .ggt-about-ceo-content-col { flex: 0 0 60%; max-width: 60%; padding-left: 2rem; }
+    }
+    @media (min-width: 768px) and (max-width: 991.98px) {
+         .ggt-about-ceo-image-col { text-align: center; }
+    }
+
+    /* Flexbox Column Simulation (Example for 3 columns on large screens) */
+    .ggt-about-feature-col {
+        flex: 0 0 100%;
+        max-width: 100%;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        margin-bottom: 2rem;
+    }
+    @media (min-width: 768px) {
+        .ggt-about-feature-col { flex: 0 0 50%; max-width: 50%; }
+    }
+    @media (min-width: 992px) {
+        .ggt-about-feature-col { flex: 0 0 33.333%; max-width: 33.333%; }
+        .ggt-about-flex-row.ggt-about-justify-center { justify-content: center; }
+    }
+
+    /* Typography Base (Shared Properties) */
+    h1, h2, h3, h4, h5, h6 {
+        font-family: var(--ggt-font-headings);
+        color: var(--ggt-text-white); /* Default color */
+        font-weight: 600;
+        margin-top: 0;
+        letter-spacing: 0.5px;
+    }
+
+    /* Specific Heading Classes */
+    .ggt-about-h1 {
+        font-size: clamp(2.8rem, 6vw, 4.2rem);
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--ggt-text-white); /* Explicit color */
+    }
+
+    .ggt-about-h2 {
+        font-size: clamp(2.2rem, 5vw, 3rem);
+        margin-bottom: 1.5rem;
+        color: var(--ggt-text-white); /* Explicit color */
+    }
+
+    h3 { font-size: clamp(1.6rem, 4vw, 2rem); margin-bottom: 1.2rem; }
+    h4 { font-size: clamp(1.2rem, 3vw, 1.4rem); margin-bottom: 1rem; }
+
+    /* Paragraphs and Links */
+    p { margin-bottom: 1.5rem; color: var(--ggt-text-light-secondary); }
+    .ggt-about-lead { font-size: clamp(1.15rem, 3vw, 1.35rem); color: var(--ggt-text-light-primary); font-weight: 400; }
+    strong { color: var(--ggt-text-white); font-weight: 600; }
+    a { color: var(--ggt-accent-primary); text-decoration: none; transition: color var(--ggt-transition-speed) var(--ggt-transition-timing); }
+    a:hover { color: var(--ggt-accent-secondary); text-decoration: none; }
+
+    /* Utility Classes */
+    .ggt-about-text-accent { color: var(--ggt-accent-primary); }
+    .ggt-about-section-padding { padding: 6rem 0; }
+    .ggt-about-text-center { text-align: center; }
+    .ggt-about-mb-3 { margin-bottom: 1rem !important; } /* Use !important sparingly if needed */
+    .ggt-about-mb-4 { margin-bottom: 1.5rem !important; }
+    .ggt-about-mb-5 { margin-bottom: 3rem !important; }
+    .ggt-about-mx-auto { margin-left: auto; margin-right: auto; }
+    .ggt-about-align-center { align-items: center; } /* For Flexbox */
+    .ggt-about-justify-center { justify-content: center; } /* For Flexbox */
+
+
+    /* Dividers */
+    hr.ggt-about-divider { border: 0; height: 1px; background-image: linear-gradient(to right, rgba(var(--ggt-accent-primary-rgb), 0), rgba(var(--ggt-accent-primary-rgb), 0.5), rgba(var(--ggt-accent-primary-rgb), 0)); margin: 4rem auto; width: 60%; }
+
+    /* Hero Header */
+    .ggt-about-hero-header {
+        background: linear-gradient(rgba(15, 15, 15, 0.92), rgba(15, 15, 15, 0.98)), url('https://via.placeholder.com/1920x700/0f0f0f/cccccc?text=GGT+Hardware+Showcase+Lahore') center/cover no-repeat fixed;
+        color: var(--ggt-text-white); padding: 10rem 1rem 8rem 1rem; text-align: center;
+        position: relative; overflow: hidden;
+    }
+    .ggt-about-hero-header::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 100px; background: linear-gradient(transparent, var(--ggt-bg-dark-primary)); }
+    .ggt-about-hero-header .ggt-about-h1 { text-shadow: 3px 3px 10px rgba(0,0,0,0.7); } /* Target class */
+    .ggt-about-hero-header .ggt-about-lead { max-width: 850px; margin: 1.5rem auto 2.5rem auto; text-shadow: 1px 1px 5px rgba(0,0,0,0.6); }
+
+    /* Section Styling */
+    .ggt-about-section-bg-secondary { background-color: var(--ggt-bg-dark-secondary); border-top: 1px solid var(--ggt-border-color-subtle); border-bottom: 1px solid var(--ggt-border-color-subtle); }
+    .ggt-about-section-title-wrapper { text-align: center; margin-bottom: 4rem; }
+    .ggt-about-section-title { margin-bottom: 0.5rem; position: relative; display: inline-block; padding-bottom: 0.8rem; } /* This is the H2 inside the wrapper */
+    .ggt-about-section-title::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 60px; height: 4px; background: linear-gradient(90deg, var(--ggt-accent-primary), var(--ggt-accent-secondary)); border-radius: 3px; }
+    .ggt-about-section-subtitle { color: var(--ggt-text-light-secondary); font-size: 1.2rem; max-width: 750px; margin: 0 auto; }
+
+    /* Specific Element Styles */
+    #ggt-about-story-image {
+        max-width: 100%; height: auto; display: block;
+        border-radius: 12px;
+        box-shadow: var(--ggt-shadow-lg);
+        border: 1px solid var(--ggt-border-color);
+    }
+
+    #ggt-about-ceo-image {
+        background-color: white;
+        max-width: 100%; height: auto; border-radius: 50%; border: 5px solid var(--ggt-border-color); box-shadow: var(--ggt-shadow-lg); margin: 0 auto 2rem auto; display: block; max-height: 350px; width: auto;
+    }
+
+    /* Feature Box (Used for Why Choose Us) */
+    .ggt-about-feature-box {
+        background-color: var(--ggt-bg-dark-tertiary); padding: 2.5rem; border-radius: 12px;
+        text-align: center; border: 1px solid var(--ggt-border-color); box-shadow: var(--ggt-shadow-sm);
+        transition: transform var(--ggt-transition-speed) var(--ggt-transition-timing), box-shadow var(--ggt-transition-speed) var(--ggt-transition-timing), border-color var(--ggt-transition-speed) var(--ggt-transition-timing);
+        height: 100%; display: flex; flex-direction: column; position: relative; overflow: hidden;
+    }
+    .ggt-about-feature-box::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, rgba(var(--ggt-accent-primary-rgb), 0.08), transparent 70%); opacity: 0; transform: scale(0.8); transition: opacity var(--ggt-transition-speed) var(--ggt-transition-timing), transform var(--ggt-transition-speed) var(--ggt-transition-timing); }
+    .ggt-about-feature-box:hover { transform: translateY(-8px); box-shadow: var(--ggt-shadow-lg); border-color: var(--ggt-accent-primary); }
+    .ggt-about-feature-box:hover::before { opacity: 1; transform: scale(1); }
+    .ggt-about-feature-icon { font-size: 2.8rem; color: var(--ggt-accent-primary); margin-bottom: 1.8rem; line-height: 1; transition: transform var(--ggt-transition-speed) var(--ggt-transition-timing); position: relative; z-index: 1; }
+    .ggt-about-feature-box:hover .ggt-about-feature-icon { transform: scale(1.1); }
+    .ggt-about-feature-box h4 { font-size: 1.4rem; margin-bottom: 1rem; color: var(--ggt-text-white); font-weight: 600; flex-grow: 1; position: relative; z-index: 1; } /* Keep H4 styling */
+    .ggt-about-feature-box p { color: var(--ggt-text-light-secondary); font-size: 1rem; line-height: 1.7; margin-bottom: 0; position: relative; z-index: 1; }
+
+    /* CEO Message Section */
+    .ggt-about-ceo-message-section { padding: 4rem 0; }
+    .ggt-about-ceo-message blockquote { border-left: 4px solid var(--ggt-accent-primary); padding-left: 2rem; margin: 0; font-size: 1.2rem; font-style: italic; color: var(--ggt-text-light-primary); }
+    .ggt-about-ceo-message .ggt-about-signature { display: block; margin-top: 1.5rem; font-weight: 600; color: var(--ggt-text-white); font-family: var(--ggt-font-headings); font-size: 1.1rem; }
+    .ggt-about-ceo-message .ggt-about-signature span { display: block; font-size: 0.95rem; color: var(--ggt-text-light-secondary); font-weight: 400; font-style: normal; }
+
+    /* Call to Action Button */
+    .ggt-about-cta-button { display: inline-block; background: linear-gradient(95deg, var(--ggt-accent-primary), var(--ggt-accent-secondary)); color: var(--ggt-bg-dark-primary) !important; /* Important to override link color */ padding: 16px 40px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 1.05rem; font-family: var(--ggt-font-headings); transition: all var(--ggt-transition-speed) var(--ggt-transition-timing); border: none; margin: 0.5rem; box-shadow: 0 5px 20px rgba(var(--ggt-accent-primary-rgb), 0.4); letter-spacing: 1px; text-transform: uppercase; cursor: pointer; }
+    .ggt-about-cta-button:hover { background: linear-gradient(95deg, var(--ggt-accent-secondary), var(--ggt-accent-primary)); color: var(--ggt-text-white) !important; transform: translateY(-5px) scale(1.03); box-shadow: 0 8px 25px rgba(var(--ggt-accent-primary-rgb), 0.5); text-decoration: none; }
+    .ggt-about-cta-button.ggt-about-secondary { background: transparent; border: 2px solid var(--ggt-border-color); color: var(--ggt-text-light-primary) !important; box-shadow: none; }
+    .ggt-about-cta-button.ggt-about-secondary:hover { background: var(--ggt-accent-primary); border-color: var(--ggt-accent-primary); color: var(--ggt-bg-dark-primary) !important; box-shadow: 0 5px 20px rgba(var(--ggt-accent-primary-rgb), 0.3); }
+
+    /* Contact Info */
+    .ggt-about-contact-info p { margin-bottom: 0.7rem; }
+    .ggt-about-contact-info i { margin-right: 0.7rem; width: 20px; text-align: center;}
+
+    /* Responsive Adjustments */
+    @media (max-width: 991.98px) {
+        .ggt-about-section-padding { padding: 4rem 0; }
+        .ggt-about-ceo-message-section { padding: 3rem 0; }
+        #ggt-about-ceo-image { max-height: 300px; }
+    }
+    @media (max-width: 767.98px) {
+        #ggt-about-page-container { font-size: 16px; } /* Adjust base font size */
+        .ggt-about-hero-header { padding: 8rem 1rem 6rem 1rem; }
+        .ggt-about-section-padding { padding: 3rem 0; }
+        .ggt-about-feature-box { padding: 2rem 1.5rem; }
+        .ggt-about-cta-button { padding: 14px 30px; font-size: 1rem; }
+        .ggt-about-ceo-message blockquote { font-size: 1.1rem; padding-left: 1.5rem; }
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'navbar.html' %}
+<div id="ggt-about-page-container"> {# Wrap content in a container for scoped styles #}
+   
+
+    <!-- Hero Header Section -->
+    <header class="ggt-about-hero-header" id="ggt-about-hero">
+        <div class="ggt-about-container" data-aos="fade-up" data-aos-duration="1000">
+            <h1 class="ggt-about-h1">About <span class="ggt-about-text-accent">GGT</span></h1> {# Added class #}
+            <p class="ggt-about-lead">Lahore's Premier Source for High-Performance PC Components, Laptops, Tablets & Unbeatable Value.</p>
+            <a href="#ggt-about-story" class="ggt-about-cta-button">Discover GGT</a>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main id="ggt-about-main-content">
+
+        <!-- Our Story Section -->
+        <section id="ggt-about-story" class="ggt-about-section-padding">
+            <div class="ggt-about-container">
+                <div class="ggt-about-flex-row ggt-about-align-center">
+                    <div class="ggt-about-flex-col-6 ggt-about-story-image-col" data-aos="fade-right" data-aos-duration="1000">
+                        <img src="{% static 'assets/images/d.jpg' %}" alt="GGT Hardware Display in Lahore" id="ggt-about-story-image">
+                    </div>
+                    <div class="ggt-about-flex-col-6 ggt-about-story-content-col" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
+                        <h2 class="ggt-about-h2 ggt-about-mb-3">Powering Lahore's Tech <span class="ggt-about-text-accent">Enthusiasts</span></h2> {# Added class #}
+                        <p class="ggt-about-lead" style="color: var(--ggt-text-light-primary); margin-bottom: 1.5rem;">Founded in 2001 with a passion for performance hardware...</p>
+                        <p><strong>GGT</strong> emerged in Lahore's tech scene driven by a core belief: everyone deserves access to powerful, reliable technology. We recognized the need for a dedicated source focusing purely on providing the best PC components, latest laptops, and essential tablets. Our journey began with curating a selection of top-tier hardware, ensuring quality and performance for gamers, creators, and professionals alike.</p>
+                        <p>We've grown by staying true to our roots – offering expert advice on hardware selection, ensuring competitive pricing, and building a reputation in Lahore as the go-to destination for genuine tech products. GGT is committed to fueling your digital ambitions with the right hardware.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CEO Message Section -->
+        <section id="ggt-about-ceo-message" class="ggt-about-section-padding ggt-about-ceo-message-section ggt-about-section-bg-secondary">
+            <div class="ggt-about-container">
+                 <div class="ggt-about-flex-row ggt-about-align-center ggt-about-justify-center">
+                    <div class="ggt-about-ceo-image-col"  data-aos="fade-right" data-aos-duration="1000">
+                        <img src="{% static 'assets/images/1.png' %}" alt="{{ ceo_name }}, CEO of GGT" id="ggt-about-ceo-image">
+                    </div>
+                    <div class="ggt-about-ceo-content-col ggt-about-ceo-message" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
+                        <h2 class="ggt-about-h2 ggt-about-mb-4">A Message from Our <span class="ggt-about-text-accent">CEO</span></h2> {# Added class #}
+                        <blockquote>
+                            "Here at GGT, we live and breathe technology. Our focus is clear: to bring the best hardware – powerful components, sleek laptops, versatile tablets – to the Lahore community. We believe in empowering our customers with the right tools, backed by knowledgeable advice and genuine value. We're excited to be Lahore's trusted source for quality tech and are committed to offering the best deals and latest products."
+                        </blockquote>
+                        <span class="ggt-about-signature">
+                            [Mr. Naveed Zahid]
+                            <span>CEO, GGT & CTI </span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="ggt-about-divider">
+
+        <!-- Why Choose Us Section (Revised) -->
+        <section id="ggt-about-why-choose-us" class="ggt-about-section-padding">
+            <div class="ggt-about-container">
+                 <div class="ggt-about-section-title-wrapper" data-aos="fade-up" data-aos-duration="800">
+                    {# Note: ggt-about-section-title IS the H2 here #}
+                    <h2 class="ggt-about-h2 ggt-about-section-title">The GGT Advantage</h2> {# Added class #}
+                    <p class="ggt-about-section-subtitle">Your benefits when choosing GGT in Lahore.</p>
+                </div>
+                <div class="ggt-about-flex-row ggt-about-justify-center">
+                    <div class="ggt-about-feature-col" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <div class="ggt-about-feature-box" id="ggt-feature-expertise">
+                            <div class="ggt-about-feature-icon"><i class="fas fa-user-tie"></i></div>
+                            <h4>Hardware Expertise</h4>
+                            <p>Our knowledgeable team provides expert guidance to help you select the perfect components, laptops, or tablets.</p>
+                        </div>
+                    </div>
+                    <div class="ggt-about-feature-col" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+                         <div class="ggt-about-feature-box" id="ggt-feature-selection">
+                            <div class="ggt-about-feature-icon"><i class="fas fa-cubes"></i></div>
+                            <h4>Premium Selection</h4>
+                            <p>Access a curated range of genuine, high-quality GPUs, CPUs, RAM, storage, laptops, tablets, and more.</p>
+                        </div>
+                    </div>
+                     <div class="ggt-about-feature-col" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+                        <div class="ggt-about-feature-box" id="ggt-feature-value">
+                            <div class="ggt-about-feature-icon"><i class="fas fa-tags"></i></div>
+                            <h4>Best Deals & Value</h4>
+                            <p>We strive to offer competitive pricing and exclusive deals, ensuring you get the best value in Lahore.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Visit Us / CTA Section -->
+        <section id="ggt-about-connect" class="ggt-about-section-padding ggt-about-text-center">
+            <div class="ggt-about-container" data-aos="fade-up" data-aos-duration="1000">
+                 <h2 class="ggt-about-h2 ggt-about-mb-3">Find Your Perfect Tech at <span class="ggt-about-text-accent">GGT</span></h2> {# Added class #}
+                 <p class="ggt-about-section-subtitle ggt-about-mx-auto ggt-about-mb-5" style="max-width: 750px;">Visit our Lahore store to explore the latest hardware, get expert advice, or browse our extensive product range online.</p>
+                 <div class="ggt-about-contact-info ggt-about-mb-5" id="ggt-contact-details">
+                    <p><i class="fas fa-map-marker-alt ggt-about-text-accent"></i><strong>Visit GGT:</strong> Shop #6 3rd Floor, Hafeez Centre, Block E1 Block E 1, Gulberg III, Lahore</p>
+                    <p><i class="fas fa-phone-alt ggt-about-text-accent"></i><strong>Call GGT:</strong> +92 306 4741099</p>
+                    <p><i class="fas fa-envelope-open-text ggt-about-text-accent"></i><strong>Email GGT:</strong> info@ggt.com.pk</p>
+                 </div>
+                 <div id="ggt-about-cta-buttons">
+                    {# Ensure URLs are correctly defined in your urls.py #}
+                    <a href="/contact" class="ggt-about-cta-button">Talk to Our Experts</a> <!-- Updated CTA text -->
+                     <a href="{% url 'all_products' %}" class="ggt-about-cta-button ggt-about-secondary">Browse Hardware</a> <!-- Updated CTA text -->
+                 </div>
+            </div>
+        </section>
+
+    </main>
+
+    {% include 'footer.html' %}
+</div> {# End ggt-about-page-container #}
+{% endblock %}
+
+{% block script %}
+{# Ensure AOS library is loaded, either here or in base.html #}
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  // Ensure AOS is initialized after the DOM is loaded
+  document.addEventListener('DOMContentLoaded', function() {
+        AOS.init({
+            once: true, // Only animate once
+            duration: 800, // Animation duration
+            easing: 'ease-in-out', // Animation timing function
+            // offset: 50, // Optional: Trigger animations earlier or later
+            // disable: 'mobile' // Optional: disable AOS on mobile
+        });
+      });
+</script>
+{% endblock %}

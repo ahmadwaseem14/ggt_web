@@ -1,0 +1,177 @@
+{% extends "sidebar.html" %}
+
+{% block content %}
+<title> Fanzer Expense</title>
+
+<div class="container mt-4">
+    <h2 class="text-center">Manage Expenses</h2>
+
+    <!-- Total Expenses -->
+    <div class="alert alert-info" role="alert">
+        <strong>Total Expenses: Rs.{{ total_filtered_expense }}</strong>
+    </div>
+
+    <!-- Filter Buttons -->
+    <div class="btn-group mb-3" role="group" aria-label="Filter Expenses">
+        <a href="?filter=today" class="btn btn-primary {% if filter_type == 'today' %}active{% endif %}">Today</a>
+        <a href="?filter=month" class="btn btn-primary {% if filter_type == 'month' %}active{% endif %}">This Month</a>
+        <a href="?filter=year" class="btn btn-primary {% if filter_type == 'year' %}active{% endif %}">This Year</a>
+        <a href="?filter=total" class="btn btn-primary {% if filter_type == 'total' %}active{% endif %}">Total</a>
+    </div>
+
+    <!-- Date Range Filter -->
+    <form method="get" class="form-inline mb-3">
+        <label for="min-date" class="mr-2">From Date:</label>
+        <input type="date" id="min-date" name="min_date" value="{{ min_date }}" class="form-control mr-2">
+        <label for="max-date" class="mr-2">To Date:</label>
+        <input type="date" id="max-date" name="max_date" value="{{ max_date }}" class="form-control mr-2">
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </form>
+
+    <!-- Expenses Bar Chart -->
+    <div class="chart-container mb-4">
+        <canvas id="expenseChart" width="400" height="200"></canvas>
+    </div>
+
+    <!-- Expenses Table -->
+    <div class="table-responsive">
+        <table id="expenseTable" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Expense Type</th>
+                    <th>Amount</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for expense in expenses %}
+                    <tr>
+                        <td>{{ expense.date|date:"Y-m-d " }}</td>
+                        <td>{{ expense.expense_type }}</td>
+                        <td>Rs.{{ expense.amount }}</td>
+                        <td>
+                            <div class="btn-group d-inline-flex">
+                                <!-- Edit Button -->
+                                <a href="{% url 'edit_expense' expense.id %}" class="btn btn-warning btn-sm mr-1">Edit</a>
+                                <!-- Delete Button -->
+                                <form action="{% url 'delete_expense' expense.id %}" method="POST" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this expense?');">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4">No expenses available</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Add Expense Button -->
+    <a href="{% url 'add_expense' %}">
+        <button class="btn btn-success add-expense-btn fixed-bottom-right">
+            Add Expense
+        </button>
+    </a>
+
+</div>
+
+<!-- jQuery, Bootstrap, and DataTables scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Initialize DataTable
+        $('#expenseTable').DataTable({
+            dom: 'Bfrtip',
+            pageLength: 50,
+            buttons: [
+                'copy', 'excel', 'pdf', 'print'
+            ]
+        });
+
+        // Prepare data for the bar chart
+        var labels = JSON.parse('{{ labels|escapejs }}');
+        var data = JSON.parse('{{ data|escapejs }}');
+
+        var ctx = document.getElementById('expenseChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Expenses',
+                    data: data,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        title: { display: true, text: 'Date' },
+                        ticks: { autoSkip: false }
+                    },
+                    y: {
+                        title: { display: true, text: 'Amount' },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+</script>
+
+<style>
+    .fixed-bottom-right {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+        padding: 10px 20px;
+        font-size: 1rem;
+        transition: font-size 0.3s, padding 0.3s;
+    }
+
+    /* Responsive adjustments for smaller screens */
+    @media (max-width: 576px) {
+        .fixed-bottom-right {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            bottom: 10px;
+            right: 10px;
+        }
+        .btn-group.d-inline-flex a,
+        .btn-group.d-inline-flex form button {
+            margin-right: 4px;
+            margin-bottom: 0; /* Prevent stacking */
+        }
+        .btn-group.d-inline-flex {
+            flex-wrap: nowrap;
+        }
+    }
+
+    .chart-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+</style>
+{% endblock %}

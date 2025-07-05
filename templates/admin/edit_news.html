@@ -1,0 +1,106 @@
+{% extends "sidebar.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4>Edit News</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        {% for field in form %}
+                        <div class="form-group">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="text-danger small">{{ field.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                        
+                        <div class="row mb-3">
+                            <!-- Save Changes Button (Left) -->
+                            <div class="col-6">
+                                <button type="submit" class="btn btn-success btn-block">
+                                    <i class="fas fa-save"></i> Save Changes
+                                </button>
+                            </div>
+                            <!-- Back to News List Button (Right) -->
+                            <div class="col-6">
+                                <a href="{% url 'news_list' %}" class="btn btn-secondary btn-block">
+                                    <i class="fas fa-arrow-left"></i> Back to News List
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<style>
+    .home-content {
+        align-items: normal;
+    }
+    a {
+        color: white;
+    }
+    a:hover {
+        color: rgb(255, 255, 255);
+        text-decoration: none;
+    }
+    .form-group label {
+        font-weight: 600;
+    }
+
+    .container {
+        margin-top: 50px;
+    }
+
+    .btn-block {
+        width: 100%;
+        padding: 15px;
+        font-size: 1rem;
+    }
+
+    /* Ensure buttons in a row are equal size on small screens */
+    .row > .col-6 {
+        margin-bottom: 10px;
+    }
+
+    @media (max-width: 576px) {
+        .btn-block {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 0.85rem;
+        }
+
+        .card-body {
+            padding: 15px;
+        }
+    }
+
+    @media (max-width: 400px) {
+        .btn-block {
+            font-size: 0.8rem;
+            padding: 8px;
+        }
+
+        .card-body {
+            padding: 10px;
+        }
+    }
+</style>
+{% endblock %}

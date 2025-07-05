@@ -1,0 +1,32 @@
+{% for fabric in fabrics %}
+                    <div class="fabric-option">
+                        <div class="fabric-radio">
+                            <input type="radio" id="fabric_{{ fabric.sku }}" name="fabric_sku" value="{{ fabric.sku }}" required>
+                            <label for="fabric_{{ fabric.sku }}">
+                                <img src="{{ fabric.image.url }}" alt="{{ fabric.name }}">
+                            </label>
+                        </div>
+                        <div class="fabric-details">
+                            <div class="fabric-info">
+                                <p>{{ fabric.name }}</p>
+                                <p>Rs.{{ fabric.price }}</p>
+                            </div>
+                        </div>
+                        <fabric type="fabric" class="view-details-btn" onclick="openModal('{{ fabric.sku }}')">View Details</fabric>
+                    </div>
+                    <div id="modal_{{ fabric.sku }}" class="modal">
+                        <div class="modal-content">
+                            <span class="close" onclick="closeModal('{{ fabric.sku }}')">&times;</span>
+                            <h3>{{ fabric.name }} Details</h3>
+                            <p>Price: Rs.{{ fabric.price }}</p>
+                            <p>Description: {{ fabric.description }}</p>
+                            {% if fabric.video %}
+                                <p>Video:</p>
+                                <video controls width="100%">
+                                    <source src="{{ fabric.video.url }}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}

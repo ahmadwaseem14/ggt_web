@@ -1,0 +1,464 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact GGT | Get in Touch - Lahore PC Hardware{% endblock %}
+
+{% block style %}
+{# Link external libraries (if not already in base.html) #}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+<style>
+    :root {
+        /* Copy variables from about page style block */
+        --ggt-bg-dark-primary: #0f0f0f;
+        --ggt-bg-dark-secondary: #1a1a1a;
+        --ggt-bg-dark-tertiary: #242424;
+        --ggt-text-light-primary: #eaeaea;
+        --ggt-text-light-secondary: #b0b0b0;
+        --ggt-text-white: #ffffff;
+        --ggt-accent-primary: #00bfff; /* Deep Sky Blue */
+        --ggt-accent-primary-rgb: 0, 191, 255;
+        --ggt-accent-secondary: #4dd0e1; /* Lighter Cyan */
+        --ggt-border-color: #3a3a3a;
+        --ggt-border-color-subtle: #2c2c2c;
+        --ggt-error-color: #f44336; /* Red for errors */
+
+        --ggt-font-primary: 'Source Sans Pro', sans-serif;
+        --ggt-font-headings: 'Poppins', sans-serif;
+
+        --ggt-shadow-sm: 0 3px 8px rgba(0, 0, 0, 0.4);
+        --ggt-shadow-md: 0 6px 20px rgba(0, 0, 0, 0.5);
+        --ggt-shadow-lg: 0 10px 35px rgba(0, 0, 0, 0.6);
+
+        --ggt-transition-speed: 0.4s;
+        --ggt-transition-timing: ease-in-out;
+    }
+
+    /* Base styles scoped to this page */
+    #ggt-contact-page-container {
+        background-color: var(--ggt-bg-dark-primary);
+        color: var(--ggt-text-light-primary);
+        font-family: var(--ggt-font-primary);
+        line-height: 1.7; /* Adjusted slightly for forms */
+        font-weight: 400;
+        font-size: 17px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%231a1a1a' fill-opacity='0.1' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+        overflow-x: hidden;
+    }
+
+    #ggt-contact-page-container *,
+    #ggt-contact-page-container *:before,
+    #ggt-contact-page-container *:after {
+        box-sizing: border-box;
+    }
+
+    /* Layout Container */
+    .ggt-contact-container {
+        max-width: 1240px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 20px;
+        padding-right: 20px;
+        width: 100%;
+    }
+
+    /* Flexbox Row/Column Simulation */
+    .ggt-contact-flex-row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-left: -1.5rem; /* Increased gutter for form/info spacing */
+        margin-right: -1.5rem;
+    }
+
+    .ggt-contact-flex-col-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        margin-bottom: 2.5rem; /* Increased spacing */
+    }
+    @media (min-width: 992px) {
+        .ggt-contact-flex-col-6 {
+            flex: 0 0 50%;
+            max-width: 50%;
+            margin-bottom: 0;
+        }
+        .ggt-contact-info-col { order: 0; } /* Info first on large screens */
+        .ggt-contact-form-col { order: 1; }
+    }
+
+    /* Typography */
+    h1, h2, h3, h4, h5, h6 { font-family: var(--ggt-font-headings); color: var(--ggt-text-white); font-weight: 600; margin-top: 0; letter-spacing: 0.5px; }
+    .ggt-contact-h1 { font-size: clamp(2.8rem, 6vw, 4.0rem); font-weight: 700; margin-bottom: 1rem; color: var(--ggt-text-white); }
+    .ggt-contact-h2 { font-size: clamp(2.0rem, 5vw, 2.8rem); margin-bottom: 1.5rem; color: var(--ggt-text-white); }
+    h3 { font-size: clamp(1.4rem, 4vw, 1.8rem); margin-bottom: 1.2rem; color: var(--ggt-accent-primary); } /* Use accent for info headings */
+    p { margin-bottom: 1.5rem; color: var(--ggt-text-light-secondary); }
+    .ggt-contact-lead { font-size: clamp(1.1rem, 3vw, 1.25rem); color: var(--ggt-text-light-primary); font-weight: 400; max-width: 750px; margin-left: auto; margin-right: auto;}
+    strong { color: var(--ggt-text-white); font-weight: 600; }
+    a { color: var(--ggt-accent-primary); text-decoration: none; transition: color var(--ggt-transition-speed) var(--ggt-transition-timing); }
+    a:hover { color: var(--ggt-accent-secondary); text-decoration: none; }
+
+    /* Utility */
+    .ggt-contact-text-accent { color: var(--ggt-accent-primary); }
+    .ggt-contact-section-padding { padding: 6rem 0; }
+    .ggt-contact-text-center { text-align: center; }
+    .ggt-contact-mb-3 { margin-bottom: 1rem !important; }
+    .ggt-contact-mb-4 { margin-bottom: 1.5rem !important; }
+    .ggt-contact-mb-5 { margin-bottom: 3rem !important; }
+    .ggt-contact-mt-4 { margin-top: 1.5rem !important; }
+    .ggt-contact-align-center { align-items: center; }
+
+    /* Hero Header */
+    .ggt-contact-hero-header {
+        background: linear-gradient(rgba(15, 15, 15, 0.88), rgba(15, 15, 15, 0.95)), url('https://via.placeholder.com/1920x450/0f0f0f/cccccc?text=Connect+with+GGT+Lahore') center/cover no-repeat; /* Different placeholder */
+        color: var(--ggt-text-white); padding: 8rem 1rem 6rem 1rem; text-align: center;
+        position: relative; overflow: hidden;
+    }
+    .ggt-contact-hero-header::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 80px; background: linear-gradient(transparent, var(--ggt-bg-dark-primary)); }
+    .ggt-contact-hero-header .ggt-contact-h1 { text-shadow: 2px 2px 8px rgba(0,0,0,0.6); }
+    .ggt-contact-hero-header .ggt-contact-lead { text-shadow: 1px 1px 5px rgba(0,0,0,0.5); margin-top: 0.5rem;}
+
+    /* Contact Info Section */
+    .ggt-contact-info-item {
+        display: flex;
+        align-items: flex-start; /* Align icon top */
+        margin-bottom: 1.8rem;
+        color: var(--ggt-text-light-secondary);
+    }
+    .ggt-contact-info-item i {
+        font-size: 1.6rem;
+        color: var(--ggt-accent-primary);
+        margin-right: 1.5rem;
+        margin-top: 0.1em; /* Small top adjust */
+        width: 30px; /* Fixed width for alignment */
+        text-align: center;
+    }
+    .ggt-contact-info-item div {
+        flex: 1;
+    }
+    .ggt-contact-info-item strong {
+        display: block;
+        color: var(--ggt-text-light-primary);
+        margin-bottom: 0.2rem;
+        font-size: 1.1rem;
+    }
+    .ggt-contact-info-item p { margin-bottom: 0; line-height: 1.6; }
+    .ggt-contact-info-item a { color: var(--ggt-text-light-secondary); }
+    .ggt-contact-info-item a:hover { color: var(--ggt-accent-primary); }
+
+    /* Map */
+    .ggt-contact-map-wrapper {
+        position: relative;
+        overflow: hidden;
+        padding-top: 56.25%; /* 16:9 Aspect Ratio */
+        border-radius: 8px;
+        border: 1px solid var(--ggt-border-color);
+        margin-top: 2rem;
+        box-shadow: var(--ggt-shadow-md);
+    }
+    .ggt-contact-map-wrapper iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+    }
+
+    /* Contact Form Styling */
+    #ggt-contact-form {
+        background-color: var(--ggt-bg-dark-secondary);
+        padding: 2.5rem;
+        border-radius: 10px;
+        border: 1px solid var(--ggt-border-color-subtle);
+        box-shadow: var(--ggt-shadow-md);
+    }
+    .ggt-contact-form-group {
+        margin-bottom: 1.5rem;
+        position: relative;
+    }
+    .ggt-contact-form-control {
+        display: block;
+        width: 100%;
+        padding: 14px 18px;
+        font-size: 1rem;
+        font-family: var(--ggt-font-primary);
+        font-weight: 400;
+        line-height: 1.6;
+        color: var(--ggt-text-light-primary);
+        background-color: var(--ggt-bg-dark-tertiary);
+        background-clip: padding-box;
+        border: 1px solid var(--ggt-border-color);
+        appearance: none; /* Remove default styling */
+        border-radius: 6px;
+        transition: border-color var(--ggt-transition-speed) var(--ggt-transition-timing), box-shadow var(--ggt-transition-speed) var(--ggt-transition-timing);
+    }
+    .ggt-contact-form-control::placeholder {
+        color: var(--ggt-text-light-secondary);
+        opacity: 0.7;
+    }
+    .ggt-contact-form-control:focus {
+        color: var(--ggt-text-white);
+        background-color: var(--ggt-bg-dark-tertiary);
+        border-color: var(--ggt-accent-primary);
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(var(--ggt-accent-primary-rgb), 0.25);
+    }
+    textarea.ggt-contact-form-control {
+        min-height: 120px; /* Ensure textarea has some height */
+        resize: vertical; /* Allow vertical resize only */
+    }
+
+    /* Form Labels (Optional - Hidden by default if using placeholders) */
+    #ggt-contact-form label {
+        display: none; /* Hide labels if placeholders are sufficient */
+        /* Or style them if you prefer visible labels: */
+        /* display: block;
+        margin-bottom: 0.5rem;
+        color: var(--ggt-text-light-primary);
+        font-weight: 600; */
+    }
+
+    /* Form Error Messages */
+    .ggt-contact-errorlist {
+        list-style: none;
+        padding: 0;
+        margin: 5px 0 0 0;
+        color: var(--ggt-error-color);
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+    .ggt-contact-form-control.is-invalid { /* Add class via JS or check form.field.errors */
+         border-color: var(--ggt-error-color);
+    }
+    .ggt-contact-form-control.is-invalid:focus {
+        box-shadow: 0 0 0 0.2rem rgba(244, 67, 54, 0.25); /* Red focus shadow */
+    }
+
+    /* CTA Button */
+    .ggt-contact-cta-button { display: inline-block; background: linear-gradient(95deg, var(--ggt-accent-primary), var(--ggt-accent-secondary)); color: var(--ggt-bg-dark-primary) !important; padding: 16px 40px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 1.05rem; font-family: var(--ggt-font-headings); transition: all var(--ggt-transition-speed) var(--ggt-transition-timing); border: none; margin: 0.5rem 0 0 0; /* Adjusted margin */ box-shadow: 0 5px 20px rgba(var(--ggt-accent-primary-rgb), 0.4); letter-spacing: 1px; text-transform: uppercase; cursor: pointer; width: 100%; /* Make button full width */ text-align: center; }
+    .ggt-contact-cta-button:hover { background: linear-gradient(95deg, var(--ggt-accent-secondary), var(--ggt-accent-primary)); color: var(--ggt-text-white) !important; transform: translateY(-3px); box-shadow: 0 8px 25px rgba(var(--ggt-accent-primary-rgb), 0.5); }
+
+    /* Django Messages Framework Styling */
+    .ggt-django-messages {
+        padding: 0;
+        margin: 0 0 1.5rem 0;
+        list-style: none;
+    }
+    .ggt-django-messages li {
+        padding: 1rem 1.5rem;
+        margin-bottom: 1rem;
+        border-radius: 6px;
+        border: 1px solid transparent;
+        font-weight: 600;
+    }
+    .ggt-django-messages li.success {
+        color: #0f5132;
+        background-color: #d1e7dd;
+        border-color: #badbcc;
+    }
+    .ggt-django-messages li.error {
+        color: #842029;
+        background-color: #f8d7da;
+        border-color: #f5c2c7;
+    }
+    .ggt-django-messages li.warning {
+        color: #664d03;
+        background-color: #fff3cd;
+        border-color: #ffecb5;
+    }
+    .ggt-django-messages li.info {
+        color: #055160;
+        background-color: #cff4fc;
+        border-color: #b6effb;
+    }
+
+
+    /* Responsive */
+    @media (max-width: 991.98px) {
+        .ggt-contact-section-padding { padding: 4rem 0; }
+        .ggt-contact-hero-header { padding: 7rem 1rem 5rem 1rem; }
+    }
+    @media (max-width: 767.98px) {
+        #ggt-contact-page-container { font-size: 16px; }
+        .ggt-contact-hero-header { padding: 6rem 1rem 4rem 1rem; }
+        .ggt-contact-section-padding { padding: 3rem 0; }
+        #ggt-contact-form { padding: 1.5rem; }
+        .ggt-contact-cta-button { padding: 14px 30px; font-size: 1rem; }
+        .ggt-contact-flex-col-6 { padding-left: 1rem; padding-right: 1rem; } /* Reduce gutter */
+        .ggt-contact-flex-row { margin-left: -1rem; margin-right: -1rem; }
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'navbar.html' %}
+<div id="ggt-contact-page-container">
+
+
+    <!-- Hero Header Section -->
+    <header class="ggt-contact-hero-header" id="ggt-contact-hero">
+        <div class="ggt-contact-container" data-aos="fade-up" data-aos-duration="900">
+            <h1 class="ggt-contact-h1">Get In <span class="ggt-contact-text-accent">Touch</span></h1>
+            <p class="ggt-contact-lead">Have questions about hardware, need a quote, or want to discuss a custom build? Reach out to us!</p>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main id="ggt-contact-main-content">
+        <section id="ggt-contact-details-form" class="ggt-contact-section-padding">
+            <div class="ggt-contact-container">
+
+                {# Display Django Messages #}
+                {% if messages %}
+                <ul class="ggt-django-messages">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+                <div class="ggt-contact-flex-row">
+
+                    <!-- Contact Information & Map Column -->
+                    <div class="ggt-contact-flex-col-6 ggt-contact-info-col" data-aos="fade-right" data-aos-duration="1000">
+                        <h2 class="ggt-contact-h2 ggt-contact-mb-4">Contact Information</h2>
+                        <p class="ggt-contact-mb-5" style="color: var(--ggt-text-light-primary);">Connect with GGT [ Gaming & Graphics Tech] through the details below or use the contact form.</p>
+
+                        <div class="ggt-contact-info-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <strong>Visit Our Store</strong>
+                                <p>Shop #6 3rd Floor, Hafeez Centre, Block E1 Block E 1, Gulberg III, Lahore</p>
+                            </div>
+                        </div>
+
+                        <div class="ggt-contact-info-item">
+                            <i class="fas fa-phone-alt"></i>
+                            <div>
+                                <strong>Call Us</strong>
+                                <p><a href="tel:+92 306 4741099">+92 306 4741099</a></p> {# REPLACE #}
+                                <p style="font-size: 0.9em; margin-top: 5px;">(Available during business hours: 10:00 AM - 10:00 PM)</p> {# REPLACE #}
+                            </div>
+                        </div>
+
+                        <div class="ggt-contact-info-item">
+                            <i class="fas fa-envelope-open-text"></i>
+                            <div>
+                                <strong>Email Us</strong>
+                                <p><a href="mailto:info@ggt.com.pk">info@ggt.com.pk</a></p> {# REPLACE #}
+                            </div>
+                        </div>
+
+                         <div class="ggt-contact-info-item">
+                            <i class="fab fa-whatsapp"></i> {# Optional: Add WhatsApp #}
+                            <div>
+                                <strong>WhatsApp</strong>
+                                <p><a href="https://wa.me/+923064741099" target="_blank">+92 306 4741099</a></p> {# REPLACE (include country code without +) #}
+                            </div>
+                        </div>
+
+                        <!-- Google Map Embed -->
+                        <h3 class="ggt-contact-mt-4 ggt-contact-mb-3">Find Us Here</h3>
+                        <div class="ggt-contact-map-wrapper">
+                            <iframe 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6802.593966120868!2d74.34029067668132!3d31.516002247356028!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391905cd46391dd5%3A0x1dc4b0db4203c746!2sGaming%20%26%20Graphics%20Tech!5e0!3m2!1sen!2sus!4v1745752974088!5m2!1sen!2sus"
+                                width="100%" 
+                                height="450" 
+                                style="border:0;" 
+                                allowfullscreen="" 
+                                loading="lazy" 
+                                referrerpolicy="no-referrer-when-downgrade"
+                                title="GGT Store Location at Hafeez Center"
+                            ></iframe>
+                        </div>
+                    </div>
+
+                    <!-- Contact Form Column -->
+                    <div class="ggt-contact-flex-col-6 ggt-contact-form-col" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="150">
+                        <h2 class="ggt-contact-h2 ggt-contact-mb-4">Send Us a Message</h2>
+                        <form method="post" action="{% url 'contact' %}" id="ggt-contact-form" novalidate>
+                            {% csrf_token %}
+
+                            <div class="ggt-contact-form-group">
+                                {{ form.name.label_tag }}
+                                {{ form.name }}
+                                {% if form.name.errors %}
+                                    <ul class="ggt-contact-errorlist">
+                                        {% for error in form.name.errors %}<li>{{ error }}</li>{% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+
+                            <div class="ggt-contact-form-group">
+                                {{ form.email.label_tag }}
+                                {{ form.email }}
+                                {% if form.email.errors %}
+                                    <ul class="ggt-contact-errorlist">
+                                        {% for error in form.email.errors %}<li>{{ error }}</li>{% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+
+                            <div class="ggt-contact-form-group">
+                                {{ form.subject.label_tag }}
+                                {{ form.subject }}
+                                {% if form.subject.errors %}
+                                    <ul class="ggt-contact-errorlist">
+                                        {% for error in form.subject.errors %}<li>{{ error }}</li>{% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+
+                            <div class="ggt-contact-form-group">
+                                {{ form.message.label_tag }}
+                                {{ form.message }}
+                                {% if form.message.errors %}
+                                    <ul class="ggt-contact-errorlist">
+                                        {% for error in form.message.errors %}<li>{{ error }}</li>{% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+
+                            <div class="ggt-contact-text-center">
+                                <button type="submit" class="ggt-contact-cta-button">Send Message</button>
+                            </div>
+                        </form>
+                    </div>
+                </div> {# End Flex Row #}
+            </div> {# End Container #}
+        </section>
+    </main>
+
+    {% include 'footer.html' %}
+</div> {# End ggt-contact-page-container #}
+{% endblock %}
+
+{% block script %}
+{# Ensure AOS library is loaded, either here or in base.html #}
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+        AOS.init({
+            once: true,
+            duration: 800,
+            easing: 'ease-in-out',
+            offset: 50, // Trigger slightly earlier for contact elements
+        });
+
+        // Optional: Add 'is-invalid' class to fields with errors on page load
+        const errorLists = document.querySelectorAll('.ggt-contact-errorlist');
+        errorLists.forEach(list => {
+            const inputField = list.previousElementSibling; // Assumes input is right before error list
+            if (inputField && inputField.classList.contains('ggt-contact-form-control')) {
+                inputField.classList.add('is-invalid');
+            }
+        });
+  });
+</script>
+{% endblock %}

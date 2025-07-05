@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center;
+        }
+        h1 {
+            color: black;
+            margin-bottom: 20px;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .otp-container {
+            margin: 20px 0;
+        }
+        .otp-code {
+            font-size: 28px;
+            font-weight: bold;
+            color: black;
+            letter-spacing: 10px;
+            margin: 0;
+        }
+        p {
+            color: #555;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #777;
+        }
+        a {
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .divider {
+            margin: 20px 0;
+            height: 1px;
+            background-color: #eaeaea;
+        }
+        .info {
+            background-color: #f1f1f1;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>OTP Verification</h1>
+        <p>Hi {{ first_name }},</p>
+        <p>To complete your registration, please use the following OTP:</p>
+        <div class="otp-container">
+            <p class="otp-code">{{ otp }}</p>
+        </div>
+        <p>This OTP is valid for 10 minutes.</p>
+        
+        <div class="divider"></div>
+
+        <div class="info">
+            <h2>About Our Tailoring Service</h2>
+            <p>At [Your Tailoring Website Name], we offer personalized tailoring services to meet your unique style and fit. Our skilled tailors are dedicated to crafting high-quality garments just for you.</p>
+            <p>Whether you need custom dresses, suits, or alterations, we've got you covered!</p>
+        </div>
+
+        <p>If you did not request this OTP, please ignore this email.</p>
+        <div class="footer">
+            <p>Thank you for choosing our service!</p>
+            <p><a href="https://example.com">Visit our website</a></p>
+        </div>
+    </div>
+</body>
+</html>

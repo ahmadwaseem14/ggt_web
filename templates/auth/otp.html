@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block content %}
+{% include 'navbar.html' %}
+
+<!-- Breadcrumb Section -->
+<div class="breadcrumb-section breadcrumb-bg" style="height: 50px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="breadcrumb-text">
+                    <p>Enter the OTP.</p>
+                    <h1>Verify Your Identity</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content Section -->
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-light shadow-sm rounded">
+                <div class="card-body">
+                    <h2 class="text-center  mb-4">Submit OTP</h2>
+                    
+                    {% if error %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endif %}
+                    
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-success" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    {% if email %}
+                        <div class="alert alert-success" role="alert">
+                            OTP sent to <strong>{{ email }}</strong>.
+                        </div>
+                    {% endif %}
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="otp" class="font-weight-bold">OTP:</label>
+                            <input type="text" id="otp" name="otp" class="form-control" placeholder="Enter your 6-digit OTP" required>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-block">Submit</button>
+                    </form>
+                    
+                    <!-- Resend OTP Form -->
+                    <div class="text-center mt-4">
+                        <span class="text-muted">Didn't receive the code? </span>
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" name="resend_otp" class="btn btn-link p-0 text-purple-500">Resend OTP</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Custom Styles */
+    .card {
+        border-radius: 12px; /* Rounded corners */
+        background-color: #ffffff; /* White background */
+    }
+    
+    .text-success {
+        font-weight: bold; /* Bold text for emphasis */
+        color: #000000;
+    }
+    
+    .form-control {
+        border: 1px solid #ced4da; /* Default border for input fields */
+        transition: border-color 0.3s; /* Transition effect */
+    }
+    
+    .form-control:focus {
+        border-color: #007bff; /* Blue border on focus */
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Blue shadow effect */
+    }
+    .form-group input {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid #000000;
+        border-radius: 4px;
+        font-size: 16px;
+        box-sizing: border-box;
+    }
+    .btn-success {
+        background-color: #000000; /* Green button color */
+        border: none; /* No border */
+    }
+    
+    .btn-success:hover {
+        background-color: #faab00; /* Darker green on hover */
+        transition: background-color 0.3s; /* Transition effect */
+    }
+</style>
+
+{% endblock %}

@@ -1,0 +1,445 @@
+<div id="ProductSection-product-template" class="product-template__container prstyle1">
+    <div class="product-single">
+        <!-- Start model close -->
+        <a href="javascript:void(0)" data-dismiss="modal" class="model-close-btn pull-right" title="close">
+            <span class="icon icon anm anm-times-l"></span>
+        </a>
+        <!-- End model close -->
+        <div class="row equal-height-row">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-12 product-image-column">
+                <div class="product-details-img h-100">
+                    <div class="product-thumb-carousel d-flex flex-column h-100">
+                        <!-- Main Image -->
+                        {% with primary_image=product.images.all|dictsort:"is_primary"|last %}
+                            {% if primary_image %}
+                                <div class="main-product-image mb-3 flex-grow-1">
+                                    <img id="main-product-image" src="{{ primary_image.image.url }}" 
+                                         alt="{{ primary_image.alt_text }}" class="img-fluid">
+                                </div>
+                            {% else %}
+                                {% with first_image=product.images.first %}
+                                    {% if first_image %}
+                                        <div class="main-product-image mb-3 flex-grow-1">
+                                            <img id="main-product-image" src="{{ first_image.image.url }}" 
+                                                 alt="{{ first_image.alt_text }}" class="img-fluid">
+                                        </div>
+                                    {% else %}
+                                        <div class="no-image-placeholder text-center p-4 bg-light flex-grow-1">
+                                            <span class="text-muted">No Image Available</span>
+                                        </div>
+                                    {% endif %}
+                                {% endwith %}
+                            {% endif %}
+                        {% endwith %}
+                        
+                        <!-- Thumbnail Images -->
+                        {% if product.images.count > 1 %}
+                            <div class="product-thumb-row d-flex flex-wrap justify-content-center mt-auto">
+                                {% for image in product.images.all %}
+                                    <div class="product-thumb-item mx-1 mb-2" style="width: 60px; cursor: pointer;">
+                                        <img src="{{ image.image.url }}" alt="{{ image.alt_text }}" 
+                                             class="img-thumbnail product-thumbnail" 
+                                             data-full-image="{{ image.image.url }}">
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-12 product-info-column">
+                <div class="product-single__meta h-100 d-flex flex-column">
+                    <h2 class="product-single__title mb-2">{{ product.name }}</h2>
+                    
+                    <!-- Product Info Section -->
+                    <div class="product-info-section mb-4">
+                        <div class="product-info-row d-flex">
+                            <div class="info-label">SKU:</div>
+                            <div class="info-value">{{ product.sku }}</div>
+                        </div>
+                        <div class="product-info-row d-flex">
+                            <div class="info-label">Brand:</div>
+                            <div class="info-value">{{ product.brand }}</div>
+                        </div>
+                        <div class="product-info-row d-flex">
+                            <div class="info-label">Condition:</div>
+                            <div class="info-value">{{ product.condition|title }}</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Price Section -->
+                    <div class="product-price-section mb-4">
+                        {% if product.price %}
+                            {% if product.old_price %}
+                                <div class="old-price mb-1">
+                                    <s><span class="money">Rs. {{ product.old_price }}</span></s>
+                                    <span class="discount-badge">{{ product.discount_percentage|floatformat:0 }}% OFF</span>
+                                </div>
+                            {% endif %}
+                            <div class="current-price">
+                                <span class="money">Rs. {{ product.price }}</span>
+                            </div>
+                        {% else %}
+                            <div class="call-for-price">Price on request</div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Description Section -->
+                    <div class="product-description-section mb-4 flex-grow-1">
+                        <h4 class="section-title">Description</h4>
+                        <div class="description-content">
+                            <p>{{ product.description|truncatewords:30 }}</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Action Buttons Section -->
+                    <div class="product-action-section mt-auto">
+                        <!-- Primary Action -->
+                        <div class="primary-action mb-3 w-100">
+                            {% if product.price %}
+                                <button type="button" class="btn btn-primary btn-addto-cart w-100">
+                                    <i class="fa fa-shopping-cart mr-2"></i> Add to Cart
+                                </button>
+                            {% else %}
+                                {% with whatsapp_number="+1234567890" message="Hi, I need the price and ordering details for SKU: "|add:product.sku|add:" - "|add:product.name %}
+                                    <a href="https://wa.me/{{ whatsapp_number }}?text={{ message|urlencode }}" target="_blank" class="btn btn-success whatsapp-btn w-100">
+                                        <i class="fa fa-whatsapp mr-2"></i> Contact for Price
+                                    </a>
+                                {% endwith %}
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Secondary Actions -->
+                        <div class="secondary-actions d-flex flex-wrap justify-content-center gap-custom">
+                            <a href="{% url 'add_to_wishlist' product.sku %}" class="btn btn-secondary-action">
+                                <i class="fa fa-heart-o mr-2"></i> Wishlist
+                            </a>
+                            <a href="{% url 'add_to_comparison' product.sku %}" class="btn btn-secondary-action">
+                                <i class="fa fa-exchange mr-2"></i> Compare
+                            </a>
+                            <a href="{% url 'product_detail' product.sku %}" class="btn btn-secondary-action">
+                                <i class="fa fa-eye mr-2"></i> Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Reset and Normalize */
+    * {
+        box-sizing: border-box;
+    }
+
+    .equal-height-row {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    
+    .product-image-column, .product-info-column {
+        display: flex;
+        margin-bottom: 20px;
+    }
+    
+    .product-info-column {
+        padding: 0 15px; /* Consistent padding */
+    }
+    
+    .product-single__meta {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+    }
+    
+    .product-info-section {
+        border-bottom: 1px solid #eee;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .product-info-row {
+        width: 100%;
+        margin-bottom: 8px;
+        align-items: flex-start;
+    }
+    
+    .info-label {
+        font-weight: bold;
+        flex: 0 0 100px;
+        margin-right: 10px;
+    }
+    
+    .info-value {
+        flex: 1;
+    }
+    
+    .product-price-section {
+        border-bottom: 1px solid #eee;
+        padding-bottom: 15px;
+    }
+    
+    .old-price {
+        color: #999;
+    }
+    
+    .current-price {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+    }
+    
+    .discount-badge {
+        background-color: #e53935;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 3px;
+        font-size: 12px;
+        margin-left: 10px;
+    }
+    
+    .call-for-price {
+        font-size: 18px;
+        color: #000000;
+        font-weight: bold;
+    }
+    
+    .section-title {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #333;
+    }
+    
+    .description-content {
+        color: #666;
+        line-height: 1.6;
+    }
+    
+    .product-action-section {
+        margin-top: clamp(1rem, 2vw, 2rem);
+    }
+    
+    /* Primary Button Styling */
+    .btn-primary, .btn-success {
+        padding: clamp(8px, 1.5vw, 12px) clamp(12px, 2vw, 20px);
+        font-size: clamp(14px, 1.5vw, 16px);
+        font-weight: 600;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .anm-times-l::before {
+        color: #000000;
+    }
+    
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+    
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+    
+    .btn-success:hover {
+        background-color: #218838;
+        border-color: #218838;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* Secondary Buttons Styling */
+    .secondary-actions {
+        gap: clamp(0.3rem, 1vw, 1rem);
+    }
+    
+    .btn-secondary-action {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: clamp(6px, 1vw, 8px) clamp(8px, 1.5vw, 12px);
+        font-size: clamp(12px, 1.2vw, 14px);
+        color: #333;
+        background-color: #f8f9fa;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        min-width: 80px;
+    }
+    
+    .btn-secondary-action:hover {
+        background-color: #e9ecef;
+        border-color: #ccc;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    }
+    
+    .fa-heart-o:before {
+        color: #000000;
+    }
+    
+    .btn-secondary-action i {
+        font-size: clamp(14px, 1.5vw, 16px);
+    }
+    
+    /* Thumbnail Styling */
+    .product-thumb-row {
+        margin: 0 -5px;
+        padding: 0;
+    }
+    
+    .product-thumb-item {
+        border: 2px solid transparent;
+        transition: all 0.2s ease;
+        margin: 0 5px 10px;
+    }
+    
+    .product-thumb-item:hover, .product-thumb-item.active-thumb {
+        border-color: #007bff;
+    }
+    
+    .main-product-image {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 300px;
+        background-color: #f8f9fa;
+    }
+    
+    .main-product-image img {
+        max-height: 100%;
+        max-width: 100%;
+        object-fit: contain;
+    }
+    
+    /* Single Image Case */
+    .product-details-img:not(:has(.product-thumb-row)) {
+        margin: 0;
+        padding: 0;
+    }
+    
+    .product-details-img:not(:has(.product-thumb-row)) .main-product-image {
+        width: 100%;
+        margin: 0 auto;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .secondary-actions {
+            gap: clamp(0.2rem, 0.8vw, 0.8rem);
+        }
+        
+        .btn-secondary-action {
+            flex: 1 1 30%;
+            padding: clamp(5px, 0.8vw, 7px) clamp(6px, 1vw, 10px);
+            font-size: clamp(11px, 1vw, 13px);
+        }
+        
+        .btn-secondary-action i {
+            font-size: clamp(12px, 1.2vw, 14px);
+        }
+        
+        .product-action-section {
+            padding: 0 10px;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .product-info-column {
+            padding: 0 10px;
+        }
+        
+        .product-single__meta {
+            padding: 0;
+        }
+        
+        .product-info-row {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .info-label {
+            flex: none;
+            width: auto;
+            margin-bottom: 4px;
+            margin-right: 0;
+        }
+        
+        .info-value {
+            width: 100%;
+        }
+        
+        .product-thumb-row {
+            margin: 0;
+            justify-content: flex-start;
+        }
+        
+        .product-thumb-item {
+            margin: 0 10px 10px 0;
+        }
+        
+        .main-product-image {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .secondary-actions {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .btn-secondary-action {
+            width: 100%;
+            flex: none;
+            margin-bottom: 0;
+            padding: clamp(6px, 1vw, 8px) clamp(8px, 1.5vw, 12px);
+            font-size: clamp(12px, 1.2vw, 14px);
+        }
+        
+        .btn-secondary-action i {
+            font-size: clamp(14px, 1.5vw, 16px);
+        }
+        
+        .primary-action {
+            margin-bottom: 1rem;
+        }
+    }
+    
+    @media (max-width: 400px) {
+        .btn-primary, .btn-success {
+            padding: clamp(6px, 1vw, 10px) clamp(10px, 1.5vw, 15px);
+            font-size: clamp(12px, 1.2vw, 14px);
+        }
+        
+        .product-action-section {
+            padding: 0 5px;
+        }
+    }
+</style>
+
+<script>
+    // Image thumbnail functionality
+    $('.product-thumbnail').on('click', function() {
+        var fullImageUrl = $(this).data('full-image');
+        $('#main-product-image').attr('src', fullImageUrl);
+        
+        // Add active class to selected thumbnail
+        $('.product-thumb-item').removeClass('active-thumb');
+        $(this).parent().addClass('active-thumb');
+    });
+    
+    // Set first thumbnail as active by default
+    $('.product-thumb-item:first').addClass('active-thumb');
+</script>

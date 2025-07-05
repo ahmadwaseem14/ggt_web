@@ -1,0 +1,1245 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+<style>
+    body {
+        background-color: #121212;
+        color: #e0e0e0;
+    }
+
+    .navbar {
+        background-color: #1a1a1a !important;
+        border-bottom: 1px solid #333;
+    }
+
+    .product-list-container {
+        margin-top: 80px;
+        padding-bottom: 50px;
+    }
+
+    .filter-sidebar {
+        background-color: #1e1e1e;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .filter-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #ffffff;
+        border-bottom: 1px solid #333;
+        padding-bottom: 10px;
+    }
+
+    .filter-section {
+        margin-bottom: 20px;
+    }
+
+    .filter-section-title {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #e0e0e0;
+    }
+
+    .filter-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .filter-list li {
+        margin-bottom: 8px;
+    }
+
+    .filter-list label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        color: #e0e0e0;
+    }
+    .variants.add {
+    position: relative;
+    overflow: hidden;
+}
+.btn.btn-addto-cart {
+    font-size: 0.6rem;
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.btn.btn-addto-cart:hover {
+    background-color: #555;
+}
+.btn.btn-addto-cart.whatsapp-btn {
+    background-color: #25D366; /* WhatsApp green */
+    text-decoration: none;
+}
+.btn.btn-addto-cart.whatsapp-btn:hover {
+    background-color: #1EBB52;
+}
+    .filter-list input[type="radio"] {
+        margin-right: 8px;
+    }
+
+    .sort-options {
+        background-color: #1e1e1e;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .sort-label {
+        font-weight: 600;
+        color: #e0e0e0;
+    }
+
+    .sort-select {
+        background-color: #2a2a2a;
+        border: 1px solid #444;
+        color: #e0e0e0;
+        padding: 8px 15px;
+        border-radius: 4px;
+        min-width: 200px;
+    }
+
+    /* Home-style product card */
+    .grid-product {
+        background-color: #1e1e1e;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 30px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    .grid-product:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .grid-view-item__image-wrapper {
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #1a1a1a;
+        padding: 20px;
+        position: relative;
+    }
+
+    .grid-view-item__image {
+        max-height: 100%;
+        max-width: 100%;
+        object-fit: contain;
+    }
+
+    .grid-view-item__title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 15px 0 5px;
+        color: #ffffff;
+        padding: 0 15px;
+        height: 2.4rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    .grid-view-item__meta {
+        padding: 0 15px;
+        margin-bottom: 10px;
+    }
+
+    .product-price__price {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #ffffff;
+    }
+
+    .call-for-price {
+        font-size: 1.1rem;
+        color: #f0f0f0;
+        font-weight: 600;
+    }
+
+    .product-badges {
+        padding: 0 15px;
+        margin-bottom: 15px;
+    }
+
+    .badge {
+        margin-right: 5px;
+    }
+
+    .product-actions {
+        padding: 0 15px 15px;
+        margin-top: auto;
+    }
+
+    .btn-view-details {
+        width: 100%;
+        background-color: #2196f3;
+        border-color: #2196f3;
+        color: white;
+        padding: 8px 15px;
+        font-weight: 600;
+        border-radius: 6px;
+    }
+
+    .btn-view-details:hover {
+        background-color: #1976d2;
+        border-color: #1976d2;
+        color: white;
+    }
+
+    .filter-button {
+        background-color: #2196f3;
+        border-color: #2196f3;
+        color: white;
+        padding: 8px 15px;
+        font-weight: 600;
+        border-radius: 6px;
+        margin-top: 15px;
+        width: 100%;
+        border: none;
+    }
+
+    .filter-button:hover {
+        background-color: #1976d2;
+    }
+
+    .reset-button {
+        background-color: #616161;
+        border-color: #616161;
+        color: white;
+        padding: 8px 15px;
+        font-weight: 600;
+        border-radius: 6px;
+        margin-top: 10px;
+        width: 100%;
+        display: block;
+        text-align: center;
+        text-decoration: none;
+    }
+
+    .reset-button:hover {
+        background-color: #424242;
+        color: white;
+        text-decoration: none;
+    }
+
+    .no-products {
+        background-color: #1e1e1e;
+        border-radius: 10px;
+        padding: 30px;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .no-products h3 {
+        color: #ffffff;
+        margin-bottom: 15px;
+    }
+
+    .no-products p {
+        color: #bdbdbd;
+        margin-bottom: 20px;
+    }
+
+    @media (max-width: 991px) {
+        .filter-sidebar {
+            margin-bottom: 20px;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .sort-options {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .sort-controls {
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .sort-select {
+            width: 100%;
+        }
+    }
+
+    /* Product action buttons */
+    .product-buttons {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .grid-product:hover .product-buttons {
+        opacity: 1;
+    }
+
+    .product-button {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background-color: rgba(33, 33, 33, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+    .product-button:hover {
+        background-color: #2196f3;
+    }
+
+    .product-button i {
+        font-size: 16px;
+    }
+
+    .quick-view-button {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(33, 33, 33, 0.8);
+        color: white;
+        text-align: center;
+        padding: 8px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        text-decoration: none;
+    }
+
+    .grid-product:hover .quick-view-button {
+        opacity: 1;
+    }
+
+    .quick-view-button:hover {
+        background-color: #2196f3;
+        color: white;
+        text-decoration: none;
+    }
+
+    /* Mobile Filter Toggle */
+    .mobile-filter-toggle {
+        display: none;
+        width: 100%;
+        padding: 12px;
+        background-color: #2196f3;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        text-align: left;
+    }
+
+    .mobile-filter-toggle i {
+        float: right;
+        transition: transform 0.3s ease;
+    }
+
+    .mobile-filter-toggle.active i {
+        transform: rotate(180deg);
+    }
+
+    /* Categories Section */
+    .categories-section {
+        background-color: #1e1e1e;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .categories-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #ffffff;
+        border-bottom: 1px solid #333;
+        padding-bottom: 10px;
+    }
+
+    .categories-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .category-item {
+        margin-bottom: 10px;
+    }
+
+    .category-link {
+        display: flex;
+        align-items: center;
+        color: #e0e0e0;
+        text-decoration: none;
+        padding: 8px 12px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+    }
+
+    .category-link:hover {
+        background-color: #2a2a2a;
+        color: #2196f3;
+    }
+
+    .category-link.active {
+        background-color: #2196f3;
+        color: white;
+    }
+
+    .category-link i {
+        margin-right: 10px;
+    }
+
+    .category-count {
+        margin-left: auto;
+        background-color: #333;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+    }
+
+    @media (max-width: 991px) {
+        .mobile-filter-toggle {
+            display: block;
+        }
+
+        .filter-sidebar {
+            display: none;
+        }
+
+        .filter-sidebar.show {
+            display: block;
+        }
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+{% include 'navbar.html' %}
+
+<div class="container product-list-container">
+    <div class="heading-container mb-4">
+        <h2 style="color: #ffffff;" class="main-heading">{{ product_type_display }}s</h2>
+        <h3 class="text-muted">Browse our collection of {{ product_type_display }}s</h3>
+    </div>
+
+    <!-- Mobile Filter Toggle Button -->
+    <button class="mobile-filter-toggle" id="mobileFilterToggle">
+        <i class="fa fa-filter"></i> Filter Products
+        <i class="fa fa-chevron-down float-end"></i>
+    </button>
+
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-3">
+            <!-- Categories Section -->
+           
+
+            <!-- Filter Sidebar -->
+            <div class="filter-sidebar" id="filterSidebar">
+                <h3 class="filter-title">Filter Products</h3>
+
+                <form id="filter-form" method="get">
+                    <!-- Brand Filter -->
+                    <div class="filter-section">
+                        <h4 class="filter-section-title">Brand</h4>
+                        <ul class="filter-list">
+                            {% for brand in all_brands %}
+                                {% if brand %}
+                                    <li>
+                                        <label>
+                                            <input type="radio" name="brand" value="{{ brand }}" {% if current_brand == brand %}checked{% endif %}>
+                                            {{ brand }}
+                                        </label>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                            <li>
+                                <label>
+                                    <input type="radio" name="brand" value="" {% if not current_brand %}checked{% endif %}>
+                                    All Brands
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Condition Filter -->
+                    <div class="filter-section">
+                        <h4 class="filter-section-title">Condition</h4>
+                        <ul class="filter-list">
+                            <li><label><input type="radio" name="condition" value="new" {% if current_condition == 'new' %}checked{% endif %}> New</label></li>
+                            <li><label><input type="radio" name="condition" value="used" {% if current_condition == 'used' %}checked{% endif %}> Used</label></li>
+                            <li><label><input type="radio" name="condition" value="refurbished" {% if current_condition == 'refurbished' %}checked{% endif %}> Refurbished</label></li>
+                            <li><label><input type="radio" name="condition" value="box_open" {% if current_condition == 'box_open' %}checked{% endif %}> Box Open</label></li>
+                            <li><label><input type="radio" name="condition" value="" {% if not current_condition %}checked{% endif %}> All Conditions</label></li>
+                        </ul>
+                    </div>
+
+                    <!-- GPU Filters -->
+                    {% if product_type == 'gpu' %}
+                        {% if filter_options.vram_options %}
+                            <div class="filter-section">
+                                <h4 class="filter-section-title">VRAM</h4>
+                                <ul class="filter-list">
+                                    {% for vram in filter_options.vram_options %}
+                                        {% if vram %}
+                                            <li><label><input type="radio" name="vram" value="{{ vram }}" {% if request.GET.vram == vram|stringformat:"i" %}checked{% endif %}> {{ vram }} GB</label></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li><label><input type="radio" name="vram" value="" {% if not request.GET.vram %}checked{% endif %}> All VRAM Sizes</label></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                        {% if filter_options.memory_type_options %}
+                            <div class="filter-section">
+                                <h4 class="filter-section-title">Memory Type</h4>
+                                <ul class="filter-list">
+                                    {% for memory_type in filter_options.memory_type_options %}
+                                        {% if memory_type %}
+                                            <li><label><input type="radio" name="memory_type" value="{{ memory_type }}" {% if request.GET.memory_type == memory_type %}checked{% endif %}> {{ memory_type }}</label></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li><label><input type="radio" name="memory_type" value="" {% if not request.GET.memory_type %}checked{% endif %}> All Memory Types</label></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+
+                    <!-- CPU Filters -->
+                    {% if product_type == 'cpu' %}
+                        {% if filter_options.generation_options %}
+                            <div class="filter-section">
+                                <h4 class="filter-section-title">Generation</h4>
+                                <ul class="filter-list">
+                                    {% for generation in filter_options.generation_options %}
+                                        {% if generation %}
+                                            <li><label><input type="radio" name="generation" value="{{ generation }}" {% if request.GET.generation == generation %}checked{% endif %}> {{ generation }}</label></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li><label><input type="radio" name="generation" value="" {% if not request.GET.generation %}checked{% endif %}> All Generations</label></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                        {% if filter_options.cores_options %}
+                            <div class="filter-section">
+                                <h4 class="filter-section-title">Minimum Cores</h4>
+                                <ul class="filter-list">
+                                    {% for cores in filter_options.cores_options %}
+                                        {% if cores %}
+                                            <li><label><input type="radio" name="cores" value="{{ cores }}" {% if request.GET.cores == cores|stringformat:"i" %}checked{% endif %}> {{ cores }} cores or more</label></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li><label><input type="radio" name="cores" value="" {% if not request.GET.cores %}checked{% endif %}> All Core Counts</label></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                        {% if filter_options.threads_options %}
+                            <div class="filter-section">
+                                <h4 class="filter-section-title">Minimum Threads</h4>
+                                <ul class="filter-list">
+                                    {% for threads in filter_options.threads_options %}
+                                        {% if threads %}
+                                            <li><label><input type="radio" name="threads" value="{{ threads }}" {% if request.GET.threads == threads|stringformat:"i" %}checked{% endif %}> {{ threads }} threads or more</label></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li><label><input type="radio" name="threads" value="" {% if not request.GET.threads %}checked{% endif %}> All Thread Counts</label></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+
+                    <!-- RAM Filters -->
+                    {% if product_type == 'ram' %}
+                        {% if filter_options.ram_type_options %}
+                            <div class="filter-section">
+                                <h4 class="filter-section-title">RAM Type</h4>
+                                <ul class="filter-list">
+                                    {% for ram_type in filter_options.ram_type_options %}
+                                        {% if ram_type %}
+                                            <li><label><input type="radio" name="ram_type" value="{{ ram_type }}" {% if request.GET.ram_type == ram_type %}checked{% endif %}> {{ ram_type }}</label></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li><label><input type="radio" name="ram_type" value="" {% if not request.GET.ram_type %}checked{% endif %}> All RAM Types</label></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                        {% if filter_options.capacity_options %}
+                            <div class="filter-section">
+                                <h4 class="filter-section-title">Capacity</h4>
+                                <ul class="filter-list">
+                                    {% for capacity in filter_options.capacity_options %}
+                                        {% if capacity %}
+                                            <li><label><input type="radio" name="capacity" value="{{ capacity }}" {% if request.GET.capacity == capacity|stringformat:"i" %}checked{% endif %}> {{ capacity }} GB</label></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li><label><input type="radio" name="capacity" value="" {% if not request.GET.capacity %}checked{% endif %}> All Capacities</label></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                        {% if filter_options.form_factor_options %}
+                            <div class="filter-section">
+                                <h4 class="filter-section-title">Form Factor</h4>
+                                <ul class="filter-list">
+                                    {% for form_factor in filter_options.form_factor_options %}
+                                        {% if form_factor %}
+                                            <li><label><input type="radio" name="form_factor" value="{{ form_factor }}" {% if request.GET.form_factor == form_factor %}checked{% endif %}> {{ form_factor }}</label></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li><label><input type="radio" name="form_factor" value="" {% if not request.GET.form_factor %}checked{% endif %}> All Form Factors</label></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+
+                    <!-- Laptop Filters -->
+                    {% if product_type == 'laptop' %}
+                        {% if filter_options.ram_options %}
+                            <div class="filter-section">
+                                <h4 class="filter-section-title">Minimum RAM</h4>
+                                <ul class="filter-list">
+                                    {% for ram in filter_options.ram_options %}
+                                        {% if ram %}
+                                            <li><label><input type="radio" name="min_ram" value="{{ ram }}" {% if request.GET.min_ram == ram|stringformat:"i" %}checked{% endif %}> {{ ram }} GB or more</label></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li><label><input type="radio" name="min_ram" value="" {% if not request.GET.min_ram %}checked{% endif %}> All RAM Sizes</label></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                        {% if filter_options.screen_size_options %}
+                            <div class="filter-section">
+                                <h4 class="filter-section-title">Screen Size</h4>
+                                <ul class="filter-list">
+                                    {% for screen_size in filter_options.screen_size_options %}
+                                        {% if screen_size %}
+                                            <li><label><input type="radio" name="screen_size" value="{{ screen_size }}" {% if request.GET.screen_size == screen_size|stringformat:"f" %}checked{% endif %}> {{ screen_size }} inches</label></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li><label><input type="radio" name="screen_size" value="" {% if not request.GET.screen_size %}checked{% endif %}> All Screen Sizes</label></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+
+                    <!-- Tablet Filters -->
+                    {% if product_type == 'tablet' %}
+                        {% if filter_options.ram_options %}
+                            <div class="filter-section">
+                                <h4 class="filter-section-title">Minimum RAM</h4>
+                                <ul class="filter-list">
+                                    {% for ram in filter_options.ram_options %}
+                                        {% if ram %}
+                                            <li><label><input type="radio" name="min_ram" value="{{ ram }}" {% if request.GET.min_ram == ram|stringformat:"i" %}checked{% endif %}> {{ ram }} GB or more</label></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li><label><input type="radio" name="min_ram" value="" {% if not request.GET.min_ram %}checked{% endif %}> All RAM Sizes</label></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                        {% if filter_options.storage_options %}
+                            <div class="filter-section">
+                                <h4 class="filter-section-title">Storage</h4>
+                                <ul class="filter-list">
+                                    {% for storage in filter_options.storage_options %}
+                                        {% if storage %}
+                                            <li><label><input type="radio" name="storage" value="{{ storage }}" {% if request.GET.storage == storage|stringformat:"i" %}checked{% endif %}> {{ storage }} GB</label></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li><label><input type="radio" name="storage" value="" {% if not request.GET.storage %}checked{% endif %}> All Storage Sizes</label></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                        {% if filter_options.screen_size_options %}
+                            <div class="filter-section">
+                                <h4 class="filter-section-title">Screen Size</h4>
+                                <ul class="filter-list">
+                                    {% for screen_size in filter_options.screen_size_options %}
+                                        {% if screen_size %}
+                                            <li><label><input type="radio" name="screen_size" value="{{ screen_size }}" {% if request.GET.screen_size == screen_size|stringformat:"f" %}checked{% endif %}> {{ screen_size }} inches</label></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li><label><input type="radio" name="screen_size" value="" {% if not request.GET.screen_size %}checked{% endif %}> All Screen Sizes</label></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+
+                    <!-- Storage Filters -->
+                    {% if product_type == 'storage' %}
+                        {% if filter_options.storage_type_options %}
+                            <div class="filter-section">
+                                <h4 class="filter-section-title">Storage Type</h4>
+                                <ul class="filter-list">
+                                    {% for storage_type in filter_options.storage_type_options %}
+                                        {% if storage_type %}
+                                            <li><label><input type="radio" name="storage_type" value="{{ storage_type }}" {% if request.GET.storage_type == storage_type %}checked{% endif %}> {{ storage_type }}</label></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li><label><input type="radio" name="storage_type" value="" {% if not request.GET.storage_type %}checked{% endif %}> All Storage Types</label></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                        {% if filter_options.form_factor_options %}
+                            <div class="filter-section">
+                                <h4 class="filter-section-title">Form Factor</h4>
+                                <ul class="filter-list">
+                                    {% for form_factor in filter_options.form_factor_options %}
+                                        {% if form_factor %}
+                                            <li><label><input type="radio" name="form_factor" value="{{ form_factor }}" {% if request.GET.form_factor == form_factor %}checked{% endif %}> {{ form_factor }}</label></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li><label><input type="radio" name="form_factor" value="" {% if not request.GET.form_factor %}checked{% endif %}> All Form Factors</label></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+
+                    <!-- PSU Filters -->
+                    {% if product_type == 'psu' %}
+                        {% if filter_options.form_factor_options %}
+                            <div class="filter-section">
+                                <h4 class="filter-section-title">Form Factor</h4>
+                                <ul class="filter-list">
+                                    {% for form_factor in filter_options.form_factor_options %}
+                                        {% if form_factor %}
+                                            <li><label><input type="radio" name="form_factor" value="{{ form_factor }}" {% if request.GET.form_factor == form_factor %}checked{% endif %}> {{ form_factor }}</label></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li><label><input type="radio" name="form_factor" value="" {% if not request.GET.form_factor %}checked{% endif %}> All Form Factors</label></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                        {% if filter_options.wattage_options %}
+                            <div class="filter-section">
+                                <h4 class="filter-section-title">Wattage</h4>
+                                <ul class="filter-list">
+                                    {% for wattage in filter_options.wattage_options %}
+                                        {% if wattage %}
+                                            <li><label><input type="radio" name="wattage" value="{{ wattage }}" {% if request.GET.wattage == wattage|stringformat:"i" %}checked{% endif %}> {{ wattage }}W or more</label></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li><label><input type="radio" name="wattage" value="" {% if not request.GET.wattage %}checked{% endif %}> All Wattages</label></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+
+                    <!-- Case Filters -->
+                    {% if product_type == 'case' %}
+                        {% if filter_options.case_type_options %}
+                            <div class="filter-section">
+                                <h4 class="filter-section-title">Case Type</h4>
+                                <ul class="filter-list">
+                                    {% for case_type in filter_options.case_type_options %}
+                                        {% if case_type %}
+                                            <li><label><input type="radio" name="case_type" value="{{ case_type }}" {% if request.GET.case_type == case_type %}checked{% endif %}> {{ case_type }}</label></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li><label><input type="radio" name="case_type" value="" {% if not request.GET.case_type %}checked{% endif %}> All Case Types</label></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+
+                    <!-- Monitor Filters -->
+                    {% if product_type == 'monitor' %}
+                        {% if filter_options.resolution_options %}
+                            <div class="filter-section">
+                                <h4 class="filter-section-title">Resolution</h4>
+                                <ul class="filter-list">
+                                    {% for resolution in filter_options.resolution_options %}
+                                        {% if resolution %}
+                                            <li><label><input type="radio" name="resolution" value="{{ resolution }}" {% if request.GET.resolution == resolution %}checked{% endif %}> {{ resolution }}</label></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li><label><input type="radio" name="resolution" value="" {% if not request.GET.resolution %}checked{% endif %}> All Resolutions</label></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                        {% if filter_options.screen_size_options %}
+                            <div class="filter-section">
+                                <h4 class="filter-section-title">Screen Size</h4>
+                                <ul class="filter-list">
+                                    {% for screen_size in filter_options.screen_size_options %}
+                                        {% if screen_size %}
+                                            <li><label><input type="radio" name="screen_size" value="{{ screen_size }}" {% if request.GET.screen_size == screen_size|stringformat:"f" %}checked{% endif %}> {{ screen_size }} inches</label></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li><label><input type="radio" name="screen_size" value="" {% if not request.GET.screen_size %}checked{% endif %}> All Screen Sizes</label></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+
+                    <!-- Keyboard Filters -->
+                    {% if product_type == 'keyboard' %}
+                        {% if filter_options.connection_type_options %}
+                            <div class="filter-section">
+                                <h4 class="filter-section-title">Connection Type</h4>
+                                <ul class="filter-list">
+                                    {% for connection_type in filter_options.connection_type_options %}
+                                        {% if connection_type %}
+                                            <li><label><input type="radio" name="connection_type" value="{{ connection_type }}" {% if request.GET.connection_type == connection_type %}checked{% endif %}> {{ connection_type }}</label></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li><label><input type="radio" name="connection_type" value="" {% if not request.GET.connection_type %}checked{% endif %}> All Connection Types</label></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                        {% if filter_options.keyboard_type_options %}
+                            <div class="filter-section">
+                                <h4 class="filter-section-title">Keyboard Type</h4>
+                                <ul class="filter-list">
+                                    {% for keyboard_type in filter_options.keyboard_type_options %}
+                                        {% if keyboard_type %}
+                                            <li><label><input type="radio" name="keyboard_type" value="{{ keyboard_type }}" {% if request.GET.keyboard_type == keyboard_type %}checked{% endif %}> {{ keyboard_type }}</label></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li><label><input type="radio" name="keyboard_type" value="" {% if not request.GET.keyboard_type %}checked{% endif %}> All Keyboard Types</label></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+
+                    <!-- Mouse Filters -->
+                    {% if product_type == 'mouse' %}
+                        {% if filter_options.dpi_options %}
+                            <div class="filter-section">
+                                <h4 class="filter-section-title">Minimum DPI</h4>
+                                <ul class="filter-list">
+                                    {% for dpi in filter_options.dpi_options %}
+                                        {% if dpi %}
+                                            <li><label><input type="radio" name="dpi" value="{{ dpi }}" {% if request.GET.dpi == dpi|stringformat:"i" %}checked{% endif %}> {{ dpi }} DPI or more</label></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li><label><input type="radio" name="dpi" value="" {% if not request.GET.dpi %}checked{% endif %}> All DPI Values</label></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                        {% if filter_options.connection_type_options %}
+                            <div class="filter-section">
+                                <h4 class="filter-section-title">Connection Type</h4>
+                                <ul class="filter-list">
+                                    {% for connection_type in filter_options.connection_type_options %}
+                                        {% if connection_type %}
+                                            <li><label><input type="radio" name="connection_type" value="{{ connection_type }}" {% if request.GET.connection_type == connection_type %}checked{% endif %}> {{ connection_type }}</label></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li><label><input type="radio" name="connection_type" value="" {% if not request.GET.connection_type %}checked{% endif %}> All Connection Types</label></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                        {% if filter_options.buttons_options %}
+                            <div class="filter-section">
+                                <h4 class="filter-section-title">Minimum Buttons</h4>
+                                <ul class="filter-list">
+                                    {% for buttons in filter_options.buttons_options %}
+                                        {% if buttons %}
+                                            <li><label><input type="radio" name="buttons" value="{{ buttons }}" {% if request.GET.buttons == buttons|stringformat:"i" %}checked{% endif %}> {{ buttons }} buttons or more</label></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li><label><input type="radio" name="buttons" value="" {% if not request.GET.buttons %}checked{% endif %}> All Button Counts</label></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+
+                    <!-- Motherboard Filters -->
+                    {% if product_type == 'motherboard' %}
+                        {% if filter_options.form_factor_options %}
+                            <div class="filter-section">
+                                <h4 class="filter-section-title">Form Factor</h4>
+                                <ul class="filter-list">
+                                    {% for form_factor in filter_options.form_factor_options %}
+                                        {% if form_factor %}
+                                            <li><label><input type="radio" name="form_factor" value="{{ form_factor }}" {% if request.GET.form_factor == form_factor %}checked{% endif %}> {{ form_factor }}</label></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li><label><input type="radio" name="form_factor" value="" {% if not request.GET.form_factor %}checked{% endif %}> All Form Factors</label></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                        {% if filter_options.ram_type_options %}
+                            <div class="filter-section">
+                                <h4 class="filter-section-title">RAM Type</h4>
+                                <ul class="filter-list">
+                                    {% for ram_type in filter_options.ram_type_options %}
+                                        {% if ram_type %}
+                                            <li><label><input type="radio" name="ram_type" value="{{ ram_type }}" {% if request.GET.ram_type == ram_type %}checked{% endif %}> {{ ram_type }}</label></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li><label><input type="radio" name="ram_type" value="" {% if not request.GET.ram_type %}checked{% endif %}> All RAM Types</label></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                        {% if filter_options.ram_slots_options %}
+                            <div class="filter-section">
+                                <h4 class="filter-section-title">RAM Slots</h4>
+                                <ul class="filter-list">
+                                    {% for ram_slots in filter_options.ram_slots_options %}
+                                        {% if ram_slots %}
+                                            <li><label><input type="radio" name="ram_slots" value="{{ ram_slots }}" {% if request.GET.ram_slots == ram_slots|stringformat:"i" %}checked{% endif %}> {{ ram_slots }} slots or more</label></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li><label><input type="radio" name="ram_slots" value="" {% if not request.GET.ram_slots %}checked{% endif %}> All Slot Counts</label></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+
+                    <!-- Speakers Filters -->
+                    {% if product_type == 'speakers' %}
+                        {% if filter_options.connection_type_options %}
+                            <div class="filter-section">
+                                <h4 class="filter-section-title">Connection Type</h4>
+                                <ul class="filter-list">
+                                    {% for connection_type in filter_options.connection_type_options %}
+                                        {% if connection_type %}
+                                            <li><label><input type="radio" name="connection_type" value="{{ connection_type }}" {% if request.GET.connection_type == connection_type %}checked{% endif %}> {{ connection_type }}</label></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li><label><input type="radio" name="connection_type" value="" {% if not request.GET.connection_type %}checked{% endif %}> All Connection Types</label></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+
+                    <!-- Sort By (Hidden in sidebar) -->
+                    <input type="hidden" name="sort_by" value="{{ current_sort }}">
+
+                    <!-- Filter Buttons -->
+                    <button type="submit" class="filter-button">Apply Filters</button>
+                    <a href="{% url 'product_list' product_type %}" class="reset-button">Reset Filters</a>
+                </form>
+            </div>
+        </div>
+
+        <!-- Product List -->
+        <div class="col-lg-9">
+            <!-- Sort Options -->
+            <div class="sort-options">
+                <div class="results-count">
+                    <span style="color: #ffffff;">{{ products.count }} products found</span>
+                </div>
+                <div class="sort-controls">
+                    <span class="sort-label me-2">Sort by:</span>
+                    <select class="sort-select" id="sort-select">
+                        <option value="newest" {% if current_sort == 'newest' %}selected{% endif %}>Newest</option>
+                        <option value="price_low" {% if current_sort == 'price_low' %}selected{% endif %}>Price: Low to High</option>
+                        <option value="price_high" {% if current_sort == 'price_high' %}selected{% endif %}>Price: High to Low</option>
+                        <option value="name_asc" {% if current_sort == 'name_asc' %}selected{% endif %}>Name: A to Z</option>
+                        <option value="name_desc" {% if current_sort == 'name_desc' %}selected{% endif %}>Name: Z to A</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="grid-products grid--view-items">
+                <div class="row">
+                    {% for product in products %}
+                        <div class="col-6 col-sm-6 col-md-4 col-lg-3 item">
+                            <!-- Product image and details remain unchanged -->
+                            <div class="product-image">
+                                <a href="{% url 'product_detail' product.sku %}">
+                                    {% with primary_image=product.images.all|dictsort:"is_primary"|last %}
+                                        {% if primary_image %}
+                                            <img class="primary blur-up lazyload" data-src="{{ primary_image.image.url }}" src="{{ primary_image.image.url }}" alt="{{ primary_image.alt_text|default:product.name }}" title="{{ product.name }}">
+                                        {% else %}
+                                            {% with first_image=product.images.first %}
+                                                {% if first_image %}
+                                                    <img class="primary blur-up lazyload" data-src="{{ first_image.image.url }}" src="{{ first_image.image.url }}" alt="{{ first_image.alt_text|default:product.name }}" title="{{ product.name }}">
+                                                {% else %}
+                                                    <img class="primary blur-up lazyload" data-src="{% static 'images/no-image.jpg' %}" src="{% static 'images/no-image.jpg' %}" alt="No image available" title="{{ product.name }}">
+                                                {% endif %}
+                                            {% endwith %}
+                                        {% endif %}
+                                        {% if product.images.count > 1 %}
+                                            {% with hover_image=product.images.all|dictsort:"is_primary"|first %}
+                                                <img class="hover blur-up lazyload" data-src="{{ hover_image.image.url }}" src="{{ hover_image.image.url }}" alt="{{ hover_image.alt_text|default:product.name }}" title="{{ product.name }}">
+                                            {% endwith %}
+                                        {% else %}
+                                            {% if primary_image %}
+                                                <img class="hover blur-up lazyload" data-src="{{ primary_image.image.url }}" src="{{ primary_image.image.url }}" alt="{{ primary_image.alt_text|default:product.name }}" title="{{ product.name }}">
+                                            {% else %}
+                                                {% with first_image=product.images.first %}
+                                                    {% if first_image %}
+                                                        <img class="hover blur-up lazyload" data-src="{{ first_image.image.url }}" src="{{ first_image.image.url }}" alt="{{ first_image.alt_text|default:product.name }}" title="{{ product.name }}">
+                                                    {% else %}
+                                                        <img class="hover blur-up lazyload" data-src="{% static 'images/no-image.jpg' %}" src="{% static 'images/no-image.jpg' %}" alt="No image available" title="{{ product.name }}">
+                                                    {% endif %}
+                                                {% endwith %}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endwith %}
+                                    <div class="product-labels rectangular">
+                                        {% if product.old_price and product.price %}
+                                            {% with discount=product.old_price|floatformat:0 current=product.price|floatformat:0 savings=discount|add:"-"|add:current percentage=savings|floatformat:0|add:"00"|stringformat:"s"|slice:":2" %}
+                                                <span class="lbl on-sale">-{{ percentage }}%</span>
+                                            {% endwith %}
+                                        {% endif %}
+                                        {% if product.condition == 'new' %}
+                                            <span class="lbl pr-label1">new</span>
+                                        {% endif %}
+                                    </div>
+                                </a>
+                                <div class="variants add">
+                                    {% if product.price %}
+                                        <a href="#" class="btn btn-addto-cart whatsapp-btn order-whatsapp-btn" 
+                                           data-sku="{{ product.sku }}" 
+                                           data-name="{{ product.name|truncatechars:50 }}" 
+                                           data-price="{{ product.price }}" 
+                                           data-url="{% url 'product_detail' product.sku %}" 
+                                           tabindex="0">
+                                            Order Now
+                                        </a>
+                                    {% else %}
+                                        <a href="#" class="btn btn-addto-cart whatsapp-btn inquiry-whatsapp-btn" 
+                                           data-sku="{{ product.sku }}" 
+                                           data-name="{{ product.name|truncatechars:50 }}" 
+                                           data-url="{% url 'product_detail' product.sku %}" 
+                                           tabindex="0">
+                                            Contact for Price & Order
+                                        </a>
+                                    {% endif %}
+                                </div>
+                                <div class="button-set">
+                                    <a href="{% url 'quick_view' product.sku %}" 
+                                       class="quick-view-popup quick-view" data-toggle="modal" 
+                                       data-target="#content_quickview">
+                                        <i class="icon anm anm-eye-r"></i>
+                                    </a>
+                                    <div class="wishlist-btn">
+                                        <a class="wishlist add-to-wishlist" href="{% url 'add_to_wishlist' product.sku %}">
+                                            <i class="icon anm anm-heart-l"></i>
+                                        </a>
+                                    </div>
+                                    <div class="compare-btn">
+                                        <a class="compare add-to-compare" href="{% url 'add_to_comparison' product.sku %}">
+                                            <i class="icon anm anm-random-r"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-details text-center">
+                                <div class="product-name">
+                                    <a href="{% url 'product_detail' product.sku %}">{{ product.name }}</a>
+                                </div>
+                                <div class="product-price">
+                                    
+                                    {% if product.price %}
+                                        <span class="price">Rs.{{ product.price }}</span>
+                                    {% else %}
+                                        <span class="price">Price on request</span>
+                                    {% endif %}
+                                </div>
+                                {% if product.variants.exists %}
+                                    <ul class="swatches">
+                                        {% for variant in product.variants.all|slice:":6" %}
+                                            <li class="swatch medium rounded">
+                                                <img src="{{ variant.image.url }}" alt="{{ variant.name|default:product.name }}" />
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="col-12 text-center">
+                            <p>No {{ product_type_display }}s available at this time.</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'footer.html' %}
+<!-- [Previous JavaScript remains unchanged] -->
+{% endblock %}
+{% block script %}
+<script>
+    if (typeof jQuery === 'undefined') {
+    console.error('jQuery is not loaded. Please ensure the jQuery CDN is accessible.');
+} else {
+    console.log('jQuery loaded successfully.');
+}
+
+// Configuration - Set your WhatsApp number here
+const WHATSAPP_NUMBER = '923224467244'; // Replace with your actual WhatsApp number
+// Note: Include country code but remove any +, -, or spaces
+// Example: 923224467244 (for Pakistan) or 919876543210 (for India)
+
+// Function to detect if the user is on a mobile device
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+// Function to format phone number for URLs (removes all non-digit characters)
+function formatPhoneNumber(phone) {
+    return phone.replace(/\D/g, '');
+}
+
+// Function to generate WhatsApp URL
+function getWhatsAppUrl(phoneNumber, message) {
+    const formattedNumber = formatPhoneNumber(phoneNumber);
+    const baseUrl = isMobileDevice() ? 'https://wa.me/' : 'https://web.whatsapp.com/send?phone=';
+    const separator = isMobileDevice() ? '?' : '&';
+    return `${baseUrl}${formattedNumber}${separator}text=${encodeURIComponent(message)}`;
+}
+
+// WhatsApp message templates
+function getOrderMessage(name, sku, price, url) {
+    return `🌟 Hello! I'm interested in ordering the following product:\n\n` +
+           `📦 *Product*: ${name}\n` +
+           `🔢 *SKU*: ${sku}\n` +
+           `💰 *Price*: Rs${price}\n` +
+           `🔗 *Details*: ${window.location.origin}${url}\n\n` +
+           `Please confirm availability and provide order details. Thank you! 😊`;
+}
+
+function getInquiryMessage(name, sku, url) {
+    return `🌟 Hello! I have a query about the following product:\n\n` +
+           `📦 *Product*: ${name}\n` +
+           `🔢 *SKU*: ${sku}\n` +
+           `🔗 *Details*: www.ggt.com.pk${url}\n\n` +
+           `Could you please provide the price and ordering details? Thank you! 😊`;
+}
+
+// Handle WhatsApp button clicks
+$(document).ready(function() {
+    // Log to verify script execution
+    console.log('Document ready. Attaching WhatsApp button event listeners.');
+    console.log('Using WhatsApp number:', WHATSAPP_NUMBER);
+
+    // Order button (with price)
+    $('.order-whatsapp-btn').on('click', function(e) {
+        e.preventDefault();
+        console.log('Order WhatsApp button clicked.');
+        const name = $(this).data('name');
+        const sku = $(this).data('sku');
+        const price = $(this).data('price');
+        const url = $(this).data('url');
+        const message = getOrderMessage(name, sku, price, url);
+        const whatsappUrl = getWhatsAppUrl(WHATSAPP_NUMBER, message);
+        console.log('Opening WhatsApp URL:', whatsappUrl);
+        try {
+            window.open(whatsappUrl, '_blank');
+        } catch (error) {
+            console.error('Failed to open WhatsApp URL:', error);
+            alert('Unable to open WhatsApp. Please check your connection or try again.');
+        }
+    });
+
+    // Inquiry button (without price)
+    $('.inquiry-whatsapp-btn').on('click', function(e) {
+        e.preventDefault();
+        console.log('Inquiry WhatsApp button clicked.');
+        const name = $(this).data('name');
+        const sku = $(this).data('sku');
+        const url = $(this).data('url');
+        const message = getInquiryMessage(name, sku, url);
+        const whatsappUrl = getWhatsAppUrl(WHATSAPP_NUMBER, message);
+        console.log('Opening WhatsApp URL:', whatsappUrl);
+        try {
+            window.open(whatsappUrl, '_blank');
+        } catch (error) {
+            console.error('Failed to open WhatsApp URL:', error);
+            alert('Unable to open WhatsApp. Please check your connection or try again.');
+        }
+    });
+});
+    $(document).ready(function () {
+        // Handle sort select change
+        $('#sort-select').on('change', function () {
+            $('input[name="sort_by"]').val($(this).val());
+            $('#filter-form').submit();
+        });
+
+        // Quick View functionality
+        
+    // Quick View
+    $('.quick-view').on('click', function(e) {
+        e.preventDefault();
+        console.log('Quick View button clicked.');
+        var url = $(this).attr('href');
+        $.ajax({
+            url: url,
+            method: 'GET',
+            success: function(data) {
+                $('#content_quickview .modal-body').html(data);
+                $('#content_quickview').modal('show');
+            },
+            error: function(xhr, status, error) {
+                console.error('Error loading Quick View:', error);
+                $('#content_quickview .modal-body').html('<p>Error loading product details.</p>');
+                $('#content_quickview').modal('show');
+            }
+        });
+    });
+
+    $('#content_quickview').on('click', '.model-close-btn', function() {
+        $('#content_quickview').modal('hide');
+    });
+
+        // Wishlist button functionality
+       
+        // Mobile Filter Toggle
+        $('#mobileFilterToggle').on('click', function () {
+            $(this).toggleClass('active');
+            $('#filterSidebar').toggleClass('show');
+            if ($(this).hasClass('active')) {
+                $(this).html('<i class="fa fa-filter"></i> Hide Filters <i class="fa fa-chevron-up float-end"></i>');
+            } else {
+                $(this).html('<i class="fa fa-filter"></i> Show Filters <i class="fa fa-chevron-down float-end"></i>');
+            }
+        });
+
+        // Close filter sidebar when clicking outside on mobile
+        $(document).on('click', function (e) {
+            if (window.innerWidth <= 991) {
+                if (!$(e.target).closest('#filterSidebar').length && !$(e.target).closest('#mobileFilterToggle').length) {
+                    $('#filterSidebar').removeClass('show');
+                    $('#mobileFilterToggle').removeClass('active').html('<i class="fa fa-filter"></i> Show Filters <i class="fa fa-chevron-down float-end"></i>');
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

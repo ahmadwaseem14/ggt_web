@@ -1,0 +1,338 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Why Choose GGT? | Lahore's Trusted PC Hardware Partner{% endblock %}
+
+{% block style %}
+{# Link external libraries (if not already in base.html) #}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+<style>
+    :root {
+        /* Consistent variables */
+        --ggt-bg-dark-primary: #0f0f0f;
+        --ggt-bg-dark-secondary: #1a1a1a;
+        --ggt-bg-dark-tertiary: #242424;
+        --ggt-text-light-primary: #eaeaea;
+        --ggt-text-light-secondary: #b0b0b0;
+        --ggt-text-white: #ffffff;
+        --ggt-accent-primary: #00bfff; /* Deep Sky Blue */
+        --ggt-accent-primary-rgb: 0, 191, 255;
+        --ggt-accent-secondary: #4dd0e1; /* Lighter Cyan */
+        --ggt-border-color: #3a3a3a;
+        --ggt-border-color-subtle: #2c2c2c;
+
+        --ggt-font-primary: 'Source Sans Pro', sans-serif;
+        --ggt-font-headings: 'Poppins', sans-serif;
+
+        --ggt-shadow-sm: 0 3px 8px rgba(0, 0, 0, 0.4);
+        --ggt-shadow-md: 0 6px 20px rgba(0, 0, 0, 0.5);
+        --ggt-shadow-lg: 0 10px 35px rgba(0, 0, 0, 0.6);
+
+        --ggt-transition-speed: 0.4s;
+        --ggt-transition-timing: ease-in-out;
+    }
+    .ggt-faq-cta-button { display: inline-block; background: linear-gradient(95deg, #25D366, #128C7E); color: var(--ggt-text-white) !important; padding: 16px 40px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 1.1rem; font-family: var(--ggt-font-headings); transition: all var(--ggt-transition-speed) var(--ggt-transition-timing); border: none; margin: 1rem 0.5rem 0 0.5rem; box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4); letter-spacing: 1px; text-transform: uppercase; cursor: pointer; }
+    .ggt-faq-cta-button i { margin-right: 0.8rem; }
+    .ggt-faq-cta-button:hover { background: linear-gradient(95deg, #128C7E, #25D366); color: var(--ggt-text-white) !important; transform: translateY(-3px) scale(1.03); box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5); }
+
+    /* Base styles scoped to this page container */
+    #ggt-why-page-container {
+        background-color: var(--ggt-bg-dark-primary);
+        color: var(--ggt-text-light-primary);
+        font-family: var(--ggt-font-primary);
+        line-height: 1.8;
+        font-weight: 400;
+        font-size: 17px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%231a1a1a' fill-opacity='0.1' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+        overflow-x: hidden;
+    }
+     #ggt-why-page-container *,
+     #ggt-why-page-container *:before,
+     #ggt-why-page-container *:after {
+        box-sizing: border-box;
+    }
+
+    /* Layout Container */
+    .ggt-why-container {
+        max-width: 1240px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 20px;
+        padding-right: 20px;
+        width: 100%;
+    }
+
+    /* Typography */
+    #ggt-why-page-container h1,
+    #ggt-why-page-container h2,
+    #ggt-why-page-container h3,
+    #ggt-why-page-container h4 { font-family: var(--ggt-font-headings); color: var(--ggt-text-white); font-weight: 600; margin-top: 0; letter-spacing: 0.5px; }
+    #ggt-why-page-container .ggt-why-h1 { font-size: clamp(2.8rem, 6vw, 4.0rem); font-weight: 700; margin-bottom: 1rem; color: var(--ggt-text-white); }
+    #ggt-why-page-container .ggt-why-h2 { font-size: clamp(2.0rem, 5vw, 2.8rem); margin-bottom: 1.5rem; color: var(--ggt-text-white); }
+    #ggt-why-page-container .ggt-why-h4 { font-size: 1.3rem; margin-bottom: 1rem; color: var(--ggt-text-white); font-weight: 600; }
+    #ggt-why-page-container p { margin-bottom: 1.5rem; color: var(--ggt-text-light-secondary); }
+    #ggt-why-page-container .ggt-why-lead { font-size: clamp(1.1rem, 3vw, 1.25rem); color: var(--ggt-text-light-primary); font-weight: 400; max-width: 850px; margin-left: auto; margin-right: auto;}
+    #ggt-why-page-container strong { color: var(--ggt-text-white); font-weight: 600; }
+    #ggt-why-page-container a { color: var(--ggt-accent-primary); text-decoration: none; transition: color var(--ggt-transition-speed) var(--ggt-transition-timing); }
+    #ggt-why-page-container a:hover { color: var(--ggt-accent-secondary); text-decoration: none; }
+
+    /* Utility */
+    #ggt-why-page-container .ggt-why-text-accent { color: var(--ggt-accent-primary); }
+    #ggt-why-page-container .ggt-why-section-padding { padding: 6rem 0; }
+    #ggt-why-page-container .ggt-why-text-center { text-align: center; }
+    #ggt-why-page-container .ggt-why-mb-5 { margin-bottom: 3rem !important; }
+    #ggt-why-page-container .ggt-why-mt-5 { margin-top: 3rem !important; }
+
+    /* Hero Header */
+    #ggt-why-page-container .ggt-why-hero-header {
+        background: linear-gradient(rgba(15, 15, 15, 0.90), rgba(15, 15, 15, 0.97)), url('https://via.placeholder.com/1920x500/1a1a1a/cccccc?text=Why+GGT+Lahore%3F') center/cover no-repeat;
+        color: var(--ggt-text-white); padding: 8rem 1rem 6rem 1rem; text-align: center;
+        position: relative; overflow: hidden;
+    }
+    #ggt-why-page-container .ggt-why-hero-header::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 80px; background: linear-gradient(transparent, var(--ggt-bg-dark-primary)); }
+    #ggt-why-page-container .ggt-why-hero-header .ggt-why-h1 { text-shadow: 2px 2px 8px rgba(0,0,0,0.6); }
+    #ggt-why-page-container .ggt-why-hero-header .ggt-why-lead { text-shadow: 1px 1px 5px rgba(0,0,0,0.5); margin-top: 0.5rem;}
+
+    /* Section Title Styling */
+    #ggt-why-page-container .ggt-why-section-title-wrapper { text-align: center; margin-bottom: 4rem; }
+    #ggt-why-page-container .ggt-why-section-title { margin-bottom: 0.5rem; position: relative; display: inline-block; padding-bottom: 0.8rem; }
+    #ggt-why-page-container .ggt-why-section-title::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 60px; height: 4px; background: linear-gradient(90deg, var(--ggt-accent-primary), var(--ggt-accent-secondary)); border-radius: 3px; }
+    #ggt-why-page-container .ggt-why-section-subtitle { color: var(--ggt-text-light-secondary); font-size: 1.2rem; max-width: 750px; margin: 0 auto; }
+
+    /* Flexbox Row/Column Simulation for Features */
+    #ggt-why-page-container .ggt-why-flex-row { display: flex; flex-wrap: wrap; margin-left: -1rem; margin-right: -1rem; }
+    #ggt-why-page-container .ggt-why-feature-col { flex: 0 0 100%; max-width: 100%; padding-left: 1rem; padding-right: 1rem; margin-bottom: 2rem; display: flex; }
+    @media (min-width: 768px) { #ggt-why-page-container .ggt-why-feature-col { flex: 0 0 50%; max-width: 50%; } }
+    @media (min-width: 992px) { #ggt-why-page-container .ggt-why-feature-col { flex: 0 0 33.333%; max-width: 33.333%; } }
+
+    /* Feature Box Styling */
+    #ggt-why-page-container .ggt-why-feature-box { background-color: var(--ggt-bg-dark-tertiary); padding: 2.5rem 2rem; border-radius: 12px; border: 1px solid var(--ggt-border-color); box-shadow: var(--ggt-shadow-md); text-align: center; transition: transform var(--ggt-transition-speed) var(--ggt-transition-timing), box-shadow var(--ggt-transition-speed) var(--ggt-transition-timing), border-color var(--ggt-transition-speed) var(--ggt-transition-timing); width: 100%; display: flex; flex-direction: column; align-items: center; }
+    #ggt-why-page-container .ggt-why-feature-box:hover { transform: translateY(-10px); box-shadow: var(--ggt-shadow-lg); border-color: var(--ggt-accent-primary); }
+    #ggt-why-page-container .ggt-why-feature-icon { font-size: 3rem; color: var(--ggt-accent-primary); margin-bottom: 1.5rem; line-height: 1; background: linear-gradient(135deg, var(--ggt-accent-primary), var(--ggt-accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-fill-color: transparent; transition: transform 0.3s ease; }
+    #ggt-why-page-container .ggt-why-feature-box:hover .ggt-why-feature-icon { transform: scale(1.1); }
+    #ggt-why-page-container .ggt-why-feature-box .ggt-why-h4 { margin-bottom: 1rem; flex-grow: 0; }
+    #ggt-why-page-container .ggt-why-feature-box p { color: var(--ggt-text-light-secondary); font-size: 0.95rem; line-height: 1.7; margin-bottom: 0; flex-grow: 1; }
+
+    /* Call to Action (WhatsApp Button) */
+    #ggt-why-page-container .ggt-why-cta-button { display: inline-block; background: linear-gradient(95deg, #25D366, #128C7E); color: var(--ggt-text-white) !important; padding: 16px 40px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 1.1rem; font-family: var(--ggt-font-headings); transition: all var(--ggt-transition-speed) var(--ggt-transition-timing); border: none; margin: 1rem 0.5rem 0 0.5rem; box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4); letter-spacing: 1px; text-transform: uppercase; cursor: pointer; }
+    #ggt-why-page-container .ggt-why-cta-button i { margin-right: 0.8rem; }
+    #ggt-why-page-container .ggt-why-cta-button:hover { background: linear-gradient(95deg, #128C7E, #25D366); color: var(--ggt-text-white) !important; transform: translateY(-3px) scale(1.03); box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5); }
+
+    /* Responsive */
+    @media (max-width: 991.98px) { #ggt-why-page-container .ggt-why-section-padding { padding: 6rem 0; } #ggt-why-page-container .ggt-why-hero-header { padding: 7rem 1rem 5rem 1rem; } }
+    @media (max-width: 767.98px) { #ggt-why-page-container { font-size: 16px; } #ggt-why-page-container .ggt-why-hero-header { padding: 6rem 1rem 4rem 1rem; } #ggt-why-page-container .ggt-why-section-padding { padding: 3rem 0; } #ggt-why-page-container .ggt-why-feature-box { padding: 2rem 1.5rem; } #ggt-why-page-container .ggt-why-feature-col { padding-left: 0.8rem; padding-right: 0.8rem; } #ggt-why-page-container .ggt-why-flex-row { margin-left: -0.8rem; margin-right: -0.8rem; } #ggt-why-page-container .ggt-why-cta-button { font-size: 1rem; padding: 14px 30px; } }
+
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'navbar.html' %}
+<div id="ggt-why-page-container"> {# Wrapper for scoped styles #}
+    
+
+    <!-- Hero Header Section -->
+    <header class="ggt-why-hero-header">
+        <div class="ggt-why-container" data-aos="fade-up" data-aos-duration="900">
+            <h1 class="ggt-why-h1">Why Choose <span class="ggt-why-text-accent">GGT ?</span></h1>
+            <p class="ggt-why-lead">Your Trusted Partner for Genuine PC Hardware, Expert Advice, and Unbeatable Value in Lahore.</p>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main id="ggt-why-main-content">
+
+        <section class="ggt-why-section-padding">
+            <div class="ggt-why-container">
+
+                <div class="ggt-why-section-title-wrapper" data-aos="fade-up">
+                    <h2 class="ggt-why-h2 ggt-why-section-title">The GGT Advantage</h2>
+                    <p class="ggt-why-section-subtitle">We go beyond just selling parts. Discover why tech enthusiasts and professionals across Lahore prefer GGT.</p>
+                </div>
+
+                <div class="ggt-why-flex-row">
+
+                    <!-- Feature 1: Genuine Products -->
+                    <div class="ggt-why-feature-col" data-aos="fade-up" data-aos-delay="100">
+                        <div class="ggt-why-feature-box">
+                            <div class="ggt-why-feature-icon"><i class="fas fa-shield-alt"></i></div>
+                            <h4 class="ggt-why-h4">100% Genuine Products</h4>
+                            <p>We source directly from authorized distributors, ensuring you receive authentic components with official warranties. No fakes, no compromises.</p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 2: Expert Advice -->
+                    <div class="ggt-why-feature-col" data-aos="fade-up" data-aos-delay="200">
+                        <div class="ggt-why-feature-box">
+                            <div class="ggt-why-feature-icon"><i class="fas fa-user-tie"></i></div>
+                            <h4 class="ggt-why-h4">Knowledgeable Staff</h4>
+                            <p>Our passionate team understands PC hardware inside out. Get personalized recommendations and compatibility checks via WhatsApp or in-store.</p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 3: Competitive Pricing -->
+                    <div class="ggt-why-feature-col" data-aos="fade-up" data-aos-delay="300">
+                        <div class="ggt-why-feature-box">
+                            <div class="ggt-why-feature-icon"><i class="fas fa-tags"></i></div>
+                            <h4 class="ggt-why-h4">Best Value & Deals</h4>
+                            <p>We strive to offer competitive market prices and exclusive deals. Contact us on WhatsApp for the latest pricing and promotions on your desired parts.</p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 4: Premium Selection -->
+                     <div class="ggt-why-feature-col" data-aos="fade-up" data-aos-delay="100">
+                        <div class="ggt-why-feature-box">
+                            <div class="ggt-why-feature-icon"><i class="fas fa-cubes"></i></div>
+                            <h4 class="ggt-why-h4">Curated Selection</h4>
+                            <p>Access a wide range of high-quality components from leading brands like NVIDIA, AMD, Intel, ASUS, MSI, Corsair, and more for every budget.</p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 5: Custom Builds -->
+                     <div class="ggt-why-feature-col" data-aos="fade-up" data-aos-delay="200">
+                        <div class="ggt-why-feature-box">
+                            <div class="ggt-why-feature-icon"><i class="fas fa-tools"></i></div>
+                            <h4 class="ggt-why-h4">Expert Custom Builds</h4>
+                            <p>Dream PC? We build it! Get meticulous assembly, clean cable management, and thorough testing tailored precisely to your needs and budget.</p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 6: Local Support -->
+                     <div class="ggt-why-feature-col" data-aos="fade-up" data-aos-delay="300">
+                        <div class="ggt-why-feature-box">
+                            <div class="ggt-why-feature-icon"><i class="fas fa-headset"></i></div>
+                            <h4 class="ggt-why-h4">Reliable Local Support</h4>
+                            <p>As a Lahore-based store, we offer accessible after-sales support and assistance with warranty claims, providing peace of mind for your purchase.</p>
+                        </div>
+                    </div>
+
+                </div> <!-- End Flex Row -->
+
+                 <!-- Call to Action Section -->
+                <div class="ggt-why-text-center ggt-why-mt-5" data-aos="fade-up">
+                    <h2 class="ggt-why-h2">Experience the GGT Difference</h2>
+                    <p class="ggt-why-lead">Ready to upgrade or build your next PC? Connect with our experts today!</p>
+                    <a href="#" id="whatsapp-faq-btn" class="ggt-faq-cta-button ggt-why-cta-button">   
+                        <i class="fab fa-whatsapp"></i> Contact Us on WhatsApp
+                    </a>
+                     <!-- REPLACE [YourWhatsAppNumber] -->
+                </div>
+
+            </div> <!-- End Container -->
+        </section>
+
+    </main>
+
+    
+</div> {# End ggt-why-page-container #}
+{% include 'footer.html' %}
+{% endblock %}
+
+
+{% block script %}
+{# Ensure AOS library is loaded, either here or in base.html #}
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+     const faqQuestions = document.querySelectorAll('.ggt-faq-question');
+
+faqQuestions.forEach(question => {
+    question.addEventListener('click', () => {
+        const item = question.closest('.ggt-faq-item');
+        const answer = item.querySelector('.ggt-faq-answer');
+        const isActive = question.classList.contains('active');
+
+        // Close all other FAQs
+        faqQuestions.forEach(otherQuestion => {
+            if (otherQuestion !== question && otherQuestion.classList.contains('active')) { // Ensure not closing itself
+                const otherItem = otherQuestion.closest('.ggt-faq-item');
+                const otherAnswer = otherItem.querySelector('.ggt-faq-answer');
+                otherQuestion.classList.remove('active');
+                otherAnswer.classList.remove('active');
+            }
+        });
+
+        // Toggle the clicked FAQ
+        if (!isActive) {
+            question.classList.add('active');
+            answer.classList.add('active');
+        } else {
+             // If already active, clicking again should close it
+             question.classList.remove('active');
+             answer.classList.remove('active');
+        }
+    });
+});
+
+// WhatsApp Link Handler for Mobile vs Desktop (UPDATED MESSAGE)
+const whatsappButton = document.querySelector('#whatsapp-faq-btn');
+if (whatsappButton) {
+    whatsappButton.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default anchor behavior
+
+        // --- Configuration ---
+        const phoneNumber = '923224467244'; // ** REPLACE WITH YOUR NUMBER **
+
+        // --- More Engaging & Structured Message ---
+        // Using %0A for line breaks
+        const preFilledMessage = `Hi GGT! 👋%0A%0A` + // Greeting & Emoji + Blank Line
+                                 `I was looking at your "Why Choose GGT" page and would like to learn more about:%0A` + // Context
+                                 `[Please specify what interests you]%0A%0A` + // Placeholder Prompt + Blank Line
+                                 `(e.g., custom PC builds, warranty coverage, bulk orders, or specific products)%0A%0A` + // Examples + Blank Line
+                                 `Looking forward to your response!`; // Closing
+
+        const message = encodeURIComponent(preFilledMessage)
+                        .replace(/%250A/g, '%0A'); // Re-encode line breaks correctly if encodeURIComponent double-encodes them
+
+
+        // Detect if the device is mobile or tablet
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+        let whatsappUrl;
+
+        if (isMobile) {
+            // Mobile: Try the app protocol first
+            whatsappUrl = `whatsapp://send?phone=${phoneNumber}&text=${message}`;
+
+            // Attempt to open the app link
+            window.location.href = whatsappUrl;
+
+            // Fallback to API link after a short delay if the app link didn't work (or wasn't handled)
+            // This is less reliable than it used to be due to browser security changes
+            const fallbackTimeout = setTimeout(() => {
+                window.open(`https://api.whatsapp.com/send?phone=${phoneNumber}&text=${message}`, '_blank');
+            }, 2500); // Increased delay slightly
+
+            // Try to clear the fallback if the app link successfully navigated away
+            // Note: Visibility change isn't a perfect indicator but helps in some cases
+             const visibilityHandler = () => {
+                 if (document.visibilityState === 'hidden') {
+                     clearTimeout(fallbackTimeout);
+                     document.removeEventListener('visibilitychange', visibilityHandler);
+                 }
+             };
+             document.addEventListener('visibilitychange', visibilityHandler);
+
+        } else {
+            // Desktop: Open WhatsApp Web
+            whatsappUrl = `https://web.whatsapp.com/send?phone=${phoneNumber}&text=${message}`;
+            window.open(whatsappUrl, '_blank'); // Open in new tab
+        }
+    });
+}
+
+  document.addEventListener('DOMContentLoaded', function() {
+        // Initialize AOS
+        AOS.init({
+            once: true, // Only animate once
+            duration: 800, // Animation duration
+            easing: 'ease-out-quad', // A smooth easing
+            offset: 50, // Trigger animation slightly earlier
+        });
+    });
+    
+</script>
+{% endblock %}

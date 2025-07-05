@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8; /* Light background for the body */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .bill-container {
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        .bill-header {
+            text-align: center;
+        }
+
+        .bill-header h1 {
+            color: black; /* Theme color for the heading */
+            margin: 0;
+        }
+
+        .bill-header h2 {
+            color: #333; /* Darker color for subheadings */
+            margin: 5px 0;
+        }
+
+        .bill-details {
+            margin-top: 20px;
+            border-top: 1px solid #f0f0f0;
+            border-bottom: 1px solid #f0f0f0;
+            padding: 15px 0;
+        }
+
+        .bill-details p {
+            color: #555; /* Gray color for text */
+            font-size: 16px;
+            margin: 5px 0;
+        }
+
+        .total-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: black; /* Theme color for total price */
+            margin-top: 20px;
+        }
+
+        .confirm-button {
+            margin-top: 20px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            background: black; /* Theme color for the button */
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .confirm-button:hover {
+            background: rgb(43, 43, 43); /* Darker shade for button hover */
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="bill-container">
+        <div class="bill-header">
+            <h1>Booking Confirmation</h1>
+            <h2>Invoice</h2>
+        </div>
+        
+        <div class="bill-details">
+            <h3>User Details</h3>
+            <p><strong>Name:</strong> {{ booking_data.name }}</p>
+            <p><strong>Address:</strong> {{ booking_data.address }}</p>
+            <p><strong>Pickup Date:</strong> {{ booking_data.pickup_date }}</p>
+            <p><strong>Pickup Time:</strong> {{ booking_data.pickup_time }}</p>
+            <p><strong>City:</strong> {{ city.name }}</p>
+
+            <h3>Outfit Details</h3>
+            <p><strong>Name:</strong> {{ product.title }}</p>
+            <p><strong>Price:</strong> Rs.{{ product.price }}</p>
+            <p><strong>SKU:</strong> {{ product.sku }}</p>
+
+            {% if fabric %}
+                <h3>Fabric Details</h3>
+                <p><strong>Name:</strong> {{ fabric.name }}</p>
+                <p><strong>Price:</strong> Rs.{{ fabric.price }}</p>
+                <p><strong>SKU:</strong> {{ fabric.sku }}</p>
+            {% endif %}
+
+            {% if button %}
+                <h3>Button Details</h3>
+                <p><strong>Name:</strong> {{ button.name }}</p>
+                <p><strong>Price:</strong> Rs.{{ button.price }}</p>
+                <p><strong>SKU:</strong> {{ button.sku }}</p>
+            {% endif %}
+        </div>
+
+        <div class="total-price">
+            <h3>Total Price: Rs.{{ total_price }}</h3>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" class="confirm-button">Confirm Order</button>
+        </form>
+    </div>
+</body>
+</html>

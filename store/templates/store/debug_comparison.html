@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <h1>Debug Comparison Lists</h1>
+    
+    <h2>All Comparison Lists</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>User</th>
+                <th>Session</th>
+                <th>Product Type</th>
+                <th>Created</th>
+                <th>Updated</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for list in all_lists %}
+            <tr>
+                <td>{{ list.id }}</td>
+                <td>{{ list.user|default:"Anonymous" }}</td>
+                <td>{{ list.session_key|slice:":8" }}</td>
+                <td>{{ list.product_type }}</td>
+                <td>{{ list.created_at }}</td>
+                <td>{{ list.updated_at }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <h2>All Comparison Items</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>List ID</th>
+                <th>Content Type</th>
+                <th>Object ID</th>
+                <th>Product</th>
+                <th>Added</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in all_items %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.comparison_list.id }}</td>
+                <td>{{ item.content_type }}</td>
+                <td>{{ item.object_id }}</td>
+                <td>{{ item.product }}</td>
+                <td>{{ item.added_at }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %} 

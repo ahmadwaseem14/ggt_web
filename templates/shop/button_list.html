@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load store_extras %}
+
+{% block content %}
+{% include 'navbar.html' %}
+
+<!-- Add spacing to prevent navbar collision -->
+<div class="wishlist-spacing" ></div>
+
+<!--Body Content-->
+<div id="page-content">
+    <!--Page Title-->
+    <div class="page section-header text-center">
+        <div class="page-title">
+            <div class="wrapper"><h1 class="page-width">My Wishlist</h1></div>
+        </div>
+    </div>
+    <!--End Page Title-->
+    
+    {% if messages %}
+    <div class="container">
+        <div class="messages">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    
+    {% if wishlist_items %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col">
+                <div class="wishlist-page">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="product-image">Image</th>
+                                    <th class="product-name">Product</th>
+                                    <th class="product-price">Price</th>
+                                    <th class="product-stock">Sku</th>
+                                    <th class="product-stock">Brand</th>
+                                    <th class="product-stock">Condition</th>
+                                    
+                                    <th class="product-action">Action</th>
+                                    <th class="product-remove">Remove</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in wishlist_items %}
+                                <tr>
+                                    <td class="product-image">
+                                        {% with primary_image=item.product.images.all|dictsort:"is_primary"|last %}
+                                            {% if primary_image %}
+                                                <img src="{{ primary_image.image.url }}" 
+                                                     alt="{{ primary_image.alt_text }}" 
+                                                     class="img-fluid" style="max-width: 100px;">
+                                            {% else %}
+                                                {% with first_image=item.product.images.first %}
+                                                    {% if first_image %}
+                                                        <img src="{{ first_image.image.url }}" 
+                                                             alt="{{ first_image.alt_text }}" 
+                                                             class="img-fluid" style="max-width: 100px;">
+                                                    {% else %}
+                                                        <div class="text-center">No image</div>
+                                                    {% endif %}
+                                                {% endwith %}
+                                            {% endif %}
+                                        {% endwith %}
+                                    </td>
+                                    <td class="product-name">
+                                        <h4 style="color: #ffffff;">{{ item.product.name }}</h4>
+                                    </td>
+                                    <td class="product-price">
+                                        {% if item.product.price %}
+                                            <span style="color: #ffffff;">Rs. {{ item.product.price }}</span>
+                                        {% else %}
+                                            <span style="color: #ffffff;">Price on request</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="product-stock " style="color: #ffffff;">
+                                        <span class=""><p style="color: #ffffff;"> {{ item.product.sku }}</p></span>        
+                                    </td>
+                                    <td class="product-price" style="color: #ffffff;">
+                                                <p style="color: #ffffff;"> {{ item.product.brand }}</p>
+                                    </td>
+                                    <td class="product-price" style="color: #ffffff;">
+                                        <p style="color: #ffffff;"  > {{ item.product.condition|title }}</p>
+                                    </td>
+                                    <td class="product-action">
+                                        <div class="action-buttons">
+                                            {% if item.product.price %}
+                                                <button class="btn btn-primary btn-sm">Add to Cart</button>
+                                            {% else %}
+                                                {% with whatsapp_number="+1234567890" message="Hi, I need the price and ordering details for SKU: "|add:item.product.sku|add:" - "|add:item.product.name %}
+                                                    <a href="https://wa.me/{{ whatsapp_number }}?text={{ message|urlencode }}" target="_blank" class="btn btn-success btn-sm whatsapp-btn">
+                                                        Contact for price
+                                                    </a>
+                                                {% endwith %}
+                                            {% endif %}
+                                            
+                                            <a href="{% url 'add_to_comparison' item.product.sku %}" class="btn btn-info btn-sm">
+                                                Compare
+                                            </a>
+                                           
+                                        </div>
+                                    </td>
+                                    <td class="product-remove">
+                                        <a href="{% url 'remove_from_wishlist' item.id %}" class="btn btn-danger" style="background-color: #1189ff; border-radius: 4px;">
+                                            <i class="fa fa-times"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="container">
+        <div class="empty-wishlist-container text-center py-5">
+            <div class="empty-wishlist-icon mb-4">
+                <i class="fa fa-heart-o" style="font-size: 64px; color: #ccc;"></i>
+            </div>
+            <h3 class="mb-3" style="color: #ffffff;">Your Wishlist is Empty</h3>
+            <p class="lead  mb-4" style="color: #ffffff;">Save your favorite items to your wishlist and come back to them later.</p>
+            <div class="mt-4">
+                <a href="{% url 'home' %} "  style="background-color: #1189ff; border-radius: 4px;" class="btn btn-primary">Continue Shopping</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+<!--End Body Content-->
+
+<style>
+.wishlist-page .table {
+    margin-bottom: 30px;
+}
+.wishlist-page .table th {
+    background-color: #f8f9fa;
+    text-align: center;
+    vertical-align: middle;
+}
+.wishlist-page .table td {
+    vertical-align: middle;
+    text-align: center;
+}
+.wishlist-page .product-name {
+    text-align: left;
+}
+.wishlist-page .product-name h4 {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+.wishlist-page .product-name p {
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+.wishlist-page .in-stock {
+    color: #28a745;
+    font-weight: bold;
+}
+.empty-wishlist-container {
+    {% comment %} background-color: #f8f9fa; {% endcomment %}
+    border-radius: 8px;
+    margin-bottom: 40px;
+}
+.action-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 5px;
+}
+.action-buttons .btn {
+    white-space: nowrap;
+    background-color: #1189ff;
+    border-radius: 4px;
+    {% comment %} border: #efefef solid 0.5px; {% endcomment %}
+    margin-left: 2px;
+}
+.wishlist-spacing {
+    margin-top: 50px;
+}
+@media (max-width: 768px) {
+    .wishlist-spacing {
+        margin-top: 70px;
+    }
+}
+</style>
+{% endblock %} 

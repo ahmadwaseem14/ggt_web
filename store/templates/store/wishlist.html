@@ -1,0 +1,313 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load store_extras %}
+
+{% block style %}
+<style>
+.wishlist-page .table {
+    margin-bottom: 30px;
+}
+.wishlist-page .table th {
+    background-color: #f8f9fa;
+    text-align: center;
+    vertical-align: middle;
+}
+.wishlist-page .table td {
+    vertical-align: middle;
+    text-align: center;
+}
+.wishlist-page .product-name {
+    text-align: left;
+}
+.wishlist-page .product-name h4 {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+.wishlist-page .product-name p {
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+.wishlist-page .in-stock {
+    color: #28a745;
+    font-weight: bold;
+}
+.empty-wishlist-container {
+    border-radius: 8px;
+    margin-bottom: 40px;
+}
+.action-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 5px;
+}
+.action-buttons .btn {
+    white-space: nowrap;
+    background-color: #1189ff;
+    border-radius: 4px;
+    margin-left: 2px;
+}
+.action-buttons .whatsapp-btn {
+    background-color: #25D366; /* WhatsApp green */
+}
+.action-buttons .whatsapp-btn:hover {
+    background-color: #1EBB52;
+}
+.wishlist-spacing {
+    margin-top: 78px;
+}
+@media (max-width: 768px) {
+    .wishlist-spacing {
+        margin-top: 70px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'navbar.html' %}
+
+<!-- Add spacing to prevent navbar collision -->
+<div class="wishlist-spacing"></div>
+
+<!-- Body Content -->
+<div id="page-content">
+    <!-- Page Title -->
+    <div class="page section-header text-center">
+        <div class="page-title">
+            <div class="wrapper"><h1 class="page-width">My Wishlist</h1></div>
+        </div>
+    </div>
+    <!-- End Page Title -->
+
+    {% if messages %}
+    <div class="container">
+        <div class="messages">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if wishlist_items %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col">
+                <div class="wishlist-page">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="product-image">Image</th>
+                                    <th class="product-name">Product</th>
+                                    <th class="product-price">Price</th>
+                                    <th class="product-stock">SKU</th>
+                                    <th class="product-stock">Brand</th>
+                                    <th class="product-stock">Condition</th>
+                                    <th class="product-action">Action</th>
+                                    <th class="product-remove">Remove</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in wishlist_items %}
+                                <tr>
+                                    <td class="product-image">
+                                        {% with primary_image=item.product.images.all|dictsort:"is_primary"|last %}
+                                            {% if primary_image %}
+                                                <img src="{{ primary_image.image.url }}" 
+                                                     alt="{{ primary_image.alt_text }}" 
+                                                     class="img-fluid" style="max-width: 100px;">
+                                            {% else %}
+                                                {% with first_image=item.product.images.first %}
+                                                    {% if first_image %}
+                                                        <img src="{{ first_image.image.url }}" 
+                                                             alt="{{ first_image.alt_text }}" 
+                                                             class="img-fluid" style="max-width: 100px;">
+                                                    {% else %}
+                                                        <div class="text-center">No image</div>
+                                                    {% endif %}
+                                                {% endwith %}
+                                            {% endif %}
+                                        {% endwith %}
+                                    </td>
+                                    <td class="product-name">
+                                        <h4 style="color: #ffffff;">{{ item.product.name }}</h4>
+                                    </td>
+                                    <td class="product-price">
+                                        {% if item.product.price %}
+                                            <span style="color: #ffffff;">Rs. {{ item.product.price }}</span>
+                                        {% else %}
+                                            <span style="color: #ffffff;">Price on request</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="product-stock" style="color: #ffffff;">
+                                        <span><p style="color: #ffffff;">{{ item.product.sku }}</p></span>        
+                                    </td>
+                                    <td class="product-price" style="color: #ffffff;">
+                                        <p style="color: #ffffff;">{{ item.product.brand }}</p>
+                                    </td>
+                                    <td class="product-price" style="color: #ffffff;">
+                                        <p style="color: #ffffff;">{{ item.product.condition|title }}</p>
+                                    </td>
+                                    <td class="product-action">
+                                        <div class="action-buttons">
+                                            {% if item.product.price %}
+                                                <a href="javascript:void(0)" 
+                                                   class="btn btn-sm whatsapp-btn order-whatsapp-btn"
+                                                   data-sku="{{ item.product.sku }}"
+                                                   data-name="{{ item.product.name|truncatechars:50 }}"
+                                                   data-price="{{ item.product.price }}"
+                                                   data-url="{% url 'product_detail' item.product.sku %}">
+                                                    Order Now
+                                                </a>
+                                            {% else %}
+                                                <a href="javascript:void(0)" 
+                                                   class="btn btn-sm whatsapp-btn inquiry-whatsapp-btn"
+                                                   data-sku="{{ item.product.sku }}"
+                                                   data-name="{{ item.product.name|truncatechars:50 }}"
+                                                   data-url="{% url 'product_detail' item.product.sku %}">
+                                                    Contact for Price & Order
+                                                </a>
+                                            {% endif %}
+                                            <a href="{% url 'add_to_comparison' item.product.sku %}" 
+                                               class="btn btn-info btn-sm">
+                                                Compare
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td class="product-remove">
+                                        <a href="{% url 'remove_from_wishlist' item.id %}" 
+                                           class="btn btn-danger" 
+                                           style="background-color: #1189ff; border-radius: 4px;">
+                                            <i class="fa fa-times"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="container">
+        <div class="empty-wishlist-container text-center py-5">
+            <div class="empty-wishlist-icon mb-4">
+                <i class="fa fa-heart-o" style="font-size: 64px; color: #ccc;"></i>
+            </div>
+            <h3 class="mb-3" style="color: #ffffff;">Your Wishlist is Empty</h3>
+            <p class="lead mb-4" style="color: #ffffff;">Save your favorite items to your wishlist and come back to them later.</p>
+            <div class="mt-4">
+                <a href="{% url 'all_products' %}" 
+                   style="background-color: #1189ff; border-radius: 4px;" 
+                   class="btn btn-primary">
+                    Continue Shopping
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% include 'footer.html' %}
+{% endblock %}
+
+{% block script %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+if (typeof jQuery === 'undefined') {
+    console.error('jQuery is not loaded. Please ensure the jQuery CDN is accessible.');
+} else {
+    console.log('jQuery loaded successfully.');
+}
+
+// Configuration - Set your WhatsApp number here
+const WHATSAPP_NUMBER = '923224467244'; // Replace with your actual WhatsApp number
+// Note: Include country code but remove any +, -, or spaces
+// Example: 923224467244 (for Pakistan) or 919876543210 (for India)
+
+// Function to detect if the user is on a mobile device
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+// Function to format phone number for URLs (removes all non-digit characters)
+function formatPhoneNumber(phone) {
+    return phone.replace(/\D/g, '');
+}
+
+// Function to generate WhatsApp URL
+function getWhatsAppUrl(phoneNumber, message) {
+    const formattedNumber = formatPhoneNumber(phoneNumber);
+    const baseUrl = isMobileDevice() ? 'https://wa.me/' : 'https://web.whatsapp.com/send?phone=';
+    const separator = isMobileDevice() ? '?' : '&';
+    return `${baseUrl}${formattedNumber}${separator}text=${encodeURIComponent(message)}`;
+}
+
+// WhatsApp message templates
+function getOrderMessage(name, sku, price, url) {
+    return `🌟 Hello! I'm interested in ordering the following product:\n\n` +
+           `📦 *Product*: ${name}\n` +
+           `🔢 *SKU*: ${sku}\n` +
+           `💰 *Price*: Rs${price}\n` +
+           `🔗 *Details*: ${window.location.origin}${url}\n\n` +
+           `Please confirm availability and provide order details. Thank you! 😊`;
+}
+
+function getInquiryMessage(name, sku, url) {
+    return `🌟 Hello! I have a query about the following product:\n\n` +
+           `📦 *Product*: ${name}\n` +
+           `🔢 *SKU*: ${sku}\n` +
+           `🔗 *Details*: www.ggt.com.pk${url}\n\n` +
+           `Could you please provide the price and ordering details? Thank you! 😊`;
+}
+
+// Handle WhatsApp button clicks
+$(document).ready(function() {
+    // Log to verify script execution
+    console.log('Document ready. Attaching WhatsApp button event listeners.');
+    console.log('Using WhatsApp number:', WHATSAPP_NUMBER);
+
+    // Order button (with price)
+    $('.order-whatsapp-btn').on('click', function(e) {
+        e.preventDefault();
+        console.log('Order WhatsApp button clicked.');
+        const name = $(this).data('name');
+        const sku = $(this).data('sku');
+        const price = $(this).data('price');
+        const url = $(this).data('url');
+        const message = getOrderMessage(name, sku, price, url);
+        const whatsappUrl = getWhatsAppUrl(WHATSAPP_NUMBER, message);
+        console.log('Opening WhatsApp URL:', whatsappUrl);
+        try {
+            window.open(whatsappUrl, '_blank');
+        } catch (error) {
+            console.error('Failed to open WhatsApp URL:', error);
+            alert('Unable to open WhatsApp. Please check your connection or try again.');
+        }
+    });
+
+    // Inquiry button (without price)
+    $('.inquiry-whatsapp-btn').on('click', function(e) {
+        e.preventDefault();
+        console.log('Inquiry WhatsApp button clicked.');
+        const name = $(this).data('name');
+        const sku = $(this).data('sku');
+        const url = $(this).data('url');
+        const message = getInquiryMessage(name, sku, url);
+        const whatsappUrl = getWhatsAppUrl(WHATSAPP_NUMBER, message);
+        console.log('Opening WhatsApp URL:', whatsappUrl);
+        try {
+            window.open(whatsappUrl, '_blank');
+        } catch (error) {
+            console.error('Failed to open WhatsApp URL:', error);
+            alert('Unable to open WhatsApp. Please check your connection or try again.');
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,515 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+        background-color: #121212;
+        color: #f5f5f5;
+    
+    }
+    
+    header {
+        background-color: #1e1e1e;
+        padding: 1.5rem 0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+    
+    .container {
+        width: 90%;
+    
+        max-width: 1200px;
+        margin: 0px auto 0 auto;
+        
+    }
+    
+    .site-title {
+        font-size: 2.2rem;
+        font-weight: 600;
+        color: #2196f3;
+        margin-bottom: 1rem;
+    }
+    
+    .subtitle {
+        font-size: 1.1rem;
+        color: #b0b0b0;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .categories-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 2rem;
+        padding: 3rem 0;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .category-card {
+        background: linear-gradient(145deg, #1e1e1e, #2d2d2d);
+        border-radius: 12px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        height: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+    
+    .category-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    }
+    
+    .category-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.6;
+        transition: opacity 0.3s ease;
+    }
+    
+    .category-card:hover::before {
+        opacity: 0.8;
+    }
+    
+    .category-content {
+        position: relative;
+        z-index: 1;
+        padding: 1.5rem;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+        height: 100%;
+    }
+    
+    .category-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+        color: white;
+        word-wrap: break-word;
+        line-height: 1.2;
+    }
+    
+    .product-count {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background-color: rgb(33, 149, 243);
+        color: #ffffff;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.65rem;
+        font-weight: 500;
+        z-index: 2;
+        backdrop-filter: blur(4px);
+        border: 1px solid rgba(33, 150, 243, 0.3);
+    }
+    
+    .category-description {
+        color: #dddddd;
+        font-size: 0.9rem;
+        margin: 0.5rem 0 1rem 0;
+    }
+    
+    .explore-btn {
+        display: inline-block;
+        background-color: #2196f3;
+        color: rgb(255, 255, 255);
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .explore-btn::after {
+        content: '→';
+        position: absolute;
+        right: -20px;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+    
+    .explore-btn:hover {
+        background-color: rgba(51, 158, 245, 0.97);
+        text-decoration: none;
+        color: #ffffff;
+        padding-right: 2rem;
+    }
+    
+    .explore-btn:hover span {
+        opacity: 0;
+    }
+    
+    .explore-btn:hover::after {
+        right: 1rem;
+        opacity: 1;
+    }
+    
+    /* Category-specific background images */
+    .category-cpu::before {
+        background-image: url('{% static "assets/images/categories/cpu.jpg" %}');
+    }
+    
+    .category-gpu::before {
+        background-image: url('{% static "assets/images/categories/gpu.jpg" %}');
+    }
+    
+    .category-motherboard::before {
+        background-image: url('{% static "assets/images/categories/motherboard.jpg" %}');
+    }
+    
+    .category-ram::before {
+        background-image: url('{% static "assets/images/categories/ram.jpg" %}');
+    }
+    
+    .category-storage::before {
+        background-image: url('{% static "assets/images/categories/storage.jpg" %}');
+    }
+    
+    .category-cooling::before {
+        background-image: url('{% static "assets/images/categories/cooling.jpg" %}');
+    }
+    
+    .category-psu::before {
+        background-image: url('{% static "assets/images/categories/ps.jpg" %}');
+    }
+    
+    .category-case::before {
+        background-image: url('{% static "assets/images/categories/case.jpg" %}');
+    }
+    
+    .category-peripherals::before {
+        background-image: url('{% static "assets/images/categories/peripherals.jpg" %}');
+    }
+    
+    .category-monitor::before {
+        background-image: url('{% static "assets/images/categories/monitor.jpg" %}');
+    }
+    
+    .category-laptop::before {
+        background-image: url('{% static "assets/images/categories/laptop.jpg" %}');
+    }
+    
+    .category-tablet::before {
+        background-image: url('{% static "assets/images/categories/tablet.jpg" %}');
+    }
+    
+    .category-mouse::before {
+        background-image: url('{% static "assets/images/categories/mice.jpg" %}');
+    }
+    
+    .category-keyboard::before {
+        background-image: url('{% static "assets/images/categories/keyboard.jpg" %}');
+    }
+    
+    .category-headset::before {
+        background-image: url('{% static "assets/images/categories/headset.jpg" %}');
+    }
+    
+    .category-speakers::before {
+        background-image: url('{% static "assets/images/categories/speaker.jpg" %}');
+    }
+    
+    .category-accessories::before {
+        background-image: url('{% static "assets/images/categories/accessories.jpg" %}');
+    }
+    
+    @media screen and (max-width: 768px) {
+        .categories-container {
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .category-card {
+            height: 200px;
+        }
+        
+        .category-title {
+            font-size: 1.3rem;
+        }
+        
+        .category-description {
+            font-size: 0.85rem;
+            margin: 0.3rem 0 0.8rem 0;
+        }
+        
+        .product-count {
+            font-size: 0.75rem;
+            padding: 3px 10px;
+            top: 10px;
+            right: 10px;
+        }
+    }
+    
+    .category-stats {
+        display: none;
+    }
+    
+    .heading-section {
+        text-align: center;
+        padding: 2rem 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'navbar.html' %}
+<div id="page-content">
+    <main class="container" style="margin-top: 100px;">
+        <div class="heading-section">
+            <h1 class="site-title">Browse Categories</h1>
+            <p class="subtitle">Explore our wide range of computer hardware and accessories</p>
+        </div>
+        
+        <div class="categories-container">
+            <!-- CPU Category -->
+            <div class="category-card category-cpu">
+                <span class="product-count">{{ cpu_count }} Products</span>
+                <div class="category-content">
+                    <h2 class="category-title">CPUs</h2>
+                    <p class="category-description">Central Processing Units from AMD, Intel, and more</p>
+                    <a href="/products/cpu" class="explore-btn">
+                        <span>Explore</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- GPU Category -->
+            <div class="category-card category-gpu">
+                <span class="product-count">{{ gpu_count }} Products</span>
+                <div class="category-content">
+                    <h2 class="category-title">GPUs</h2>
+                    <p class="category-description">Graphics cards from NVIDIA, AMD, and Intel</p>
+                    <a href="/products/gpu" class="explore-btn">
+                        <span>Explore</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Motherboard Category -->
+            <div class="category-card category-motherboard">
+                <span class="product-count">{{ motherboard_count }} Products</span>
+                <div class="category-content">
+                    <h2 class="category-title">Motherboards</h2>
+                    <p class="category-description">ATX, Micro-ATX, and Mini-ITX motherboards</p>
+                    <a href="/products/motherboard" class="explore-btn">
+                        <span>Explore</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- RAM Category -->
+            <div class="category-card category-ram">
+                <span class="product-count">{{ ram_count }} Products</span>
+                <div class="category-content">
+                    <h2 class="category-title">RAM</h2>
+                    <p class="category-description">DDR4, DDR5, and high-performance memory</p>
+                    <a href="/products/ram" class="explore-btn">
+                        <span>Explore</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Storage Category -->
+            <div class="category-card category-storage">
+                <span class="product-count">{{ storage_count }} Products</span>
+                <div class="category-content">
+                    <h2 class="category-title">Storage</h2>
+                    <p class="category-description">SSDs, HDDs, and external storage solutions</p>
+                    <a href="/products/storage" class="explore-btn">
+                        <span>Explore</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Power Supply Category -->
+            <div class="category-card category-psu">
+                <span class="product-count">{{ psu_count }} Products</span>
+                <div class="category-content">
+                    <h2 class="category-title">Power Supplies</h2>
+                    <p class="category-description">Modular and non-modular PSUs</p>
+                    <a href="/products/psu" class="explore-btn">
+                        <span>Explore</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Case Category -->
+            <div class="category-card category-case">
+                <span class="product-count">{{ case_count }} Products</span>
+                <div class="category-content">
+                    <h2 class="category-title">Cases</h2>
+                    <p class="category-description">Full tower, mid tower, and SFF cases</p>
+                    <a href="/products/case" class="explore-btn">
+                        <span>Explore</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Monitor Category -->
+            <div class="category-card category-monitor">
+                <span class="product-count">{{ monitor_count }} Products</span>
+                <div class="category-content">
+                    <h2 class="category-title">Monitors</h2>
+                    <p class="category-description">Gaming, professional, and ultrawide displays</p>
+                    <a href="/products/monitor" class="explore-btn">
+                        <span>Explore</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Laptop Category -->
+            <div class="category-card category-laptop">
+                <span class="product-count">{{ laptop_count }} Products</span>
+                <div class="category-content">
+                    <h2 class="category-title">Laptops</h2>
+                    <p class="category-description">Gaming, business, and ultraportable laptops</p>
+                    <a href="/products/laptop" class="explore-btn">
+                        <span>Explore</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Tablet Category -->
+            <div class="category-card category-tablet">
+                <span class="product-count">{{ tablet_count }} Products</span>
+                <div class="category-content">
+                    <h2 class="category-title">Tablets</h2>
+                    <p class="category-description">Android, iOS, and Windows tablets</p>
+                    <a href="/products/tablet" class="explore-btn">
+                        <span>Explore</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Mouse Category -->
+            <div class="category-card category-mouse">
+                <span class="product-count">{{ mouse_count }} Products</span>
+                <div class="category-content">
+                    <h2 class="category-title">Mice</h2>
+                    <p class="category-description">Gaming, ergonomic, and wireless mice</p>
+                    <a href="/products/mouse" class="explore-btn">
+                        <span>Explore</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Keyboard Category -->
+            <div class="category-card category-keyboard">
+                <span class="product-count">{{ keyboard_count }} Products</span>
+                <div class="category-content">
+                    <h2 class="category-title">Keyboards</h2>
+                    <p class="category-description">Mechanical, membrane, and wireless keyboards</p>
+                    <a href="/products/keyboard" class="explore-btn">
+                        <span>Explore</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Headset Category -->
+            <div class="category-card category-headset">
+                <span class="product-count">{{ headset_count }} Products</span>
+                <div class="category-content">
+                    <h2 class="category-title">Headsets</h2>
+                    <p class="category-description">Gaming, wireless, and noise-cancelling headsets</p>
+                    <a href="/products/headset" class="explore-btn">
+                        <span>Explore</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Speakers Category -->
+            <div class="category-card category-speakers">
+                <span class="product-count">{{ speakers_count }} Products</span>
+                <div class="category-content">
+                    <h2 class="category-title">Speakers</h2>
+                    <p class="category-description">Desktop, bookshelf, and gaming speakers</p>
+                    <a href="/products/speakers" class="explore-btn">
+                        <span>Explore</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Accessories Category -->
+            <div class="category-card category-accessories">
+                <span class="product-count">{{ accessory_count }} Products</span>
+                <div class="category-content">
+                    <h2 class="category-title">Other Accessories</h2>
+                    <p class="category-description">Cables, adapters, and other PC accessories</p>
+                    <a href="/products/accessory" class="explore-btn">
+                        <span>Explore</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+    </div>
+{% include 'footer.html' %}
+{% endblock %}
+
+{% block script %}
+<script>
+$(document).ready(function() {
+    // Auto-submit form when filters change
+    $('input[name="condition"], select[name="sort_by"]').on('change', function() {
+        $('#filter-form').submit();
+    });
+    
+    // Quick View functionality
+    $('.quick-view').on('click', function(e) {
+        e.preventDefault();
+        var url = $(this).attr('href');
+        
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function(data) {
+                $('#content_quickview .modal-body').html(data);
+                $('#content_quickview').modal('show');
+            },
+            error: function() {
+                alert('Error loading product information');
+            }
+        });
+    });
+    
+    // Filter toggle for mobile
+    $('#filterToggle').on('click', function() {
+        $(this).toggleClass('active');
+        $('#filterSection').slideToggle(300);
+    });
+    
+    // Adjust visibility on window resize
+    $(window).on('resize', function() {
+        if ($(window).width() > 991) {
+            $('#filterSection').show();
+        } else if (!$('#filterToggle').hasClass('active')) {
+            $('#filterSection').hide();
+        }
+    });
+});
+</script>
+{% endblock %} 

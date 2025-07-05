@@ -1,0 +1,85 @@
+{% extends "sidebar.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4 text-uppercase font-weight-bold">Edit General Information</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <!-- Image 1 -->
+        <div class="form-group">
+            <label for="image1" class="font-weight-bold">Image 1</label>
+            <input type="file" class="form-control-file" name="image1" id="image1">
+            {% if homepage_info.image1 %}
+                <div class="mt-3">
+                    <img src="{{ homepage_info.image1.url }}" alt="Image 1" class="img-fluid rounded" width="150">
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Heading 1 -->
+        <div class="form-group">
+            <label for="heading1" class="font-weight-bold">Heading 1</label>
+            <input type="text" class="form-control" name="heading1" id="heading1" value="{{ homepage_info.heading1 }}" placeholder="Enter Heading 1">
+        </div>
+
+        <!-- Image 2 -->
+        <div class="form-group">
+            <label for="image2" class="font-weight-bold">Image 2</label>
+            <input type="file" class="form-control-file" name="image2" id="image2">
+            {% if homepage_info.image2 %}
+                <div class="mt-3">
+                    <img src="{{ homepage_info.image2.url }}" alt="Image 2" class="img-fluid rounded" width="150">
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Heading 2 -->
+        <div class="form-group">
+            <label for="heading2" class="font-weight-bold">Heading 2</label>
+            <input type="text" class="form-control" name="heading2" id="heading2" value="{{ homepage_info.heading2 }}" placeholder="Enter Heading 2">
+        </div>
+
+        <!-- Image 3 -->
+        <div class="form-group">
+            <label for="image3" class="font-weight-bold">Image 3</label>
+            <input type="file" class="form-control-file" name="image3" id="image3">
+            {% if homepage_info.image3 %}
+                <div class="mt-3">
+                    <img src="{{ homepage_info.image3.url }}" alt="Image 3" class="img-fluid rounded" width="150">
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Heading 3 -->
+        <div class="form-group">
+            <label for="heading3" class="font-weight-bold">Heading 3</label>
+            <input type="text" class="form-control" name="heading3" id="heading3" value="{{ homepage_info.heading3 }}" placeholder="Enter Heading 3">
+        </div>
+
+        <!-- Address -->
+        <div class="form-group">
+            <label for="address" class="font-weight-bold">Address</label>
+            <textarea class="form-control" name="address" id="address" rows="4" placeholder="Enter Address">{{ homepage_info.address }}</textarea>
+        </div>
+
+        <!-- Phone Number -->
+        <div class="form-group">
+            <label for="phone_number" class="font-weight-bold">Phone Number</label>
+            <input type="text" class="form-control" name="phone_number" id="phone_number" value="{{ homepage_info.phone_number }}" placeholder="Enter Phone Number">
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+            <label for="email" class="font-weight-bold">Email</label>
+            <input type="email" class="form-control" name="email" id="email" value="{{ homepage_info.email }}" placeholder="Enter Email">
+        </div>
+
+        <!-- Submit Button -->
+        <div class="form-group text-center mt-4">
+            <button type="submit" class="btn btn-success btn-lg px-5">Save Changes</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

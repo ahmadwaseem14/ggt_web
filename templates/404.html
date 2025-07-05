@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+<style>
+.error-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1a1a1a;
+    color: #ffffff;
+    padding: 40px 20px;
+}
+
+.error-container {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.error-code {
+    font-size: 120px;
+    font-weight: 700;
+    color: #1189ff;
+    margin: 0;
+    line-height: 1;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.error-title {
+    font-size: 36px;
+    margin: 20px 0;
+    color: #ffffff;
+}
+
+.error-message {
+    font-size: 18px;
+    color: #b0b0b0;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.error-actions {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.error-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: #1189ff;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.error-btn:hover {
+    background-color: #c1121f;
+    transform: translateY(-2px);
+}
+
+.error-btn.secondary {
+    background-color: #2a2a2a;
+}
+
+.error-btn.secondary:hover {
+    background-color: #333333;
+}
+
+.error-image {
+    max-width: 300px;
+    margin: 40px auto;
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .error-code {
+        font-size: 80px;
+    }
+    
+    .error-title {
+        font-size: 28px;
+    }
+    
+    .error-message {
+        font-size: 16px;
+    }
+    
+    .error-actions {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .error-btn {
+        width: 100%;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="error-page">
+    <div class="error-container">
+        <h1 class="error-code">404</h1>
+        <h2 class="error-title">Page Not Found</h2>
+        <p class="error-message">
+            Oops! The page you're looking for seems to have vanished into the digital void. 
+            Don't worry though, we've got plenty of other amazing products waiting for you!
+        </p>
+        <div class="error-actions">
+            <a href="{% url 'home' %}" class="error-btn">Back to Home</a>
+            <a href="{% url 'all_products' %}" class="error-btn secondary">Browse Products</a>
+        </div>
+        
+    </div>
+</div>
+{% endblock %} 

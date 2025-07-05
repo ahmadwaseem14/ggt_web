@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+{% load static %} {# If needed for assets not in base.html #}
+
+{% block title %}Terms & Conditions | GGT [ Gaming & Graphics Tech]{% endblock %}
+
+{% block style %}
+{# Link external libraries (if not already in base.html) #}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+{# Font Awesome link if needed #}
+{# AOS link if needed #}
+
+<style>
+    :root {
+        /* Consistent variables */
+        --ggt-bg-dark-primary: #0f0f0f;
+        --ggt-bg-dark-secondary: #1a1a1a;
+        --ggt-bg-dark-tertiary: #242424;
+        --ggt-text-light-primary: #eaeaea;
+        --ggt-text-light-secondary: #b0b0b0;
+        --ggt-text-white: #ffffff;
+        --ggt-accent-primary: #00bfff; /* Deep Sky Blue */
+        --ggt-accent-primary-rgb: 0, 191, 255;
+        --ggt-accent-secondary: #4dd0e1; /* Lighter Cyan */
+        --ggt-border-color: #3a3a3a;
+        --ggt-border-color-subtle: #2c2c2c;
+
+        --ggt-font-primary: 'Source Sans Pro', sans-serif;
+        --ggt-font-headings: 'Poppins', sans-serif;
+
+        --ggt-shadow-sm: 0 3px 8px rgba(0, 0, 0, 0.4);
+        --ggt-shadow-md: 0 6px 20px rgba(0, 0, 0, 0.5);
+        --ggt-shadow-lg: 0 10px 35px rgba(0, 0, 0, 0.6);
+
+        --ggt-transition-speed: 0.3s;
+        --ggt-transition-timing: ease-in-out;
+    }
+
+    /* Base styles scoped to this page container */
+    #ggt-terms-page-container {
+        background-color: var(--ggt-bg-dark-primary);
+        color: var(--ggt-text-light-primary);
+        font-family: var(--ggt-font-primary);
+        line-height: 1.8; /* Increase line-height for readability */
+        font-weight: 400;
+        font-size: 16px; /* Standard base font size */
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%231a1a1a' fill-opacity='0.1' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+        overflow-x: hidden; /* Prevent horizontal scroll */
+    }
+     #ggt-terms-page-container *,
+     #ggt-terms-page-container *:before,
+     #ggt-terms-page-container *:after {
+        box-sizing: border-box;
+    }
+
+    /* Layout Container */
+    .ggt-terms-container {
+        max-width: 900px; /* Optimal width for text readability */
+        margin-left: auto;
+        margin-right: auto;
+        padding: 0 20px; /* Padding only left/right */
+        width: 100%;
+    }
+
+    /* Typography specific to terms page within the container */
+    #ggt-terms-page-container h1,
+    #ggt-terms-page-container h2,
+    #ggt-terms-page-container h3 { font-family: var(--ggt-font-headings); color: var(--ggt-text-white); font-weight: 600; margin: 0 0 1.5rem 0; letter-spacing: 0.5px; padding-top: 1rem; }
+    #ggt-terms-page-container .ggt-terms-h1 { font-size: clamp(2.2rem, 5vw, 3rem); margin-bottom: 0.5rem; text-align: center; padding-top: 0; }
+    #ggt-terms-page-container .ggt-terms-h2 { font-size: clamp(1.6rem, 4vw, 2rem); margin-top: 2.5rem; border-bottom: 1px solid var(--ggt-border-color); padding-bottom: 0.5rem; }
+    #ggt-terms-page-container .ggt-terms-h3 { font-size: clamp(1.2rem, 3vw, 1.4rem); margin-top: 2rem; color: var(--ggt-accent-primary); }
+    #ggt-terms-page-container p { margin-bottom: 1.5rem; color: var(--ggt-text-light-secondary); }
+    #ggt-terms-page-container ul,
+    #ggt-terms-page-container ol { margin-bottom: 1.5rem; padding-left: 2rem; color: var(--ggt-text-light-secondary); }
+    #ggt-terms-page-container li { margin-bottom: 0.75rem; }
+    #ggt-terms-page-container strong { color: var(--ggt-text-light-primary); font-weight: 600; }
+    #ggt-terms-page-container a { color: var(--ggt-accent-primary); text-decoration: underline; transition: color var(--ggt-transition-speed) var(--ggt-transition-timing); }
+    #ggt-terms-page-container a:hover { color: var(--ggt-accent-secondary); text-decoration: none; }
+    #ggt-terms-page-container .last-updated { text-align: center; color: var(--ggt-text-light-secondary); font-size: 0.9rem; margin-bottom: 2.5rem; }
+
+    /* Utility */
+    #ggt-terms-page-container .ggt-terms-section-padding { padding: 4rem 0; }
+
+    /* Hero Header (Simplified) */
+    #ggt-terms-page-container .ggt-terms-hero-header {
+        background: linear-gradient(rgba(15, 15, 15, 0.85), rgba(15, 15, 15, 0.95));
+        color: var(--ggt-text-white); padding: 6rem 1rem 3rem 1rem;
+        margin-bottom: 3rem;
+        border-bottom: 1px solid var(--ggt-border-color);
+    }
+
+    /* Responsive */
+    @media (max-width: 767.98px) {
+        #ggt-terms-page-container { font-size: 15px; }
+        #ggt-terms-page-container .ggt-terms-hero-header { padding: 6rem 1rem 2rem 1rem; }
+        #ggt-terms-page-container .ggt-terms-section-padding { padding: 2rem 0; }
+        #ggt-terms-page-container h1 { font-size: 1.8rem; }
+        #ggt-terms-page-container h2 { font-size: 1.4rem; }
+        #ggt-terms-page-container h3 { font-size: 1.1rem; }
+        #ggt-terms-page-container ul,
+        #ggt-terms-page-container ol { padding-left: 1.5rem; }
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'navbar.html' %}
+<div id="ggt-terms-page-container"> {# Wrapper for scoped styles #}
+    
+
+    <!-- Hero Header Section -->
+    <header class="ggt-terms-hero-header">
+        <div class="ggt-terms-container">
+            <h1 class="ggt-terms-h1">Terms and Conditions</h1>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main id="ggt-terms-main-content">
+        <div class="ggt-terms-container">
+
+            <p class="last-updated">Last Updated: {% now "F j, Y" %}</p> {# Dynamic Date #}
+
+            <p>Welcome to GGT [ Gaming & Graphics Tech] ("GGT", "we", "us", or "our"). These Terms and Conditions ("Terms") govern your access to and use of our website located at [Your Website URL] (the "Website") and any related services offered by GGT (collectively, the "Service").</p> <!-- REPLACE URL -->
+
+            <p>Please read these Terms carefully before using our Service. By accessing or using the Website, you agree to be bound by these Terms. If you disagree with any part of the terms, then you may not access the Service.</p>
+
+            <h2 class="ggt-terms-h2">1. Definitions</h2>
+            <ul>
+                <li><strong>"Website"</strong> refers to [Your Website URL].</li> <!-- REPLACE URL -->
+                <li><strong>"User", "You", "Your"</strong> refers to the individual accessing or using the Service.</li>
+                <li><strong>"Content"</strong> refers to text, images, graphics, logos, product information, and any other material found on the Website.</li>
+                <li><strong>"Service"</strong> refers to the Website and any associated information or communication channels referenced.</li>
+            </ul>
+
+            <h2 class="ggt-terms-h2">2. Use of the Website</h2>
+            <p>You agree to use the Website only for lawful purposes and in a way that does not infringe the rights of, restrict, or inhibit anyone else's use and enjoyment of the Website. Prohibited behavior includes:</p>
+            <ul>
+                <li>Using the Website in any way that breaches any applicable local, national, or international law or regulation.</li>
+                <li>Attempting to gain unauthorized access to our server, database, or any part of our Website.</li>
+                <li>Knowingly introducing viruses, trojans, worms, logic bombs, or other material that is malicious or technologically harmful.</li>
+                <li>Reproducing, duplicating, copying, or re-selling any part of our Website in contravention of the provisions of these Terms.</li>
+                <li>Using any data mining, robots, or similar data gathering and extraction tools on the Website.</li>
+            </ul>
+
+            <h2 class="ggt-terms-h2">3. Product Information and Pricing</h2>
+            <p>We strive to provide accurate and up-to-date information regarding the products listed on our Website, including specifications and descriptions. However, we do not warrant that product descriptions, images, or other Content on the Website are accurate, complete, reliable, current, or error-free.</p>
+            <p><strong>IMPORTANT:</strong> The prices displayed on the Website are indicative and subject to change without notice due to market fluctuations, currency exchange rates, and supplier pricing adjustments. <strong>The Website does not facilitate direct online orders or final price confirmation.</strong></p>
+            <p>For the most current pricing, stock availability, and to place an order, you **must** contact us directly via our official WhatsApp number or other contact methods provided on the <a href="{% url 'contact' %}">Contact Us</a> page.</p> {# Use url tag #}
+
+            <h2 class="ggt-terms-h2">4. Ordering Process</h2>
+            <p>As stated above, orders cannot be placed directly through the Website interface. All orders, price confirmations, payment arrangements, and delivery details must be finalized through direct communication with GGT staff, primarily via WhatsApp.</p>
+            <p>GGT reserves the right to refuse or cancel any inquiry or potential order at its sole discretion, including but not limited to cases of suspected fraud, stock unavailability, or pricing errors communicated.</p>
+
+            <h2 class="ggt-terms-h2">5. Intellectual Property</h2>
+            <p>The Website and its original Content, features, and functionality are and will remain the exclusive property of GGT [ Gaming & Graphics Tech] and its licensors. The Content is protected by copyright, trademark, and other laws of Pakistan and foreign countries.</p>
+            <p>Our trademarks and trade dress may not be used in connection with any product or service without the prior written consent of GGT [ Gaming & Graphics Tech]. You may not use any GGT logos or graphics provided on the Website without express written permission.</p>
+
+            <h2 class="ggt-terms-h2">6. Links to Other Web Sites</h2>
+            <p>Our Service may contain links to third-party web sites or services that are not owned or controlled by GGT [ Gaming & Graphics Tech].</p>
+            <p>GGT [ Gaming & Graphics Tech] has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third-party web sites or services. You further acknowledge and agree that GGT [ Gaming & Graphics Tech] shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with the use of or reliance on any such content, goods, or services available on or through any such web sites or services.</p>
+            <p>We strongly advise you to read the terms and conditions and privacy policies of any third-party web sites or services that you visit.</p>
+
+            <h2 class="ggt-terms-h2">7. Limitation of Liability</h2>
+             <p>To the fullest extent permitted by applicable law, in no event shall GGT [ Gaming & Graphics Tech], nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from:</p>
+            <ul>
+                <li>Your access to or use of or inability to access or use the Service;</li>
+                <li>Any conduct or content of any third party on the Service;</li>
+                <li>Any content obtained from the Service; and</li>
+                <li>Unauthorized access, use, or alteration of your transmissions or content, whether based on warranty, contract, tort (including negligence), or any other legal theory, whether or not we have been informed of the possibility of such damage, and even if a remedy set forth herein is found to have failed of its essential purpose.</li>
+            </ul>
+            <p>Our liability for any issues related to products purchased will be limited as per the manufacturer's warranty and applicable consumer protection laws in Pakistan.</p>
+
+            <h2 class="ggt-terms-h2">8. Indemnification</h2>
+            <p>You agree to defend, indemnify and hold harmless GGT [ Gaming & Graphics Tech] and its licensee and licensors, and their employees, contractors, agents, officers, and directors, from and against any and all claims, damages, obligations, losses, liabilities, costs or debt, and expenses (including but not limited to attorney's fees), resulting from or arising out of a) your use and access of the Service, or b) a breach of these Terms.</p>
+
+            <h2 class="ggt-terms-h2">9. Governing Law</h2>
+            <p>These Terms shall be governed and construed in accordance with the laws of Pakistan, without regard to its conflict of law provisions.</p>
+            <p>Our failure to enforce any right or provision of these Terms will not be considered a waiver of those rights. If any provision of these Terms is held to be invalid or unenforceable by a court, the remaining provisions of these Terms will remain in effect. These Terms constitute the entire agreement between us regarding our Service and supersede and replace any prior agreements we might have had between us regarding the Service.</p>
+
+            <h2 class="ggt-terms-h2">10. Changes to Terms</h2>
+            <p>We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material, we will provide at least [e.g., 15-30] days' notice prior to any new terms taking effect by posting the updated terms on the Website. What constitutes a material change will be determined at our sole discretion.</p> <!-- REPLACE NOTICE PERIOD -->
+            <p>By continuing to access or use our Service after any revisions become effective, you agree to be bound by the revised terms. If you do not agree to the new terms, you are no longer authorized to use the Service.</p>
+
+            <h2 class="ggt-terms-h2">11. Privacy Policy</h2>
+            <p>Your use of the Website is also governed by our Privacy Policy. Please review our <a href="{% url 'privacy_policy' %}">Privacy Policy</a>, which explains how we collect, use, and disclose information that pertains to your privacy.</p> <!-- REPLACE 'privacy_policy' with your actual URL name -->
+
+            <h2 class="ggt-terms-h2">12. Contact Us</h2>
+            <p>If you have any questions about these Terms, please contact us:</p>
+            <ul>
+                <li>By email: info@ggt.com.pk</li> <!-- REPLACE -->
+                <li>By visiting our Contact page: <a href="{% url 'contact' %}">www.ggt.com.pk/contact</a></li> <!-- REPLACE URL text if needed -->
+                <li>By phone number: +92 322 4467244</li> <!-- REPLACE -->
+            </ul>
+
+        </div> <!-- End Container -->
+    </main>
+
+  
+</div> {# End ggt-terms-page-container #}
+{% include 'footer.html' %}
+{% endblock %}
+
+{% block script %}
+{# Add any page-specific JS here if needed #}
+{# Example: AOS initialization if you decide to use it #}
+{# <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> #}
+{# <script> #}
+{#  document.addEventListener('DOMContentLoaded', function() { #}
+{#      AOS.init({ #}
+{#          once: true, #}
+{#          duration: 600 #}
+{#      }); #}
+{#  }); #}
+{# </script> #}
+{% endblock %}

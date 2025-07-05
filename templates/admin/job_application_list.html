@@ -1,0 +1,65 @@
+{% extends "sidebar.html" %}
+
+{% block content %}
+<div class="table-responsive">
+<div class="container mt-4">
+    <!-- Status Filter Buttons -->
+    <div class="btn-group mb-3" role="group">
+        <a href="?status=all" class="btn btn-secondary">All</a>
+        <a href="?status=new" class="btn btn-primary">New</a>
+        <a href="?status=pending" class="btn btn-warning">Pending</a>
+        <a href="?status=completed" class="btn btn-success">Completed</a>
+    </div>
+
+    <!-- Responsive Job Application Table -->
+  
+        <table class="table table-bordered">
+            <thead class="thead-light">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Applied On</th>
+                    <th>CV</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for application in applications %}
+                <tr>
+                    <td>{{ application.first_name }} {{ application.last_name }}</td>
+                    <td>{{ application.email }}</td>
+                    <td>{{ application.phone_no }}</td>
+                    <td>{{ application.applied_on }}</td>
+                    <td>
+                        <a href="{{ application.cv.url }}" class="btn btn-sm btn-info" download>
+                            <i class="fas fa-download"></i> Download CV
+                        </a>
+                    </td>
+                    <td>{{ application.get_status_display }}</td>
+                    <td>
+                        <!-- Dropdown to Change Status -->
+                        <form action="{% url 'change_status' application.id %}" method="POST">
+                            {% csrf_token %}
+                            <select name="status" onchange="this.form.submit()" class="form-control form-control-sm">
+                                {% for key, value in application.STATUS_CHOICES %}
+                                    <option value="{{ key }}" {% if application.status == key %}selected{% endif %}>{{ value }}</option>
+                                {% endfor %}
+                            </select>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center">No applications found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+{% endblock %}

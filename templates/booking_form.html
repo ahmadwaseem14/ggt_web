@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Information Form</title>
+
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8; /* Light background for the body */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden; /* Hide body overflow to prevent double scrollbars */
+        }
+
+        .form-container {
+            max-width: 700px;
+            width: 100%;
+            background: white;
+            padding: 30px;
+            margin: 20px; /* Add margin to center the form */
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            max-height: 80vh; /* Limit height of form container */
+            overflow-y: auto; /* Allow vertical scrolling within the form container */
+            box-sizing: border-box; /* Prevent padding from increasing width */
+        }
+
+        h1 {
+            text-align: center;
+            color: black; /* Theme color for the heading */
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 1px 1px 5px rgba(0, 123, 255, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"], input[type="date"], select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid black; /* Theme color for the input borders */
+            border-radius: 8px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            font-size: 16px;
+            box-sizing: border-box; /* Prevents padding from increasing width */
+        }
+
+        input[type="text"]:focus, input[type="date"]:focus, select:focus, textarea:focus {
+            border-color: rgb(43, 43, 43); /* Darker shade for focus */
+            outline: none;
+            box-shadow: 0 0 5px rgba(242, 129, 35, 0.5);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: black; /* Theme color for the button */
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background: rgb(43, 43, 43); /* Darker shade for button hover */
+            transform: translateY(-2px);
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        /* Custom Scrollbar Styles */
+        .form-container::-webkit-scrollbar {
+            width: 4px; /* Reduced width of the scrollbar */
+        }
+
+        .form-container::-webkit-scrollbar-track {
+            background: #f0f4f8; /* Background of the scrollbar track */
+        }
+
+        .form-container::-webkit-scrollbar-thumb {
+            background: black; /* Color of the scrollbar thumb */
+            border-radius: 4px; /* Rounded corners for the scrollbar thumb */
+        }
+
+        .form-container::-webkit-scrollbar-thumb:hover {
+            background: rgb(43, 43, 43); /* Darker color on hover */
+        }
+
+        .form-container {
+            scrollbar-width: thin; /* Firefox: thin scrollbar */
+            scrollbar-color: black #f0f4f8; /* Firefox: scrollbar thumb and track colors */
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            button {
+                font-size: 16px;
+            }
+        }
+    </style>
+    
+    
+</head>
+<body>
+    <div class="form-container"> <!-- Added a container for the form -->
+        <h1>Information Form</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="id_name">Name</label>
+                {{ form.name }}
+                <div class="error">{{ form.name.errors }}</div>
+            </div>
+
+            <div class="form-group">
+                <label for="id_phone_number">Phone Number</label>
+                {{ form.phone_number }}
+                <div class="error">{{ form.phone_number.errors }}</div>
+            </div>
+
+            <div class="form-group">
+                <label for="id_address">Address</label>
+                {{ form.address }}
+                <div class="error">{{ form.address.errors }}</div>
+            </div>
+
+            <div class="form-group">
+                <label for="id_pickup_date">Select Pickup Date</label>
+                {{ form.pickup_date }}
+                <div class="error">{{ form.pickup_date.errors }}</div>
+            </div>
+
+            <div class="form-group">
+                <label for="id_pickup_time">Select Pickup Time</label>
+                {{ form.pickup_time }}
+                <div class="error">{{ form.pickup_time.errors }}</div>
+            </div>
+
+            <div class="form-group">
+                <label for="id_city">City</label>
+                {{ form.city }}
+                <div class="error">{{ form.city.errors }}</div>
+            </div>
+
+            <div class="form-group">
+                <label for="id_preference_image">Upload Preference Image</label>
+                {{ form.preference_image }}
+                <div class="error">{{ form.preference_image.errors }}</div>
+            </div>
+
+            <div class="form-group">
+                <label for="id_note">Additional Notes</label>
+                {{ form.note }}
+                <div class="error">{{ form.note.errors }}</div>
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script>
+        // Initialize Flatpickr for date and time
+        flatpickr('.datepicker', {
+            dateFormat: 'Y-m-d',
+        });
+
+        flatpickr('.timepicker', {
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: 'H:i',
+            time_24hr: true,
+        });
+    </script>
+</body>
+</html>

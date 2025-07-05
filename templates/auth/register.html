@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+{% block content %}
+{% include 'navbar.html' %}
+<style>
+    .error-message {
+        color: red;
+        font-size: 0.9em;
+        margin-top: 5px;
+    }
+
+    .card {
+        border-radius: 12px; /* Rounded corners */
+        background-color: #ffffff; /* White background */
+    }
+
+    .text-success {
+        font-weight: bold; /* Bold text for emphasis */
+        color: #000000;
+    }
+
+    .form-control {
+        border: 1px solid #ced4da; /* Default border for input fields */
+        transition: border-color 0.3s; /* Transition effect */
+    }
+
+    label {
+        color: black;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid #000000;
+        border-radius: 4px;
+        font-size: 16px;
+        box-sizing: border-box;
+        position: relative; /* For positioning the eye icon */
+    }
+
+    .form-control:focus {
+        border-color: #007bff; /* Blue border on focus */
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Blue shadow effect */
+    }
+
+    .btn-primary {
+        background-color: #000000; /* Primary button color */
+        border: none; /* No border */
+    }
+
+    .btn-primary:hover {
+        background-color: #3c3c3c; /* Darker green on hover */
+        transition: background-color 0.3s; /* Transition effect */
+    }
+
+    .eye-icon {
+        cursor: pointer;
+        position: absolute;
+        right: 10px;
+        top: 50%; /* Center vertically */
+        transform: translateY(-50%);
+        color: #007bff;
+    }
+</style>
+
+<div class="breadcrumb-section breadcrumb-bg" style="height: 50px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="breadcrumb-text">
+                    <p>Sign Up Today</p>
+                    <h1>Create Your Account</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="text-gray-500 body-font min-vh-100 d-flex align-items-center">
+    <div class="container px-4 mx-auto">
+        <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6 col-10"> <!-- Centered column for form -->
+                {% if reg_errors|length > 0 %}
+                    {% for reg_error in reg_errors %}
+                        <div class="alert alert-danger" role="alert" id="login_error">
+                            <span>{{ reg_error }}</span>
+                            <button type="button" class="close" onclick="document.getElementById('login_error').style.display = 'none'">
+                                <span>&times;</span>
+                            </button>
+                        </div>
+                        <br>
+                    {% endfor %}
+                {% endif %}
+                
+                <div class="card bg-light p-4">
+                    <h2 class="text-center mb-4" style="color: #000000;">Sign Up</h2>
+
+                    <form method="post" onsubmit="return validatePassword()">{% csrf_token %}
+                        <div class="form-group">
+                            <label for="inline-fname">First Name</label>
+                            <input class="form-control" id="inline-fname" type="text" placeholder="First Name" name="f_name" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="inline-lname">Last Name</label>
+                            <input class="form-control" id="inline-lname" type="text" placeholder="Last Name" name="l_name" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="inline-email">Email</label>
+                            <input class="form-control" id="inline-email" type="email" placeholder="Email" name="email" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="inline-password">Password</label>
+                            <div class="position-relative">
+                                <input class="form-control" id="inline-password" type="password" placeholder="******************" name="password1" required />
+                                <i class="fa fa-eye eye-icon" id="toggle-password1" onclick="togglePassword('inline-password')"></i>
+                            </div>
+                            <div class="error-message" id="password-error"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inline-confirm-password">Confirm Password</label>
+                            <div class="position-relative">
+                                <input class="form-control" id="inline-confirm-password" type="password" placeholder="******************" name="password2" required />
+                                <i class="fa fa-eye eye-icon" id="toggle-password2" onclick="togglePassword('inline-confirm-password')"></i>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button class="btn btn-primary btn-block" type="submit">Sign Up</button>
+                        </div>
+
+                        <br>
+                        <div class="text-center">
+                            <label class="text-gray-500 font-bold">
+                                <span class="text-sm">Already have an account? <a class="text-purple-500" href="{% url 'login' %}">Sign In</a></span>
+                            </label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function validatePassword() {
+        const password = document.getElementById('inline-password').value;
+        const errorMessage = document.getElementById('password-error');
+
+        // Reset error message
+        errorMessage.innerText = '';
+
+        // Password strength criteria (without special characters)
+        const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$/;
+
+        if (!strongPasswordRegex.test(password)) {
+            errorMessage.innerText = 'Password must be at least 8 characters long and include uppercase letters, lowercase letters, and numbers.';
+            return false; // Prevent form submission
+        }
+        
+        return true; // Allow form submission
+    }
+
+    function togglePassword(inputId) {
+        const inputField = document.getElementById(inputId);
+        const inputType = inputField.getAttribute('type') === 'password' ? 'text' : 'password';
+        inputField.setAttribute('type', inputType);
+    }
+</script>
+
+{% endblock %}

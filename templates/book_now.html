@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    /* Popup and overlay styling */
+    #bookingPopup {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+    }
+    .popup-content {
+        background-color: #fff;
+        padding: 20px;
+        width: 90%;
+        max-width: 500px;
+        position: relative;
+        border-radius: 8px;
+    }
+    .close-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        font-size: 24px;
+    }
+    /* Additional styling for the form */
+    .form-control, .city-select, .timepicker, .note-input {
+        width: 100%;
+        margin: 10px 0;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+</style>
+<script>
+    function openBookingPopup(productId) {
+        document.getElementById("productId").value = productId;
+        document.getElementById("bookingPopup").style.display = "flex";
+    }
+
+    function closeBookingPopup() {
+        document.getElementById("bookingPopup").style.display = "none";
+    }
+</script>
+</head>
+<body>
+
+<!-- Display each product with a Book Now button -->
+{% for product in products %}
+    <div class="product-item">
+        <h3>{{ product.title }}</h3>
+        <img src="{{ product.image.url }}" alt="{{ product.title }}" width="200">
+        <p>Price: {{ product.price }}</p>
+        <button onclick="openBookingPopup('{{ product.id }}')">Book Now</button>
+    </div>
+{% endfor %}
+
+<!-- Booking Form Popup -->
+<div id="bookingPopup">
+    <div class="popup-content">
+        <span onclick="closeBookingPopup()" class="close-button">&times;</span>
+        <h2>Book Now</h2>
+        <form id="bookingForm" action="{% url 'book_now' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="product" id="productId">
+
+            <!-- Fabric and Button selection based on availability -->
+            <label>Do you have fabric?</label>
+            <select name="fabric_option" onchange="toggleFabricOptions(this.value)">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+
+            <div id="fabricOptions">
+                <label for="fabric">Fabric:</label>
+                <input type="text" class="form-control" placeholder="Search fabric...">
+                <select name="fabric" class="form-control">
+                    {% for fabric in fabrics %}
+                        <option value="{{ fabric.id }}">{{ fabric.name }} - {{ fabric.price }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <label for="button">Button:</label>
+            <input type="text" class="form-control" placeholder="Search button...">
+            <select name="button" class="form-control">
+                {% for button in buttons %}
+                    <option value="{{ button.id }}">{{ button.name }} - {{ button.price }}</option>
+                {% endfor %}
+            </select>
+
+            <!-- City selection and availability check -->
+            <label for="city">City:</label>
+            <select name="city" class="city-select">
+                {% for city in cities %}
+                    {% if city.booking_open %}
+                        <option value="{{ city.id }}">{{ city.name }}</option>
+                    {% else %}
+                        <option disabled>{{ city.name }} (Booking closed)</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+
+            <!-- Other form fields -->
+            <label for="name">Name:</label>
+            <input type="text" name="name" class="form-control" required>
+
+            <label for="phone_number">Phone Number:</label>
+            <input type="text" name="phone_number" class="form-control" placeholder="e.g. +923001234567" required>
+
+            <label for="pickup_date">Pickup Date:</label>
+            <input type="date" name="pickup_date" class="form-control" required>
+
+            <label for="pickup_time">Pickup Time:</label>
+            <select name="pickup_time" class="timepicker">
+                <option value="10:00 AM - 12:00 PM">10:00 AM - 12:00 PM</option>
+                <option value="12:00 PM - 2:00 PM">12:00 PM - 2:00 PM</option>
+                <option value="2:00 PM - 4:00 PM">2:00 PM - 4:00 PM</option>
+                <option value="4:00 PM - 6:00 PM">4:00 PM - 6:00 PM</option>
+                <option value="6:00 PM - 8:00 PM">6:00 PM - 8:00 PM</option>
+            </select>
+
+            <label for="address">Address:</label>
+            <input type="text" name="address" class="form-control" required>
+
+            <label for="preference_image">Preference Image:</label>
+            <input type="file" name="preference_image" class="form-control">
+
+            <label for="note">Additional Notes:</label>
+            <textarea name="note" class="note-input" placeholder="Enter any additional notes..."></textarea>
+
+            <button type="submit">Confirm Booking</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
+{% endblock %}

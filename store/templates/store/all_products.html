@@ -1,0 +1,590 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+<style>
+    /* Keep your existing dark theme styles */
+    body {
+        background-color: #121212;
+        color: #e0e0e0;
+    }
+    .filter-section {
+        background-color: #1e1e1e;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .filter-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #ffffff;
+    }
+    .row{
+        margin-left: 0px !important;
+        margin-right: 0px !important;
+    }
+    .filter-group {
+        margin-bottom: 20px;
+    }
+    
+    .filter-group-title {
+        font-size: 1rem;
+        color: #e0e0e0;
+        margin-bottom: 10px;
+    }
+    
+    .filter-options {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .filter-option {
+        margin-bottom: 8px;
+    }
+    
+    .filter-option label {
+        display: flex;
+        align-items: center;
+        color: #bdbdbd;
+        cursor: pointer;
+    }
+    
+    .filter-option input[type="radio"] {
+        margin-right: 8px;
+    }
+    
+    .sort-options {
+        background-color: #1e1e1e;
+        padding: 20px 25px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .results-count {
+        color: #ffffff;
+        font-size: 0.95rem;
+    }
+    .btn.btn-addto-cart.whatsapp-btn {
+    background-color: #25D366; /* WhatsApp green */
+    text-decoration: none;
+}
+.btn.btn-addto-cart.whatsapp-btn:hover {
+    background-color: #1EBB52;
+}
+    .sort-controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .sort-label {
+        color: #b0b0b0;
+        font-size: 0.95rem;
+    }
+    .variants.add {
+    position: relative;
+    overflow: hidden;
+}
+.btn.btn-addto-cart {
+    font-size: 0.6rem;
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.btn.btn-addto-cart:hover {
+    background-color: #555;
+}
+    .sort-select {
+        background-color: #2a2a2a;
+        color: #ffffff;
+        border: 1px solid #404040;
+        padding: 8px 35px 8px 15px;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        appearance: none;
+        -webkit-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23ffffff' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: calc(100% - 12px) center;
+        min-width: 200px;
+        transition: all 0.3s ease;
+    }
+
+    .sort-select:hover {
+        background-color: #333333;
+        border-color: #505050;
+    }
+
+    .sort-select:focus {
+        outline: none;
+        border-color: #2196f3;
+        box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
+    }
+
+    @media (max-width: 768px) {
+        .sort-options {
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .sort-controls {
+            width: 100%;
+        }
+
+        .sort-select {
+            width: 100%;
+            min-width: unset;
+        }
+    }
+    
+    /* Product Grid Styles - Match your product_list.html styles */
+    .grid-product {
+        background-color: #1e1e1e;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+        height: 100%;
+        position: relative;
+    }
+    
+    /* Add all your existing product card styles here */
+    
+    /* Mobile filter toggle styles */
+    .filter-toggle {
+        display: none;
+        background-color: #1e1e1e;
+        color: #e0e0e0;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        width: 100%;
+        text-align: left;
+        font-weight: 600;
+        cursor: pointer;
+    }
+    
+    .filter-toggle i {
+        float: right;
+        transition: transform 0.3s ease;
+    }
+    
+    .filter-toggle.active i {
+        transform: rotate(180deg);
+    }
+    
+    /* Responsive styles */
+    @media (max-width: 991px) {
+        .filter-toggle {
+            display: block;
+        }
+        .row{
+        margin-left: -15px !important;
+        margin-right: -15px !important;
+    }
+        
+        .filter-section {
+            display: none;
+        }
+        
+        .filter-section.show {
+            display: block;
+        }
+    }
+    .container {
+        margin-top: 80px;
+        padding-bottom: 50px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'navbar.html' %}
+
+<div class="container">
+    <div class="row">
+        <!-- Filters Sidebar -->
+        <div class="col-lg-3">
+            <button type="button" class="filter-toggle" id="filterToggle">
+                <span>Filter Products</span> <i class="fa fa-chevron-down"></i>
+            </button>
+            <form id="filter-form" method="get" action="{% url 'all_products' %}">
+                <!-- Preserve search query if exists -->
+                {% if query %}
+                    <input type="hidden" name="q" value="{{ query }}">
+                {% endif %}
+                
+                <div class="filter-section" id="filterSection">
+                    <h3 class="filter-title">Filters</h3>
+                    
+                    <!-- Condition Filter -->
+                    <div class="filter-group">
+                        <h4 class="filter-group-title">Condition</h4>
+                        <ul class="filter-options">
+                            <li class="filter-option">
+                                <label>
+                                    <input type="radio" name="condition" value="" 
+                                           {% if not current_condition %}checked{% endif %}>
+                                    All Conditions
+                                </label>
+                            </li>
+                            {% for condition in conditions %}
+                            <li class="filter-option">
+                                <label>
+                                    <input type="radio" name="condition" value="{{ condition }}"
+                                           {% if current_condition == condition %}checked{% endif %}>
+                                    {{ condition|title }}
+                                </label>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    
+                    <!-- Category Filter -->
+                    <div class="filter-group">
+                        <h4 class="filter-group-title">Categories</h4>
+                        <ul class="filter-options">
+                            <li class="filter-option">
+                                <label>
+                                    <input type="radio" name="category" value="" 
+                                           {% if not current_category %}checked{% endif %}
+                                           onchange="this.form.submit()">
+                                    All Categories
+                                </label>
+                            </li>
+                            {% for cat in categories %}
+                            <li class="filter-option">
+                                <label>
+                                    <input type="radio" name="category" value="{{ cat.code }}"
+                                           {% if current_category == cat.code %}checked{% endif %}
+                                           onchange="this.form.submit()">
+                                    {{ cat.name }} ({{ cat.count }})
+                                </label>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Products Grid -->
+        <div class="col-lg-9">
+            <!-- Sort Section -->
+            <div class="sort-options">
+                <div class="results-count">
+                    {% if query %}
+                        <span style="color: #ffffff;">Search Results for "{{ query }}" ({{ total_count }} products found)</span>
+                    {% else %}
+                        <span style="color: #ffffff;">{{ total_count }} product{{ total_count|pluralize }} found</span>
+                    {% endif %}
+                </div>
+                <div class="sort-controls">
+                    <span class="sort-label me-2">Sort by:</span>
+                    <select class="sort-select" name="sort_by" form="filter-form">
+                        {% for option in sort_options %}
+                            <option value="{{ option.value }}" 
+                                    {% if current_sort == option.value %}selected{% endif %}>
+                                {{ option.label }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="grid-products grid--view-items">
+                <div class="row">
+                    {% for item in products %}
+                    <div class="col-6 col-sm-6 col-md-4 col-lg-3 item">
+                        <!-- Start product image -->
+                        <div class="product-image">
+                            <a href="{% url 'product_detail' item.product.sku %}">
+                                {% with primary_image=item.product.images.all|dictsort:"is_primary"|last %}
+                                    {% if primary_image %}
+                                        <!-- Primary Image -->
+                                        <img class="primary blur-up lazyload" 
+                                             data-src="{{ primary_image.image.url }}" 
+                                             src="{{ primary_image.image.url }}" 
+                                             alt="{{ primary_image.alt_text|default:item.product.name }}" 
+                                             title="{{ item.product.name }}">
+                                        
+                                        <!-- Hover Image -->
+                                        {% with second_image=item.product.images.all|dictsortreversed:"is_primary"|first %}
+                                            {% if second_image and second_image != primary_image %}
+                                                <img class="hover blur-up lazyload"
+                                                     data-src="{{ second_image.image.url }}"
+                                                     src="{{ second_image.image.url }}"
+                                                     alt="{{ second_image.alt_text|default:item.product.name }}"
+                                                     title="{{ item.product.name }}">
+                                            {% else %}
+                                                <!-- If no second image, use primary image as hover -->
+                                                <img class="hover blur-up lazyload"
+                                                     data-src="{{ primary_image.image.url }}"
+                                                     src="{{ primary_image.image.url }}"
+                                                     alt="{{ primary_image.alt_text|default:item.product.name }}"
+                                                     title="{{ item.product.name }}">
+                                            {% endif %}
+                                        {% endwith %}
+                                    {% else %}
+                                        {% with first_image=item.product.images.first %}
+                                            {% if first_image %}
+                                                <img class="primary blur-up lazyload" 
+                                                     data-src="{{ first_image.image.url }}" 
+                                                     src="{{ first_image.image.url }}" 
+                                                     alt="{{ first_image.alt_text|default:item.product.name }}" 
+                                                     title="{{ item.product.name }}">
+                                                <!-- Use same image for hover -->
+                                                <img class="hover blur-up lazyload"
+                                                     data-src="{{ first_image.image.url }}"
+                                                     src="{{ first_image.image.url }}"
+                                                     alt="{{ first_image.alt_text|default:item.product.name }}"
+                                                     title="{{ item.product.name }}">
+                                            {% else %}
+                                                <img class="primary blur-up lazyload" 
+                                                     data-src="{% static 'images/no-image.jpg' %}" 
+                                                     src="{% static 'images/no-image.jpg' %}" 
+                                                     alt="No image available" 
+                                                     title="{{ item.product.name }}">
+                                                <!-- Use same no-image for hover -->
+                                                <img class="hover blur-up lazyload"
+                                                     data-src="{% static 'images/no-image.jpg' %}"
+                                                     src="{% static 'images/no-image.jpg' %}"
+                                                     alt="No image available"
+                                                     title="{{ item.product.name }}">
+                                            {% endif %}
+                                        {% endwith %}
+                                    {% endif %}
+                                {% endwith %}
+                            </a>
+
+                            <!-- Start product button -->
+                            <div class="variants add">
+                                {% if item.product.price %}
+                                    <a href="#" class="btn btn-addto-cart whatsapp-btn order-whatsapp-btn" 
+                                       data-sku="{{ item.product.sku }}" 
+                                       data-name="{{ item.product.name|truncatechars:50 }}" 
+                                       data-price="{{ item.product.price }}" 
+                                       data-url="{% url 'product_detail' item.product.sku %}" 
+                                       tabindex="0">
+                                        Order Now
+                                    </a>
+                                {% else %}
+                                    <a href="#" class="btn btn-addto-cart whatsapp-btn inquiry-whatsapp-btn" 
+                                       data-sku="{{ item.product.sku }}" 
+                                       data-name="{{ item.product.name|truncatechars:50 }}" 
+                                       data-url="{% url 'product_detail' item.product.sku %}" 
+                                       tabindex="0">
+                                        Contact for Price & Order
+                                    </a>
+                                {% endif %}
+                            </div>
+                            <div class="button-set">
+                                <a href="{% url 'quick_view' item.product.sku %}" 
+                                   class="quick-view-popup quick-view" data-toggle="modal" 
+                                   data-target="#content_quickview">
+                                    <i class="icon anm anm-eye-r"></i>
+                                </a>
+                                <div class="wishlist-btn">
+                                    <a class="wishlist add-to-wishlist" href="{% url 'add_to_wishlist' item.product.sku %}">
+                                        <i class="icon anm anm-heart-l"></i>
+                                    </a>
+                                </div>
+                                <div class="compare-btn">
+                                    <a class="compare add-to-compare" href="{% url 'add_to_comparison' item.product.sku %}">
+                                        <i class="icon anm anm-random-r"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Start product details -->
+                        <div class="product-details text-center">
+                            <div class="product-name">
+                                <a href="{% url 'product_detail' item.product.sku %}">{{ item.product.name }}</a>
+                            </div>
+                            <div class="product-price">
+                               
+                                {% if item.product.price %}
+                                    <span class="price">Rs. {{ item.product.price }}</span>
+                                {% else %}
+                                    <span class="price">Price on request</span>
+                                {% endif %}
+                            </div>
+                            
+                            {% if item.product.variants.exists %}
+                            <ul class="swatches">
+                                {% for variant in item.product.variants.all|slice:":6" %}
+                                    <li class="swatch medium rounded">
+                                        <img src="{{ variant.image.url }}" alt="{{ variant.name|default:item.product.name }}" />
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="col-12 text-center">
+                        <p>No products found.</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'footer.html' %}
+{% endblock %}
+
+{% block script %}
+<script>
+    if (typeof jQuery === 'undefined') {
+    console.error('jQuery is not loaded. Please ensure the jQuery CDN is accessible.');
+} else {
+    console.log('jQuery loaded successfully.');
+}
+
+// Configuration - Set your WhatsApp number here
+const WHATSAPP_NUMBER = '923224467244'; // Replace with your actual WhatsApp number
+// Note: Include country code but remove any +, -, or spaces
+// Example: 923224467244 (for Pakistan) or 919876543210 (for India)
+
+// Function to detect if the user is on a mobile device
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+// Function to format phone number for URLs (removes all non-digit characters)
+function formatPhoneNumber(phone) {
+    return phone.replace(/\D/g, '');
+}
+
+// Function to generate WhatsApp URL
+function getWhatsAppUrl(phoneNumber, message) {
+    const formattedNumber = formatPhoneNumber(phoneNumber);
+    const baseUrl = isMobileDevice() ? 'https://wa.me/' : 'https://web.whatsapp.com/send?phone=';
+    const separator = isMobileDevice() ? '?' : '&';
+    return `${baseUrl}${formattedNumber}${separator}text=${encodeURIComponent(message)}`;
+}
+
+// WhatsApp message templates
+function getOrderMessage(name, sku, price, url) {
+    return `🌟 Hello! I'm interested in ordering the following product:\n\n` +
+           `📦 *Product*: ${name}\n` +
+           `🔢 *SKU*: ${sku}\n` +
+           `💰 *Price*: Rs${price}\n` +
+           `🔗 *Details*: ${window.location.origin}${url}\n\n` +
+           `Please confirm availability and provide order details. Thank you! 😊`;
+}
+
+function getInquiryMessage(name, sku, url) {
+    return `🌟 Hello! I have a query about the following product:\n\n` +
+           `📦 *Product*: ${name}\n` +
+           `🔢 *SKU*: ${sku}\n` +
+           `🔗 *Details*: www.ggt.com.pk${url}\n\n` +
+           `Could you please provide the price and ordering details? Thank you! 😊`;
+}
+
+// Handle WhatsApp button clicks
+$(document).ready(function() {
+    // Log to verify script execution
+    console.log('Document ready. Attaching WhatsApp button event listeners.');
+    console.log('Using WhatsApp number:', WHATSAPP_NUMBER);
+
+    // Order button (with price)
+    $('.order-whatsapp-btn').on('click', function(e) {
+        e.preventDefault();
+        console.log('Order WhatsApp button clicked.');
+        const name = $(this).data('name');
+        const sku = $(this).data('sku');
+        const price = $(this).data('price');
+        const url = $(this).data('url');
+        const message = getOrderMessage(name, sku, price, url);
+        const whatsappUrl = getWhatsAppUrl(WHATSAPP_NUMBER, message);
+        console.log('Opening WhatsApp URL:', whatsappUrl);
+        try {
+            window.open(whatsappUrl, '_blank');
+        } catch (error) {
+            console.error('Failed to open WhatsApp URL:', error);
+            alert('Unable to open WhatsApp. Please check your connection or try again.');
+        }
+    });
+
+    // Inquiry button (without price)
+    $('.inquiry-whatsapp-btn').on('click', function(e) {
+        e.preventDefault();
+        console.log('Inquiry WhatsApp button clicked.');
+        const name = $(this).data('name');
+        const sku = $(this).data('sku');
+        const url = $(this).data('url');
+        const message = getInquiryMessage(name, sku, url);
+        const whatsappUrl = getWhatsAppUrl(WHATSAPP_NUMBER, message);
+        console.log('Opening WhatsApp URL:', whatsappUrl);
+        try {
+            window.open(whatsappUrl, '_blank');
+        } catch (error) {
+            console.error('Failed to open WhatsApp URL:', error);
+            alert('Unable to open WhatsApp. Please check your connection or try again.');
+        }
+    });
+});
+$(document).ready(function() {
+    // Auto-submit form when filters change
+    $('input[name="condition"], select[name="sort_by"]').on('change', function() {
+        $('#filter-form').submit();
+    });
+    
+    // Quick View functionality
+    $('.quick-view').on('click', function(e) {
+        e.preventDefault();
+        console.log('Quick View button clicked.');
+        var url = $(this).attr('href');
+        $.ajax({
+            url: url,
+            method: 'GET',
+            success: function(data) {
+                $('#content_quickview .modal-body').html(data);
+                $('#content_quickview').modal('show');
+            },
+            error: function(xhr, status, error) {
+                console.error('Error loading Quick View:', error);
+                $('#content_quickview .modal-body').html('<p>Error loading product details.</p>');
+                $('#content_quickview').modal('show');
+            }
+        });
+    });
+
+    $('#content_quickview').on('click', '.model-close-btn', function() {
+        $('#content_quickview').modal('hide');
+    });
+    
+    // Filter toggle for mobile
+    $('#filterToggle').on('click', function() {
+        $(this).toggleClass('active');
+        $('#filterSection').slideToggle(300);
+    });
+    
+    // Adjust visibility on window resize
+    $(window).on('resize', function() {
+        if ($(window).width() > 991) {
+            $('#filterSection').show();
+        } else if (!$('#filterToggle').hasClass('active')) {
+            $('#filterSection').hide();
+        }
+    });
+});
+
+</script>
+{% endblock %} 

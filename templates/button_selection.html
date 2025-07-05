@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Button</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* Main Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        #buttonForm {
+            max-width: 700px;
+            width: 90%;
+            background: white;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            max-height: 80vh;
+            overflow-y: auto;
+            min-height: 80vh;
+            box-sizing: border-box;
+        }
+        h2 {
+            text-align: center;
+            color: black;
+            margin-bottom: 20px;
+            font-size: 2em;
+            text-shadow: 1px 1px 5px rgba(0, 123, 255, 0.2);
+        }
+        .button-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 2px solid black;
+            border-radius: 8px;
+            transition: background-color 0.3s, border-color 0.3s;
+            position: relative;
+            flex-wrap: wrap;
+        }
+        .button-option:hover {
+            background-color: #f9f9f9;
+            border-color: #bbb;
+        }
+        .button-radio {
+            display: flex;
+            align-items: center;
+            margin-right: 15px;
+        }
+        .button-radio input[type="radio"] {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        .button-radio img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+            transition: transform 0.3s;
+        }
+        .button-radio img:hover {
+            transform: scale(1.05);
+        }
+        .button-details {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            flex-grow: 1;
+            width: 100%;
+        }
+        .button-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #555;
+            font-size: 16px;
+            width: 100%;
+        }
+        .view-details-btn {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+            position: absolute;
+            right: 10px;
+            font-size: 14px;
+        }
+        .view-details-btn:hover {
+            background-color: #555;
+        }
+        button[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: black;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        button[type="submit"]:hover {
+            background: rgb(43, 43, 43);
+            transform: translateY(-2px);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            cursor: pointer;
+        }
+        #buttonForm::-webkit-scrollbar {
+            width: 4px;
+        }
+        #buttonForm::-webkit-scrollbar-thumb {
+            background: black;
+            border-radius: 4px;
+        }
+        #buttonForm {
+            scrollbar-width: thin;
+            scrollbar-color: black #f0f4f8;
+        }
+        @media (max-width: 600px) {
+            h2 {
+                font-size: 1.5em;
+            }
+            .button-option {
+                flex-direction: row;
+                align-items: center;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+            }
+            .button-radio img {
+                width: 70px;
+                height: 70px;
+                margin-right: 15px;
+            }
+            .button-details {
+                flex-direction: row;
+                justify-content: space-between;
+                width: 100%;
+                margin-left: 10px;
+            }
+            .button-info {
+                flex-direction: row;
+                justify-content: space-between;
+                width: 100%;
+                font-size: 14px;
+            }
+            .button-info p:last-child {
+                text-align: right;
+                margin-left: auto;
+            }
+            .view-details-btn {
+                position: static;
+                width: 100%;
+                margin-top: 10px;
+                text-align: center;
+                font-size: 14px;
+            }
+            button[type="submit"] {
+                font-size: 16px;
+            }
+            .modal-content {
+                width: 80%;
+                margin: 15% auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="buttonForm">
+        <h2>Select Button</h2>
+        <input type="text" id="buttonSearch" placeholder="Search buttons..." style="width: 100%; padding: 8px; margin-bottom: 20px;">
+
+        <form method="post" action="{% url 'booking' product_sku=product.sku %}?step=select_button{% if fabric %}&fabric_sku={{ fabric.sku }}{% endif %}">            {% csrf_token %}
+
+            <div id="buttonOptions">
+                {% for button in buttons %}
+                    <div class="button-option">
+                        <div class="button-radio">
+                            <input type="radio" id="button_{{ button.sku }}" name="button_sku" value="{{ button.sku }}" required>
+                            <label for="button_{{ button.sku }}">
+                                <img src="{{ button.image.url }}" alt="{{ button.name }}">
+                            </label>
+                        </div>
+                        <div class="button-details">
+                            <div class="button-info">
+                                <p>{{ button.name }}</p>
+                                <p>Rs.{{ button.price }}</p>
+                            </div>
+                        </div>
+                        <button type="button" class="view-details-btn" onclick="openModal('{{ button.sku }}')">View Details</button>
+                    </div>
+                    <div id="modal_{{ button.sku }}" class="modal">
+                        <div class="modal-content">
+                            <span class="close" onclick="closeModal('{{ button.sku }}')">&times;</span>
+                            <h3>{{ button.name }} Details</h3>
+                            <p>Price: Rs.{{ button.price }}</p>
+                            <p>Description: {{ button.description }}</p>
+                            {% if button.video %}
+                                <p>Video:</p>
+                                <video controls width="100%">
+                                    <source src="{{ button.video.url }}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <button type="submit">Next</button>
+        </form>
+    </div>
+
+    <script>
+        function openModal(buttonSku) {
+            document.getElementById("modal_" + buttonSku).style.display = "block";
+        }
+        function closeModal(buttonSku) {
+            document.getElementById("modal_" + buttonSku).style.display = "none";
+        }
+        window.onclick = function(event) {
+            const modals = document.getElementsByClassName("modal");
+            for (let i = 0; i < modals.length; i++) {
+                if (event.target == modals[i]) {
+                    modals[i].style.display = "none";
+                }
+            }
+        }
+        $(document).ready(function() {
+            $('#buttonSearch').on('input', function() {
+                const query = $(this).val();
+                $.ajax({
+                    url: '{% url "button_search" %}',
+                    data: { 'q': query },
+                    success: function(data) {
+                        $('#buttonOptions').html(data);
+                    },
+                    error: function() {
+                        alert("Error retrieving buttons. Please try again.");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

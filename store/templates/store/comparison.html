@@ -1,0 +1,415 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load store_extras %}
+{% block style %}
+<style>
+ 
+ .btn{
+    background-color: #007bff !important;
+    color: white !important;
+    border-radius: 4px !important;
+  
+ 
+    border-radius: 5px;
+   
+}
+.align-items-center1{
+    align-items: center !important;
+}
+.badge{
+    padding: 0.7em 0.9em !important;
+    margin-left: 10px !important;
+}
+.btn:hover{
+    background-color: #0056b3 !important;  
+}
+.empty-comparison-container {
+    /* background-color: #f8f9fa; */
+    border-radius: 8px;
+    margin-bottom: 40px;
+}
+.description-compare{
+    color: white;
+}
+.alert {
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border-color: #bee5eb
+}
+.step-number {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    font-weight: bold;
+}
+.compare-page .table td{
+    color:white;
+}
+.card {
+    transition: transform 0.3s ease;
+    border: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+.compare-page .table td{
+    background: none !important;
+}
+.wishlist-spacing {
+        margin-top: 78px;
+    }
+    @media (max-width: 768px) {
+        .wishlist-spacing {
+            margin-top: 70px;
+        }
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+{% include 'navbar.html' %}
+<div class="wishlist-spacing"></div>
+
+<!--Body Content-->
+<div id="page-content">
+    <!--Page Title-->
+    <div class="page section-header text-center">
+        <div class="page-title">
+            <div class="wrapper"><h1 class="page-width">Product Comparison</h1></div>
+        </div>
+    </div>
+    <!--End Page Title-->
+    
+    {% if messages %}
+    <div class="container">
+        <div class="messages">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    
+    {% if comparison_lists %}
+        {% for comparison_list in comparison_lists %}
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col">
+                    <div class="compare-page">
+                        <!-- Responsive comparison header -->
+                        <div class="d-flex flex-wrap justify-content-between align-items-center1 mb-3">
+                            <div class="comparison-title mb-2 mb-md-0">
+                                <h2 style="color: white;" class="d-inline-block me-2">{{ comparison_list.product_type|title }} Comparison</h2>
+                                <span class="badge  " style="background-color: none; color: white; border: 1px solid white">{{ comparison_list.items.count }} items</span>
+                            </div>
+                            <div class="comparison-actions">
+                                <a href="{% url 'clear_comparison' comparison_list.id %}" class="btn btn-danger">
+                                    <i class="fa fa-trash"></i> <span class="d-none d-sm-inline">Clear Comparison</span>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        {% if comparison_list.items.exists %}
+                        <div class="table-wrapper table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr class="th-compare">
+                                        <th valign="middle">Action</th>
+                                        {% for item in comparison_list.items.all %}
+                                        <td valign="middle" class="item-row">
+                                            <a href="{% url 'remove_from_comparison' item.id %}" class="remove-compare">
+                                                <i class="anm anm-times-l" aria-hidden="true"></i>
+                                            </a>
+                                        </td>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                                <tbody id="table-compare">
+                                    <tr>
+                                        <th valign="middle" class="product-name">Product Name</th>
+                                        {% for item in comparison_list.items.all %}
+                                        <td valign="middle" class="grid-link__title">{{ item.product.name }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    <tr>
+                                        <th valign="middle" class="product-name">Product Image</th>
+                                        {% for item in comparison_list.items.all %}
+                                        <td valign="middle" class="item-row">
+                                            {% with primary_image=item.product.images.all|dictsort:"is_primary"|last %}
+                                                {% if primary_image %}
+                                                    <img src="{{ primary_image.image.url }}" 
+                                                         alt="{{ primary_image.alt_text }}" 
+                                                         class="featured-image">
+                                                {% else %}
+                                                    {% with first_image=item.product.images.first %}
+                                                        {% if first_image %}
+                                                            <img src="{{ first_image.image.url }}" 
+                                                                 alt="{{ first_image.alt_text }}" 
+                                                                 class="featured-image">
+                                                        {% else %}
+                                                            <div class="text-center">No image</div>
+                                                        {% endif %}
+                                                    {% endwith %}
+                                                {% endif %}
+                                            {% endwith %}
+                                            
+                                            <div class="product-price product_price">
+                                                {% if item.product.price %}
+                                                    <span>Rs. {{ item.product.price }}</span>
+                                                   
+                                                {% else %}
+                                                    <span>Price on request</span>
+                                                {% endif %}
+                                            </div>
+                                            
+                                            {% if item.product.price %}
+                                                <a href="javascript:void(0)" 
+                                                   class="btn btn-sm whatsapp-btn order-whatsapp-btn"
+                                                   data-sku="{{ item.product.sku }}"
+                                                   data-name="{{ item.product.name|truncatechars:50 }}"
+                                                   data-price="{{ item.product.price }}"
+                                                   data-url="{% url 'product_detail' item.product.sku %}">
+                                                    Order Now
+                                                </a>
+                                            {% else %}
+                                                <a href="javascript:void(0)" 
+                                                   class="btn btn-sm whatsapp-btn inquiry-whatsapp-btn"
+                                                   data-sku="{{ item.product.sku }}"
+                                                   data-name="{{ item.product.name|truncatechars:50 }}"
+                                                   data-url="{% url 'product_detail' item.product.sku %}">
+                                                    Contact for Price & Order
+                                                </a>
+                                            {% endif %}
+                                        </td>
+                                        {% endfor %}
+                                    </tr>
+                                    
+                                    <tr>
+                                        <th valign="middle" class="product-name">SKU</th>
+                                        {% for item in comparison_list.items.all %}
+                                        <td valign="middle">{{ item.product.sku }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    
+                                    <tr>
+                                        <th valign="middle" class="product-name">Brand</th>
+                                        {% for item in comparison_list.items.all %}
+                                        <td valign="middle">{{ item.product.brand }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    
+                                    <tr>
+                                        <th valign="middle" class="product-name">Condition</th>
+                                        {% for item in comparison_list.items.all %}
+                                        <td valign="middle">{{ item.product.condition|title }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    
+                                    <!-- Dynamic model-specific fields -->
+                                    {% if comparison_list.model_fields %}
+                                        {% for field in comparison_list.model_fields %}
+                                        <tr>
+                                            <th valign="middle" class="product-name">{{ field.verbose_name }}</th>
+                                            {% for item in comparison_list.items.all %}
+                                            <td valign="middle">
+                                                {% with field_value=item.product|getattribute:field.name %}
+                                                    {% if field.field_type == 'BooleanField' %}
+                                                        {{ field_value|yesno:"Yes,No" }}
+                                                    {% elif field.field_type == 'IntegerField' and 'clock' in field.name %}
+                                                        {{ field_value }} MHz
+                                                    {% elif field.field_type == 'IntegerField' and 'size' in field.name %}
+                                                        {{ field_value }} GB
+                                                    {% elif field.field_type == 'IntegerField' and 'capacity' in field.name %}
+                                                        {{ field_value }} GB
+                                                    {% elif field.field_type == 'IntegerField' and 'wattage' in field.name %}
+                                                        {{ field_value }} W
+                                                    {% elif field.field_type == 'IntegerField' and 'tdp' in field.name %}
+                                                        {{ field_value }} W
+                                                    {% elif field.field_type == 'IntegerField' and 'rate' in field.name %}
+                                                        {{ field_value }} Hz
+                                                    {% elif field.field_type == 'FloatField' and 'size' in field.name %}
+                                                        {{ field_value }}"
+                                                    {% elif field.field_type == 'FloatField' and 'clock' in field.name %}
+                                                        {{ field_value }} GHz
+                                                    {% else %}
+                                                        {{ field_value }}
+                                                    {% endif %}
+                                                {% endwith %}
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+                                        {% endfor %}
+                                    {% endif %}
+                                    
+                                    <tr>
+                                        <th valign="middle" class="product-name">Product Description</th>
+                                        {% for item in comparison_list.items.all %}
+                                        <td valign="middle" class="item-row">
+                                            <p class="description-compare">{{ item.product.description|truncatewords:30 }}</p>
+                                        </td>
+                                        {% endfor %}
+                                    </tr>
+                                    
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <p>No items in this comparison list yet.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+    <div class="container">
+        <div class="empty-comparison-container text-center py-5" style="padding:15px; border-bottom: 35px solid #121212;">
+            <div class="empty-comparison-icon mb-4">
+                <i class="fa fa-balance-scale" style="font-size: 64px; color: #ccc;"></i>
+            </div>
+            <h3 class="mb-3">No Comparison Lists Yet</h3>
+            <p class="lead text-muted mb-4">Start comparing products to make better buying decisions.</p>
+            <div class="empty-comparison-steps">
+                <div class="row justify-content-center">
+                    <div class="col-md-3 mb-4">
+                        <div class="card h-100 bg-light">
+                            <div class="card-body text-center">
+                                <div class="step-number mb-2">1</div>
+                                <h5>Browse Products</h5>
+                                <p class="small">Explore our wide range of tech products</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="card h-100 bg-light">
+                            <div class="card-body text-center">
+                                <div class="step-number mb-2">2</div>
+                                <h5>Add to Compare</h5>
+                                <p class="small">Click "Add to Compare" on products you're interested in</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="card h-100 bg-light">
+                            <div class="card-body text-center">
+                                <div class="step-number mb-2">3</div>
+                                <h5>Review Differences</h5>
+                                <p class="small">See all specs side-by-side to make informed decisions</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4">
+                <a href="{% url 'all_products' %}" class="btn btn-primary">Start Shopping</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% include 'footer.html' %}
+{% endblock %}
+{% block script %}
+<script>
+   if (typeof jQuery === 'undefined') {
+    console.error('jQuery is not loaded. Please ensure the jQuery CDN is accessible.');
+} else {
+    console.log('jQuery loaded successfully.');
+}
+
+// Configuration - Set your WhatsApp number here
+const WHATSAPP_NUMBER = '923224467244'; // Replace with your actual WhatsApp number
+// Note: Include country code but remove any +, -, or spaces
+// Example: 923224467244 (for Pakistan) or 919876543210 (for India)
+
+// Function to detect if the user is on a mobile device
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+// Function to format phone number for URLs (removes all non-digit characters)
+function formatPhoneNumber(phone) {
+    return phone.replace(/\D/g, '');
+}
+
+// Function to generate WhatsApp URL
+function getWhatsAppUrl(phoneNumber, message) {
+    const formattedNumber = formatPhoneNumber(phoneNumber);
+    const baseUrl = isMobileDevice() ? 'https://wa.me/' : 'https://web.whatsapp.com/send?phone=';
+    const separator = isMobileDevice() ? '?' : '&';
+    return `${baseUrl}${formattedNumber}${separator}text=${encodeURIComponent(message)}`;
+}
+
+// WhatsApp message templates
+function getOrderMessage(name, sku, price, url) {
+    return `🌟 Hello! I'm interested in ordering the following product:\n\n` +
+           `📦 *Product*: ${name}\n` +
+           `🔢 *SKU*: ${sku}\n` +
+           `💰 *Price*: Rs${price}\n` +
+           `🔗 *Details*: ${window.location.origin}${url}\n\n` +
+           `Please confirm availability and provide order details. Thank you! 😊`;
+}
+
+function getInquiryMessage(name, sku, url) {
+    return `🌟 Hello! I have a query about the following product:\n\n` +
+           `📦 *Product*: ${name}\n` +
+           `🔢 *SKU*: ${sku}\n` +
+           `🔗 *Details*: www.ggt.com.pk${url}\n\n` +
+           `Could you please provide the price and ordering details? Thank you! 😊`;
+}
+
+// Handle WhatsApp button clicks
+$(document).ready(function() {
+    // Log to verify script execution
+    console.log('Document ready. Attaching WhatsApp button event listeners.');
+    console.log('Using WhatsApp number:', WHATSAPP_NUMBER);
+
+    // Order button (with price)
+    $('.order-whatsapp-btn').on('click', function(e) {
+        e.preventDefault();
+        console.log('Order WhatsApp button clicked.');
+        const name = $(this).data('name');
+        const sku = $(this).data('sku');
+        const price = $(this).data('price');
+        const url = $(this).data('url');
+        const message = getOrderMessage(name, sku, price, url);
+        const whatsappUrl = getWhatsAppUrl(WHATSAPP_NUMBER, message);
+        console.log('Opening WhatsApp URL:', whatsappUrl);
+        try {
+            window.open(whatsappUrl, '_blank');
+        } catch (error) {
+            console.error('Failed to open WhatsApp URL:', error);
+            alert('Unable to open WhatsApp. Please check your connection or try again.');
+        }
+    });
+
+    // Inquiry button (without price)
+    $('.inquiry-whatsapp-btn').on('click', function(e) {
+        e.preventDefault();
+        console.log('Inquiry WhatsApp button clicked.');
+        const name = $(this).data('name');
+        const sku = $(this).data('sku');
+        const url = $(this).data('url');
+        const message = getInquiryMessage(name, sku, url);
+        const whatsappUrl = getWhatsAppUrl(WHATSAPP_NUMBER, message);
+        console.log('Opening WhatsApp URL:', whatsappUrl);
+        try {
+            window.open(whatsappUrl, '_blank');
+        } catch (error) {
+            console.error('Failed to open WhatsApp URL:', error);
+            alert('Unable to open WhatsApp. Please check your connection or try again.');
+        }
+    });
+});
+</script>
+{% endblock %}

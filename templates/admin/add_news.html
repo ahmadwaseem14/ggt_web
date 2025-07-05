@@ -1,0 +1,122 @@
+{% extends "sidebar.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4>Add News</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- News Title -->
+                        <div class="form-group">
+                            {{ form.title.label_tag }}
+                            {{ form.title }}
+                            {% if form.title.errors %}
+                                <div class="text-danger small">{{ form.title.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- News Content -->
+                        <div class="form-group">
+                            {{ form.content.label_tag }}
+                            {{ form.content }}
+                            {% if form.content.errors %}
+                                <div class="text-danger small">{{ form.content.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- News Image -->
+                        <div class="form-group">
+                            {{ form.image.label_tag }}
+                            {{ form.image }}
+                            {% if form.image.errors %}
+                                <div class="text-danger small">{{ form.image.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="row mb-3">
+                            <!-- Save News Button (Left) -->
+                            <div class="col-6">
+                                <button type="submit" name="save" class="btn btn-success btn-block">
+                                    <i class="fas fa-save"></i> Save News
+                                </button>
+                            </div>
+                            <!-- Save and Add New Button (Right) -->
+                            <div class="col-6">
+                                <button type="submit" name="save_and_add" class="btn btn-primary btn-block">
+                                    <i class="fas fa-plus-circle"></i> Save and Add New
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Back to News List Button (Full Width) -->
+                        <div class="mb-3">
+                            <a href="{% url 'news_list' %}">
+                                <button type="button" class="btn btn-secondary btn-block">
+                                    <i class="fas fa-arrow-left"></i> Back to News List
+                                </button>
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<style>
+     .home-content {
+        align-items: normal;
+    }
+    a {
+        color: white;
+    }
+    a:hover {
+        color: rgb(255, 255, 255);
+        text-decoration: none;
+    }
+    .form-group label {
+        font-weight: 600;
+    }
+    .container {
+        margin-top: 50px;
+    }
+    .btn-block {
+        width: 100%;
+        padding: 15px;
+        font-size: 1rem;
+    }
+    .row > .col-6 {
+        margin-bottom: 10px;
+    }
+    @media (max-width: 576px) {
+        .btn-block {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 0.85rem;
+        }
+        .card-body {
+            padding: 15px;
+        }
+    }
+    @media (max-width: 400px) {
+        .btn-block {
+            font-size: 0.8rem;
+            padding: 8px;
+        }
+        .card-body {
+            padding: 10px;
+        }
+    }
+</style>
+{% endblock %}

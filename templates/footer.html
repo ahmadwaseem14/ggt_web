@@ -1,0 +1,234 @@
+
+<footer id="footer">
+    <div class="newsletter-section">
+        <div class="container" >
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-7 w-100 d-flex justify-content-start align-items-center">
+                    <div class="display-table">
+                        <div class="display-table-cell footer-newsletter">
+                            <div class="section-header text-center">
+                                <label class="h2"><span>sign up for </span>newsletter</label>
+                            </div>
+                            <form id="newsletter-form" action="{% url 'subscribe_newsletter' %}" method="post">
+                                {% csrf_token %}
+                                <div class="input-group">
+                                    <input type="email" class="input-group__field newsletter__input" name="email" value="" placeholder="Email address" required="">
+                                    <span class="input-group__btn">
+                                        <button type="submit" class="btn newsletter__submit" name="commit" id="Subscribe">
+                                            <span class="newsletter__submit-text--large">Subscribe</span>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                            <div id="newsletter-message" class="newsletter-message" style="display: none;">
+                                <i class="icon anm anm-check-circle"></i>
+                                <div class="message-content"></div>
+                                <button class="close-btn">×</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-5 d-flex justify-content-end align-items-center">
+                    <div class="footer-social">
+                        <ul class="list--inline site-footer__social-icons social-icons">
+                            <li><a class="social-icons__link" href="#" target="_blank"><i class="icon icon-facebook"></i></a></li>
+                            <li><a class="social-icons__link" href="#" target="_blank"><i class="icon icon-twitter"></i></a></li>
+                            <li><a class="social-icons__link" href="#" target="_blank"><i class="icon icon-pinterest"></i></a></li>
+                            <li><a class="social-icons__link" href="#" target="_blank"><i class="icon icon-instagram"></i></a></li>
+                            <li><a class="social-icons__link" href="#" target="_blank"><i class="icon icon-youtube"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </div>
+    <div class="site-footer">
+        <div class="container">
+            <!--Footer Links-->
+            <div class="footer-top">
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-3 col-lg-3 footer-links">
+                        <h4 class="h4">Quick Shop</h4>
+                        <ul>
+                            <li><a href="/products/laptop">Laptops</a></li>
+                            <li><a href="/products/gpu">Graphics Cards</a></li>
+                            <li><a href="/products/cpu">Processors</a></li>
+                            
+                            <li><a href="/products/accessories">Accessories</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-3 col-lg-3 footer-links">
+                        <h4 class="h4">Information</h4>
+                        <ul>
+                            <li><a href="{% url 'about_us' %}">About us</a></li>
+                            <li><a href="{% url 'why_ggt' %}">Why Choose GGT</a></li>     
+                            <li><a href="{% url 'privacy_policy' %}">Privacy policy</a></li>
+                            <li><a href="{% url 'terms_and_conditions' %}">Terms & conditions</a></li>
+                            
+                        </ul>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-3 col-lg-3 footer-links">
+                        <h4 class="h4">Customer Services</h4>
+                        <ul>
+                            
+                            <li><a href="{% url 'faq' %}">FAQ's</a></li>
+                            <li><a href="{% url 'contact' %}">Contact Us</a></li>
+                            <li><a href="{% url 'order_return_policy' %}">Orders and Returns</a></li>
+                            <li><a href="{% url 'customer_support' %}">Support Center</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-3 col-lg-3 contact-box">
+                        <h4 class="h4">Contact Us</h4>
+                        <ul class="addressFooter">
+                            <li><i class="icon anm anm-map-marker-al"></i><p>Shop #6 3rd Floor,<br>Hafeez Centre, Block E1 Block E 1<br>Gulberg III, Lahore</p></li>
+                            <li class="phone"><i class="icon anm anm-phone-s"></i><p>+92 306 4741099 , +92 322 4467244 , +92 321 4845324</p></li>
+                            <li class="email"><i class="icon anm anm-envelope-l"></i><p>info@ggt.com.pk</p></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!--End Footer Links-->
+            <hr>
+            <div class="footer-bottom">
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-6 col-lg-6 order-1 order-md-0 order-lg-0 order-sm-1 copyright text-sm-center text-md-left text-lg-left">
+                        <span>&copy; 2025 GGT. All Rights Reserved.</span>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-6 col-lg-6 order-2 order-md-1 order-lg-1 order-sm-2 copyright text-sm-center text-md-right text-lg-right">
+                        <span>Developed by <a href="https://www.cosmicsols.com" target="_blank">Cosmicsol</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!--End Footer-->
+<!--Scoll Top-->
+<span id="site-scroll"><i class="icon anm anm-angle-up-r"></i></span>
+<!--End Scoll Top-->
+<style>
+.newsletter-message {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 9999;
+    padding: 16px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateX(150%);
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: 400px;
+    font-size: 0.95rem;
+}
+
+.newsletter-message.show {
+    transform: translateX(0);
+}
+
+.newsletter-message.success {
+    background-color: #1e3932;
+    color: #fff;
+    border-left: 4px solid #00e676;
+}
+
+.newsletter-message.error {
+    background-color: #421c1d;
+    color: #fff;
+    border-left: 4px solid #ff5252;
+}
+
+.newsletter-message i {
+    font-size: 20px;
+}
+
+.newsletter-message .message-content {
+    flex-grow: 1;
+}
+
+.newsletter-message .close-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 0;
+    font-size: 18px;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.newsletter-message .close-btn:hover {
+    opacity: 1;
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('newsletter-form');
+    const messageDiv = document.getElementById('newsletter-message');
+    const messageContent = messageDiv.querySelector('.message-content');
+    const closeBtn = messageDiv.querySelector('.close-btn');
+
+    function showMessage(message, type) {
+        messageContent.textContent = message;
+        messageDiv.className = `newsletter-message ${type}`;
+        
+        // Set icon based on message type
+        const icon = messageDiv.querySelector('i');
+        icon.className = type === 'success' 
+            ? 'icon anm anm-check-circle' 
+            : 'icon anm anm-times-circle';
+
+        messageDiv.style.display = 'flex';
+        // Trigger reflow
+        messageDiv.offsetHeight;
+        messageDiv.classList.add('show');
+
+        // Auto hide after 5 seconds
+        setTimeout(() => {
+            hideMessage();
+        }, 5000);
+    }
+
+    function hideMessage() {
+        messageDiv.classList.remove('show');
+        setTimeout(() => {
+            messageDiv.style.display = 'none';
+        }, 300);
+    }
+
+    closeBtn.addEventListener('click', hideMessage);
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(form);
+        const submitButton = form.querySelector('button[type="submit"]');
+        
+        submitButton.disabled = true;
+        
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            credentials: 'same-origin'
+        })
+        .then(response => response.json())
+        .then(data => {
+            showMessage(data.message, data.success ? 'success' : 'error');
+            if (data.success) {
+                form.reset();
+            }
+        })
+        .catch(error => {
+            showMessage('An error occurred. Please try again.', 'error');
+        })
+        .finally(() => {
+            submitButton.disabled = false;
+        });
+    });
+});
+</script>

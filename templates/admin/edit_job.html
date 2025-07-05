@@ -1,0 +1,150 @@
+{% extends "sidebar.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4>Edit Job</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Job Title -->
+                        <div class="form-group">
+                            {{ form.title.label_tag }}
+                            {{ form.title }}
+                            {% if form.title.errors %}
+                                <div class="text-danger small">{{ form.title.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Job Description -->
+                        <div class="form-group">
+                            {{ form.description.label_tag }}
+                            {{ form.description }}
+                            {% if form.description.errors %}
+                                <div class="text-danger small">{{ form.description.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Job Location -->
+                        <div class="form-group">
+                            {{ form.location.label_tag }}
+                            {{ form.location }}
+                            {% if form.location.errors %}
+                                <div class="text-danger small">{{ form.location.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Job Salary -->
+                        <div class="form-group">
+                            {{ form.salary.label_tag }}
+                            {{ form.salary }}
+                            {% if form.salary.errors %}
+                                <div class="text-danger small">{{ form.salary.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Job Type -->
+                        <div class="form-group">
+                            {{ form.job_type.label_tag }}
+                            {{ form.job_type }}
+                            {% if form.job_type.errors %}
+                                <div class="text-danger small">{{ form.job_type.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="row mb-3">
+                            <!-- Save Job Button (Left) -->
+                            <div class="col-6">
+                                <button type="submit" name="save" class="btn btn-success btn-block">
+                                    <i class="fas fa-save"></i> Save Job
+                                </button>
+                            </div>
+                            <!-- Back to Jobs Button (Right) -->
+                            <div class="col-6">
+                                <a href="{% url 'job_list' %}" class="btn btn-secondary btn-block">
+                                    <i class="fas fa-arrow-left"></i> Back to Jobs
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<style>
+    .home-content {
+        align-items: normal;
+    }
+    a {
+        color: white;
+    }
+    a:hover {
+        color: rgb(255, 255, 255);
+        text-decoration: none;
+    }
+    .form-group label {
+        font-weight: 600;
+    }
+    .container {
+        margin-top: 50px;
+    }
+    .btn-block {
+        width: 100%;
+        padding: 15px;
+        font-size: 1rem;
+    }
+    .row > .col-6 {
+        margin-bottom: 10px;
+    }
+
+    /* Responsive adjustments for description field */
+    textarea[name="description"] {
+        width: 100%;
+        min-height: 150px;
+        resize: vertical;
+    }
+
+    @media (max-width: 576px) {
+        .btn-block {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 0.85rem;
+        }
+        .card-body {
+            padding: 15px;
+        }
+        textarea[name="description"] {
+            min-height: 120px;
+            font-size: 0.9rem;
+        }
+    }
+
+    @media (max-width: 400px) {
+        .btn-block {
+            font-size: 0.8rem;
+            padding: 8px;
+        }
+        .card-body {
+            padding: 10px;
+        }
+        textarea[name="description"] {
+            min-height: 100px;
+            font-size: 0.8rem;
+        }
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,305 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load store_extras %}
+
+{% block content %}
+{% include 'navbar.html' %}
+
+<!-- Add spacing to prevent navbar collision -->
+<div class="wishlist-spacing"></div>
+
+<!--Body Content-->
+<div id="page-content">
+    <!--Page Title-->
+    <div class="page section-header text-center">
+        <div class="page-title">
+            <div class="wrapper"><h1 class="page-width">Product Comparison</h1></div>
+        </div>
+    </div>
+    <!--End Page Title-->
+    
+    {% if messages %}
+    <div class="container">
+        <div class="messages">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    
+    {% if comparison_lists %}
+        {% for comparison_list in comparison_lists %}
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col">
+                    <div class="compare-page">
+                        <!-- Responsive comparison header -->
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+                            <div class="comparison-title mb-2 mb-md-0">
+                                <h2 style="color: white;" class="d-inline-block me-2">{{ comparison_list.product_type|title }} Comparison</h2>
+                                <span class="badge  " style="background-color: none; color: white; border: 1px solid white">{{ comparison_list.items.count }} items</span>
+                            </div>
+                            <div class="comparison-actions">
+                                <a href="{% url 'clear_comparison' comparison_list.id %}" class="btn btn-danger">
+                                    <i class="fa fa-trash"></i> <span class="d-none d-sm-inline">Clear Comparison</span>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        {% if comparison_list.items.exists %}
+                        <div class="table-wrapper table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr class="th-compare">
+                                        <th valign="middle">Action</th>
+                                        {% for item in comparison_list.items.all %}
+                                        <td valign="middle" class="item-row">
+                                            <a href="{% url 'remove_from_comparison' item.id %}" class="remove-compare">
+                                                <i class="anm anm-times-l" aria-hidden="true"></i>
+                                            </a>
+                                        </td>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                                <tbody id="table-compare">
+                                    <tr>
+                                        <th valign="middle" class="product-name">Product Name</th>
+                                        {% for item in comparison_list.items.all %}
+                                        <td valign="middle" class="grid-link__title">{{ item.product.name }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    <tr>
+                                        <th valign="middle" class="product-name">Product Image</th>
+                                        {% for item in comparison_list.items.all %}
+                                        <td valign="middle" class="item-row">
+                                            {% with primary_image=item.product.images.all|dictsort:"is_primary"|last %}
+                                                {% if primary_image %}
+                                                    <img src="{{ primary_image.image.url }}" 
+                                                         alt="{{ primary_image.alt_text }}" 
+                                                         class="featured-image">
+                                                {% else %}
+                                                    {% with first_image=item.product.images.first %}
+                                                        {% if first_image %}
+                                                            <img src="{{ first_image.image.url }}" 
+                                                                 alt="{{ first_image.alt_text }}" 
+                                                                 class="featured-image">
+                                                        {% else %}
+                                                            <div class="text-center">No image</div>
+                                                        {% endif %}
+                                                    {% endwith %}
+                                                {% endif %}
+                                            {% endwith %}
+                                            
+                                            <div class="product-price product_price">
+                                                {% if item.product.price %}
+                                                    <span>Rs. {{ item.product.price }}</span>
+                                                    {% if item.product.old_price %}
+                                                        <span class="old-price">Rs. {{ item.product.old_price }}</span>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <span>Price on request</span>
+                                                {% endif %}
+                                            </div>
+                                            
+                                            {% if item.product.price %}
+                                                <form class="variants clearfix">
+                                                    <input type="hidden" name="product_id" value="{{ item.product.id }}">
+                                                    <button title="Add to Cart" class="add-to-cart btn btn-solid">Add to Cart</button>
+                                                </form>
+                                            {% else %}
+                                                {% with whatsapp_number="+1234567890" message="Hi, I need the price and ordering details for SKU: "|add:item.product.sku|add:" - "|add:item.product.name %}
+                                                    <a href="https://wa.me/{{ whatsapp_number }}?text={{ message|urlencode }}" target="_blank" class="btn btn-solid whatsapp-btn">
+                                                        Contact for price
+                                                    </a>
+                                                {% endwith %}
+                                            {% endif %}
+                                        </td>
+                                        {% endfor %}
+                                    </tr>
+                                    
+                                    <tr>
+                                        <th valign="middle" class="product-name">SKU</th>
+                                        {% for item in comparison_list.items.all %}
+                                        <td valign="middle">{{ item.product.sku }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    
+                                    <tr>
+                                        <th valign="middle" class="product-name">Brand</th>
+                                        {% for item in comparison_list.items.all %}
+                                        <td valign="middle">{{ item.product.brand }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    
+                                    <tr>
+                                        <th valign="middle" class="product-name">Condition</th>
+                                        {% for item in comparison_list.items.all %}
+                                        <td valign="middle">{{ item.product.condition|title }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    
+                                    <!-- Dynamic model-specific fields -->
+                                    {% if comparison_list.model_fields %}
+                                        {% for field in comparison_list.model_fields %}
+                                        <tr>
+                                            <th valign="middle" class="product-name">{{ field.verbose_name }}</th>
+                                            {% for item in comparison_list.items.all %}
+                                            <td valign="middle">
+                                                {% with field_value=item.product|getattribute:field.name %}
+                                                    {% if field.field_type == 'BooleanField' %}
+                                                        {{ field_value|yesno:"Yes,No" }}
+                                                    {% elif field.field_type == 'IntegerField' and 'clock' in field.name %}
+                                                        {{ field_value }} MHz
+                                                    {% elif field.field_type == 'IntegerField' and 'size' in field.name %}
+                                                        {{ field_value }} GB
+                                                    {% elif field.field_type == 'IntegerField' and 'capacity' in field.name %}
+                                                        {{ field_value }} GB
+                                                    {% elif field.field_type == 'IntegerField' and 'wattage' in field.name %}
+                                                        {{ field_value }} W
+                                                    {% elif field.field_type == 'IntegerField' and 'tdp' in field.name %}
+                                                        {{ field_value }} W
+                                                    {% elif field.field_type == 'IntegerField' and 'rate' in field.name %}
+                                                        {{ field_value }} Hz
+                                                    {% elif field.field_type == 'FloatField' and 'size' in field.name %}
+                                                        {{ field_value }}"
+                                                    {% elif field.field_type == 'FloatField' and 'clock' in field.name %}
+                                                        {{ field_value }} GHz
+                                                    {% else %}
+                                                        {{ field_value }}
+                                                    {% endif %}
+                                                {% endwith %}
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+                                        {% endfor %}
+                                    {% endif %}
+                                    
+                                    <tr>
+                                        <th valign="middle" class="product-name">Product Description</th>
+                                        {% for item in comparison_list.items.all %}
+                                        <td valign="middle" class="item-row">
+                                            <p class="description-compare">{{ item.product.description|truncatewords:30 }}</p>
+                                        </td>
+                                        {% endfor %}
+                                    </tr>
+                                    
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <p>No items in this comparison list yet.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+    <div class="container">
+        <div class="empty-comparison-container text-center py-5">
+            <div class="empty-comparison-icon mb-4">
+                <i class="fa fa-balance-scale" style="font-size: 64px; color: #ccc;"></i>
+            </div>
+            <h3 class="mb-3">No Comparison Lists Yet</h3>
+            <p class="lead text-muted mb-4">Start comparing products to make better buying decisions.</p>
+            <div class="empty-comparison-steps">
+                <div class="row justify-content-center">
+                    <div class="col-md-3 mb-4">
+                        <div class="card h-100 bg-light">
+                            <div class="card-body text-center">
+                                <div class="step-number mb-2">1</div>
+                                <h5>Browse Products</h5>
+                                <p class="small">Explore our wide range of tech products</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="card h-100 bg-light">
+                            <div class="card-body text-center">
+                                <div class="step-number mb-2">2</div>
+                                <h5>Add to Compare</h5>
+                                <p class="small">Click "Add to Compare" on products you're interested in</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="card h-100 bg-light">
+                            <div class="card-body text-center">
+                                <div class="step-number mb-2">3</div>
+                                <h5>Review Differences</h5>
+                                <p class="small">See all specs side-by-side to make informed decisions</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4">
+                <a href="{% url 'home' %}" class="btn btn-primary">Start Shopping</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+<!--End Body Content-->
+
+<style>
+/* Custom styles for empty comparison state */
+.btn{
+    background-color: #007bff;
+    color: white;
+  
+ 
+    border-radius: 5px;
+   
+}
+.badge{
+    padding: 0.7em 0.9em;
+    margin-left: 10px;
+}
+.btn:hover{
+    background-color: #0056b3;
+}
+.empty-comparison-container {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 40px;
+}
+.description-compare{
+    color: white;
+}
+.step-number {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    font-weight: bold;
+}
+.compare-page .table td{
+    color:white;
+}
+.card {
+    transition: transform 0.3s ease;
+    border: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+.wishlist-spacing {
+        margin-top: 78px;
+    }
+    @media (max-width: 768px) {
+        .wishlist-spacing {
+            margin-top: 70px;
+        }
+    }
+</style>
+{% endblock %} 
