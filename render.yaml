@@ -2,7 +2,7 @@ services:
   - type: web
     name: ggt-web
     env: python
-    buildCommand: "pip install -r requirements.txt"
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput && mkdir -p media"
     startCommand: "gunicorn ggt_web.wsgi:application"
     autoDeploy: true
     region: singapore

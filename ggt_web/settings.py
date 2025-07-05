@@ -123,14 +123,21 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
-# WhiteNoise static files storage with compression and caching
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# WhiteNoise static files storage - use simple storage for better compatibility
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
+# WhiteNoise configuration
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_AUTOREFRESH = True
 
-# Media files (uploads)
+# Media files (uploads) - for database images
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'  # Good to keep this as Path object
+MEDIA_ROOT = BASE_DIR / 'media'
 
+# Configure WhiteNoise to serve media files in production
+WHITENOISE_ADDITIONAL_PREFIXES = [
+    ('media/', 'media/'),
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
